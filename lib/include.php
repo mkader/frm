@@ -1,0 +1,11 @@
+<?php
+	require_once('./dnsconfig.php');
+	require_once('db.class.php');
+	require_once('dbexception.class.php');
+	require_once('logger.class.php');
+	require_once('sessions.class.php');
+	require_once('users.class.php');
+	require_once('events.class.php');
+	require_once('pledges.class.php');
+	require_once('commons.class.php');
+?>
