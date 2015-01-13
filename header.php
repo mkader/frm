@@ -28,9 +28,11 @@ if ($session->isValidSession()){
 		<li>User</li>
 <?php } ?>
 		<li>Event</li>
-		<li>Pledge</li>
 		<li>Donator</li>
+		<!-- <li>Pledge</li>-->
 		<li>Expense</li>
+		<li>Template</li>
+		<li>Report</li>
 		<li>Log</li>
 	</ul>
 </div>

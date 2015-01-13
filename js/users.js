@@ -1,14 +1,30 @@
 var userColModel = [
-	{label: 'id', template:common.idTemplate('id')},
-	{label: 'Name', template:common.textTemplate('name', 100, true, ' * ')},
-	{label: 'Password', template:common.passwordTemplate('password')},
-	{label: 'E-mail', formatter:'email', template:common.textTemplate('email', 100, true, ' * ')},
-	{label: 'Phone', template:common.phoneTemplate('phone', 50, true, ' * ')},
+	{label: 'id', template:common.idTemplate('id',7,1)},
+	{label: 'Name', template:common.textTemplate('name', 100, true, ' * ',true,1,1)},
+	{label: 'Password', template:common.passwordTemplate('password',2,1)},
+	{label: 'E-mail', formatter:'email', template:common.textTemplate('email', 100, true, ' * ',true,3,1)},
+	{label: 'Phone', template:common.phoneTemplate('phone', 50, true, ' * ',true,4,1)},
 	{label: 'User Type', template:common.selectTemplate('user_type', 50, true, ' * ',
-		'select', ":;1:Super Admin;2:Admin", ':[All];Super Admin:Super Admin;Admin:Admin')},
-	{label: 'Active', template:common.selectTemplate('active', 50, true, ' &nbsp; ', 'checkbox',
-		"1:Yes;2:No", ":[All];Yes:Yes;No:No")}
+		'select', ':;1:Super Admin;2:Admin', ':[All];Super Admin:Super Admin;Admin:Admin', true,5,1)},
+	{label: 'Active', template:common.selectTemplate('active', 50, true, ' &nbsp; ', 
+		'checkbox', '1:Yes;2:No', ':[All];Yes:Yes;No:No', true,6,1)}
 ];
+
+function editSettings() {
+	return $.extend(common.modalEdit('auto', "<br><font color='red'>Leave password blank if dont want to change</font>"), {
+		beforeInitData: function(formid) {
+			$("#jqGrid").jqGrid('setColProp', 'password',
+					{formoptions: {elmprefix: "  &nbsp;  ", rowpos: 2, colpos: 1}},
+					{editoptions:{value:''}});
+		},
+		beforeShowForm: function(formid) {
+			$("#jqGrid").jqGrid('setColProp', 'password', {editrules: {required: false}});
+		},
+		beforeSubmit: function(postdata, formid) {
+			return[common.validateEmail(postdata.email),'E-mail: Field is not valid'];
+		},
+	});
+}
 
 //$(document).ready(function()
 /*$(function(){
@@ -22,16 +38,7 @@ var userColModel = [
 
 			$("#jqGrid").navGrid("#jqGridPager",
 				gridFooterIcons,
-				$.extend(common.modalEdit('auto', "<br><font color='red'>Leave password blank if dont want to change</font>"), {
-					beforeInitData: function(formid) {
-						$("#jqGrid").jqGrid('setColProp', 'password',
-								{formoptions: {elmprefix: "  &nbsp;  "}},
-								{editoptions:{value:''}});
-					},
-					beforeShowForm: function(formid) {
-						$("#jqGrid").jqGrid('setColProp', 'password', {editrules: {required: false}});
-					},
-				}),
+				editSettings(),
 				$.extend( common.modalCreate('auto'), {
 					// options for the Add Dialog
 					//mtype: "post",
@@ -39,7 +46,8 @@ var userColModel = [
 						fetchGridData();
 					},*/
 					beforeInitData: function(formid) {
-						$("#jqGrid").jqGrid('setColProp', 'password', {formoptions: {elmprefix: " * "}});
+						$("#jqGrid").jqGrid('setColProp', 'password', 
+								{formoptions: {elmprefix: " * ", rowpos: 2, colpos: 1}});
 					},
 					beforeShowForm: function(formid) {
 						$("#jqGrid").jqGrid('setColProp', 'password', {editrules: {required: true}});

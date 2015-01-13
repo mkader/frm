@@ -7,6 +7,7 @@ $(function(){
 		else if (menu=="user")  updateContent("userlist.php");
 		else if (menu=="event") updateContent("eventlist.php");
 		else if (menu=="pledge") updateContent("pledgelist.php");
+		else if (menu=="donator") updateContent("donatorlist.php");
 	});
 })	
 function loadContent() {

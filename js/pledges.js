@@ -1,15 +1,19 @@
 var pledgeColModel = [
 	{label: 'id', template:common.idTemplate('id')},
 	{label: 'Event', template:common.selectTemplate('event_id', 50, true, ' * ',
-			'select', ':;1:Operation;2:New Masjid', ':[All];Operation:Operation;New Masjid:New Masjid')},
+			'select', ':;1:Operation;2:New Masjid', ':[All];Operation:Operation;New Masjid:New Masjid', true,1,1)},
 	{label: 'Donator', template:common.selectTemplate('donator_id', 50, true, ' * ',
-			'select', ':;1:Operation;2:New Masjid', ':[All];Operation:Operation;New Masjid:New Masjid')},
+			'select', ':;1:Operation;2:New Masjid', ':[All];Operation:Operation;New Masjid:New Masjid', true,1,1)},
 	{label: 'Pledge Amount', template:common.numberTemplate('amount', 50, true, ' * ')},
 	{label: 'Payment Method', template:common.selectTemplate('payment_method_id', 50, true, ' * ',
-			'select', ':;1:Operation;2:New Masjid', ':[All];Operation:Operation;New Masjid:New Masjid')},
+			'select', ':;1:Operation;2:New Masjid', ':[All];Operation:Operation;New Masjid:New Masjid', true,1,1)},
 	{label: 'Payment Type', template:common.selectTemplate('payment_type_id', 50, true, ' * ',
-			'select', ':;1:Operation;2:New Masjid', ':[All];Operation:Operation;New Masjid:New Masjid')},
+			'select', ':;1:Operation;2:New Masjid', ':[All];Operation:Operation;New Masjid:New Masjid', true,1,1)},
 ];
+
+function editSettings() {
+	return common.modalEdit('auto','');
+}
 
 $("#jqGrid").jqGrid(common.gridOptions(pledgeColModel, 'Pledge List', 'pledges.php'));
 
@@ -18,7 +22,7 @@ $('#jqGrid').jqGrid('filterToolbar',common.showFilterOptions);
 
 $("#jqGrid").navGrid("#jqGridPager",
 	gridFooterIcons,
-	common.modalEdit('auto',''),
+	editSettings(),
 	common.modalCreate('auto'),
 	common.modalDelete()
 );

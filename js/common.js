@@ -11,30 +11,42 @@ var Common = {
 	    return re.test(email);
 	},
 	
-	gridOptions:function(userColModel, caption, editurl) {
-		return {colModel: userColModel,
-		/*loadComplete: function () {
-		    $(this).find(">tbody>tr.jqgrow:visible:odd").addClass("altRow");
-		},*/
-		viewrecords: true,
-        //autowidth: true,
-        height: "auto",
-        width: 900,
-		height: 230,
-		rowNum: 10,
-		ignoreCase: true,
-		datatype: 'local',
-		multiSort: true,
-		altRows: true,
-		rownumbers: true,
-        rownumWidth: 25,
-        rowList: [10,20,40],
-		pager: "#jqGridPager",
-		mtype:"POST",
-		caption: caption,
-		//type:"post",
-		editurl: editurl,
-		//reloadAfterSubmit:true,
+	gridOptions:function(icolModel, icaption, iediturl, iwidth) {
+		if(typeof(iwidth)==='undefined') iwidth = 900;
+		return {colModel: icolModel,
+			/*loadComplete: function () {
+			    $(this).find(">tbody>tr.jqgrow:visible:odd").addClass("altRow");
+			},*/
+			viewrecords: true,
+	        //autowidth: true,
+	        height: "auto",
+	        width: iwidth,
+			height: 230,
+			rowNum: 10,
+			ignoreCase: true,
+			datatype: 'local',
+			multiSort: true,
+			altRows: true,
+			rownumbers: true,
+	        rownumWidth: 25,
+	        rowList: [10,20,40],
+			pager: "#jqGridPager",
+			mtype:"POST",
+			caption: icaption,
+			//type:"post",
+			editurl: iediturl,
+			//reloadAfterSubmit:true,
+			ondblClickRow: function(rowid, ri, ci) {
+				//alert(rowid + " - " + ri + " - " + ci)
+	            var p = $(this)[0].p;
+	            if (p.selrow !== rowid) {
+	            	// prevent the row from be unselected on double-click
+	                // the implementation is for "multiselect:false" which we use,
+	                // but one can easy modify the code for "multiselect:true"
+	            	$(this).jqGrid('setSelection', rowid);
+	            }
+	            $(this).jqGrid('editGridRow', rowid,  editSettings());
+	        }
 		}
 	},
 	
@@ -80,44 +92,46 @@ var Common = {
 		searchOperators: true
 	},
 	
-	idTemplate: function(iname) {
+	idTemplate: function(iname, irowpos, icolpos) {
     	return {name: iname, key: true, hidden:true, editable: true, 
-    		editrules: { edithidden: false }, hidedlg: true};
+    		editrules: { edithidden: false }, hidedlg: true,
+    		formoptions: { rowpos: irowpos, colpos: icolpos}};
 	},
 	
-    passwordTemplate: function(iname) {
+    passwordTemplate: function(iname, irowpos, icolpos) {
         return {name: iname, hidden:true, edittype:"password", 
-		editable: true, editrules: { edithidden: true}
-		/*editrules: { required:true },
-		formoptions: {elmprefix: " * "}*/}
+		editable: true, editrules: { edithidden: true},
+		/*editrules: { required:true },*/
+		formoptions: { rowpos: irowpos, colpos: icolpos}};
     },
 
-    textTemplate: function(iname, iwidth, irequired, iprefix) {
-    	var formoptions = {elmprefix: iprefix};
-    	var editOptions = {};
-    	var editrules = {required: irequired}
-    	return generateFieldTemplate(iname, iwidth, true, "text", editrules, 
+    textTemplate: function(iname, iwidth, irequired, iprefix, ieditable, irowpos, icolpos) {
+    	var formoptions = {elmprefix: iprefix, rowpos: irowpos, colpos: icolpos};
+    	var editOptions = {}; 
+    	var editrules = {required: irequired, edithidden: true}
+    	return generateFieldTemplate(iname, iwidth, ieditable, "text", editrules, 
     			textSearchOptions, formoptions, {}, 'text');
     },
     
-    phoneTemplate: function(iname, iwidth, irequired, iprefix) {
+    phoneTemplate: function(iname, iwidth, irequired, iprefix, ieditable, irowpos, icolpos) {
     	var editOptions = {dataInit: function (elem) { $(elem).mask("(999) 999-9999"); }};
-    	var formoptions = {elmprefix: iprefix};
+    	var formoptions = {elmprefix: iprefix, rowpos: irowpos, colpos: icolpos};
     	var editrules = {required: irequired}
-    	return generateFieldTemplate(iname, iwidth, true, "text", editrules, 
+    	return generateFieldTemplate(iname, iwidth, ieditable, "text", editrules, 
     			textSearchOptions, formoptions, editOptions, 'text');
     },
     
-    selectTemplate: function(iname, iwidth, irequired, iprefix, itype, editvalue, searchvalue) {
+    selectTemplate: function(iname, iwidth, irequired, iprefix, itype, editvalue, 
+    		searchvalue, ieditable, irowpos, icolpos) {
     	var searchOptions = {sopt: ['eq', 'ne'], value: searchvalue};
     	var editOptions = {value: editvalue};
-    	var formoptions = {elmprefix: iprefix};
-    	var editrules = {required: irequired}
-    	return generateFieldTemplate(iname, iwidth, true, itype, editrules, 
-    			searchOptions, formoptions, editOptions, itype);
+    	var formoptions = {elmprefix: iprefix, rowpos: irowpos, colpos: icolpos};
+    	var editrules = {required: irequired, edithidden: true}
+    	return generateFieldTemplate(iname, iwidth, ieditable, itype, editrules, 
+    			searchOptions, formoptions, editOptions, 'select');
     },
     
-    dateTemplate: function(iname, iwidth, irequired, iprefix) {
+    dateTemplate: function(iname, iwidth, irequired, iprefix, irowpos, icolpos) {
     	 var searchOptions = { sopt: numberSearchOptions, 
 			dataInit:  function (elem) {
 		        setTimeout(function () {
@@ -144,7 +158,8 @@ var Common = {
 	            showOn: 'focus'
 	        });
 	    }};
-    	var formoptions = {srcformat:'mm/dd/YY', newformat:'ShortDate', elmprefix: " * "};
+    	var formoptions = {srcformat:'mm/dd/YY', newformat:'ShortDate', 
+    			elmprefix: " * ", rowpos: irowpos, colpos: icolpos};
     	var editrules = {required: irequired}
     	var dateOptions = {align:'right'};
     	var generateOptions = generateFieldTemplate(iname, iwidth, true, "text", editrules, 
@@ -152,24 +167,24 @@ var Common = {
     	return $.extend( dateOptions, generateOptions );
     },
      
-    numberTemplate: function(iname, iwidth, irequired, iprefix) {
+    numberTemplate: function(iname, iwidth, irequired, iprefix, irowpos, icolpos) {
     	var searchOptions = { sopt: numberSearchOptions};
     	var editrules = {number:true, required: irequired}
     	var editOptions = {};
-    	var formoptions = {elmprefix: " * "};
+    	var formoptions = {elmprefix: " * ", rowpos: irowpos, colpos: icolpos};
     	var numberOptions = {align:'right'};
     	var generateOptions = generateFieldTemplate(iname, iwidth, true, "text", editrules, 
 				searchOptions, formoptions, editOptions, 'text');
     	return $.extend( numberOptions, generateOptions );
     },     
     
-    textAreaTemplate: function(iname, iwidth, irequired, iprefix) {
+    textAreaTemplate: function(iname, iwidth, irequired, iprefix, ieditable, irowpos, icolpos) {
     	var searchOptions = {};
-    	var formoptions = {elmprefix: iprefix};
+    	var formoptions = {elmprefix: iprefix, rowpos: irowpos, colpos: icolpos};
     	var editOptions = {rows:"2",cols:"23"};
     	var textAreaOptions = {wrap:"on", hidden:true};
     	var editrules = {edithidden: true, required: irequired}
-    	var generateOptions = generateFieldTemplate(iname, iwidth, true, "textarea", editrules, 
+    	var generateOptions = generateFieldTemplate(iname, iwidth, ieditable, "textarea", editrules, 
     			searchOptions, formoptions, editOptions, 'text');
     	return $.extend( textAreaOptions, generateOptions );
     },
