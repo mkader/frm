@@ -11,7 +11,7 @@ function eventlist() {
 
 	try {
 		$responseData = $event->getEventList();
-		Logger::log('EventList complete');
+		Logger::log('Event List complete');
 		$response['success'] = 1;
 		$response['data'] = $responseData;
 	} catch (DBException $e) {

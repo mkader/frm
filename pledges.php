@@ -11,7 +11,7 @@ function pledgelist() {
 
 	try {
 		$responseData = $pledge->getPledgeList();
-		Logger::log('PledgeList complete');
+		Logger::log('Pledge List complete');
 		$response['success'] = 1;
 		$response['data'] = $responseData;
 	} catch (DBException $e) {
@@ -30,7 +30,7 @@ function iudpledge($iud, $action_type, $action_type_done) {
 	$amount = 0;
 	$payment_method_id = 0;
 	$payment_type_id = 0;
-	
+
 	if ($iud!='d') {
 		$event_id = @intval($_POST['event_id']);
 		$donator_id = @intval($_POST['donator_id']);

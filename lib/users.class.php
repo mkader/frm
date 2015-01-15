@@ -130,7 +130,6 @@ class Users {
 	            	'created_on' => $created_on, 'modified_on' => $modified_on,
 	            	'created_by' => $created_by, 'modified_by' => $modified_by , 'user_type' => $user_type);
 	        }
-			$stmt->fetch();
 			$stmt->close();
 
 	        return $users;

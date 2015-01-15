@@ -12,8 +12,7 @@ $(function(){
 					password: password,
 					securitycode: securitycode,
 			};
-			common.ajaxCall(
-				"post", "users.php", data,
+			common.ajaxCall(true, "post", "users.php", data,
 				function( response ) {
 					var res = common.decode(response);
 					if (res['error']) {
@@ -30,8 +29,7 @@ $(function(){
 	});
 
 	$("#logout").click(function(event ) {
-		common.ajaxCall(
-			"get", "users.php", {action: 'logout'},
+		common.ajaxCall(true, "get", "users.php", {action: 'logout'},
 			function( response ) {
 				var res = common.decode(response);
 				if (res['error']) {

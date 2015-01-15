@@ -6,7 +6,7 @@
     $( "#tabs" ).tabs({
       beforeLoad: function( event, ui ) {
         debugger;
-        updateContent("pledgelist.php");
+        updateContent("pledgelist.php", "#pledgelistid");
         /*ui.jqXHR.error(function() {
           ui.panel.html(
             "Couldn't load this tab. We'll try to fix this as soon as possible. " +
@@ -16,23 +16,21 @@
     });
   });
   </script>
+  
  
 <br>
 <div id="tabs" style="width:900px">
   <ul>
-    <li><a href="#tabs-1">Pledges</a></li>
-    <li><a href="pledgelist.php">Payments</a></li>
-    <li><a href="ajax/content2.html">Tab 2</a></li>
-    <li><a href="ajax/content3-slow.php">Tab 3 (slow)</a></li>
-    <li><a href="ajax/content4-broken.php">Tab 4 (broken)</a></li>
+    <li><a href="#pledgelistid">Pledges</a></li>
+    <li><a href="#tabs-1">Payments</a></li>
+    <li><a href="#tabs-2">Tab 2</a></li>
+    <li><a href="#tabs-3">Tab 3 (slow)</a></li>
+    <li><a href="#tabs-4">Tab 4 (broken)</a></li>
   </ul>
-  <div id="tabs-1">
-    <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. 
-    Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. 
-    Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend 
-    adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. 
-    Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. 
-    Nunc tristique tempus lectus.</p>
+  <idv id="pledgelistid">
+  	<script>
+		updateContent("pledgelist.php", "#pledgelistid");
+	</script>
   </div>
 </div>
  

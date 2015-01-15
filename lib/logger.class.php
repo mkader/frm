@@ -22,6 +22,16 @@ class Logger {
 			}
 		}
     }
+    
+    static function JSON($jsonfile, $jsondata) {
+    	$data ="{".$jsondata."}";
+    	$jsonpath = 'json/'.$jsonfile.'.json';
+    	$fp = fopen($jsonpath, 'w');
+    	if ($fp) {
+   			fwrite($fp, $data);
+   			fclose($fp);
+   		}
+    }
 }
 
 ?>

@@ -8,10 +8,12 @@ class Donators {
 	private $session;
 	
 	private $common;
+	private $select;
 
     function __construct(&$db) {
     	$this->session = new Sessions();
     	$this->common = new Commons();
+    	$this->select = new Selects($db);
         $this->db = $db;
         if (!$this->db) {
             $this->db = new Db();
@@ -46,10 +48,15 @@ class Donators {
             	'modified_on' => $common->date_format_form($modified_on),
             	'created_by' => $created_by, 'modified_by' => $modified_by);
         }
-		$stmt->fetch();
 		$stmt->close();
 
         return $donators;
+    }
+    
+    function jsonDonator() {
+    	//global $select;
+    	$jsonData = $this->select->jsonData('donator', 'id, name value');
+    	Logger::JSON('donator',$jsonData);
     }
 
     function iudDonator($dml, $id, $name, $address1, $address2, $city, $state, 
@@ -79,7 +86,7 @@ class Donators {
        	} 
        	else if ($dml=='u') $this->db->update($tableName, $id, $data);
 	   	else if ($dml=='d') $this->db->delete($tableName, $id);
-
+	   	Donators::jsonDonator();
         return $id;
     }
 }

@@ -1,34 +1,47 @@
+var gridid = "#jqGrid";
+var gridpagerid  = "#jqGridPager";
+var pledge_type_id =':;';
+var pledge_type_value =':[All];';
+common.ajaxCall(false, "get", "json/select.json", null,
+	function( response ) {
+		pledge_type_id += response['pledge_type_id'][0];
+		pledge_type_value += response['pledge_type_value'][0];
+	},
+	function( response ) {
+		common.errorAlert(event, response.responseText);
+	}
+)
 var eventColModel = [
 	{label: 'id', template:common.idTemplate('id',7,1)},
 	{label: 'Title', template:common.textTemplate('title', 100, true, ' * ',true,1,1)},
 	{label: 'Event Date', template:common.dateTemplate('event_date', 50, true, ' * ',2,1)},
 	{label: 'Target Amount', template:common.numberTemplate('target_amount', 50, true, ' * ',3,1)},
 	{label: 'Event Type', template:common.selectTemplate('pledge_type', 50, true, ' * ',
-			'select', ':;1:Operation;2:New Masjid', ':[All];Operation:Operation;New Masjid:New Masjid',true,4,1)},
+			'select', pledge_type_id, pledge_type_value,true,4,1)},
 	{label: 'Location', template:common.textTemplate('location', 150, true, ' * ',true,5,1)},
 	{label: 'Description', template:common.textAreaTemplate('description', 100, false, ' &nbsp; ',true,6,1)},
 ];
 
 function editSettings() {
-	return common.modalEdit('auto','');
+	return common.modalEdit('auto','',common.afterSubmit);
 }
 
-$("#jqGrid").jqGrid(common.gridOptions(eventColModel, 'Event List', 'events.php'));
+$(gridid).jqGrid(common.gridOptions(gridpagerid, eventColModel, 'Event List', 'events.php', 900));
 
 // activate the toolbar searching
-$('#jqGrid').jqGrid('filterToolbar',common.showFilterOptions);
+$(gridid).jqGrid('filterToolbar',common.showFilterOptions);
 
-$("#jqGrid").navGrid("#jqGridPager",
+$(gridid).navGrid(gridpagerid,
 	gridFooterIcons,
 	editSettings(),
-	common.modalCreate('auto'),
-	common.modalDelete()
+	common.modalCreate('auto',common.afterSubmit),
+	common.modalDelete(common.afterSubmit)
 );
 
 fetchGridData();
 
 function fetchGridData() {
-	common.setGridData("get", "events.php", {action: 'eventlist'}, pushData) 
+	common.setGridData(gridid, "get", "events.php", {action: 'eventlist'}, pushData)
 }
 
 function pushData(result) {

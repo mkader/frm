@@ -6,13 +6,13 @@ var Common = {
 		return JSON.parse(a)
 	},
 
-	validateEmail: function(email) { 
+	validateEmail: function(email) {
 	    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	    return re.test(email);
 	},
-	
-	gridOptions:function(icolModel, icaption, iediturl, iwidth) {
-		if(typeof(iwidth)==='undefined') iwidth = 900;
+
+	gridOptions:function(ipager, icolModel, icaption, iediturl, iwidth) {
+		//if(typeof(iwidth)==='undefined') iwidth = 900;
 		return {colModel: icolModel,
 			/*loadComplete: function () {
 			    $(this).find(">tbody>tr.jqgrow:visible:odd").addClass("altRow");
@@ -30,11 +30,14 @@ var Common = {
 			rownumbers: true,
 	        rownumWidth: 25,
 	        rowList: [10,20,40],
-			pager: "#jqGridPager",
+			pager: ipager,
 			mtype:"POST",
 			caption: icaption,
 			//type:"post",
 			editurl: iediturl,
+			/*onSelectRow: function (id) {
+				alert(id);
+			},*/
 			//reloadAfterSubmit:true,
 			ondblClickRow: function(rowid, ri, ci) {
 				//alert(rowid + " - " + ri + " - " + ci)
@@ -49,8 +52,8 @@ var Common = {
 	        }
 		}
 	},
-	
-	modalDelete:function() {
+
+	modalDelete:function(iafterSubmit) {
 		return {// options for the Delete Dailog
 			/*beforeShowForm: function ($form) {
 			    $("td.delmsg", $form[0]).html("Do you really want delete the row with <b>id=" +
@@ -59,47 +62,47 @@ var Common = {
 			onclickSubmit : function(params, posdata) {
 				return {action:"iud",iud:"d",id:posdata}
 			},
-			afterSubmit : common.afterSubmit,
+			afterSubmit : iafterSubmit,
 			errorTextFormat: common.errorTextFormat};
 	},
-	
-	modalCreate:function(iwidth) {
+
+	modalCreate:function(iwidth, iafterSubmit) {
 		return{// options for the Add Dialog
 			width:iwidth,
 			bottominfo: common.fieldsRequiredText,
 			closeAfterAdd: true,
 			recreateForm: true,
 			editData: {action:"iud",iud:"i"},
-			afterSubmit: common.afterSubmit,
+			afterSubmit: iafterSubmit,
 			errorTextFormat: common.errorTextFormat};
 	},
-	
-	modalEdit:function(iwidth, ibottominfo) {// options for the Edit Dialog
+
+	modalEdit:function(iwidth, ibottominfo, iafterSubmit) {// options for the Edit Dialog
 		return {
 			width:iwidth,
 			bottominfo: common.fieldsRequiredText+ibottominfo,
 			recreateForm: true,
 			closeAfterEdit: true,
 			editData: {action:"iud",iud:"u"},
-			afterSubmit: common.afterSubmit,
+			afterSubmit: iafterSubmit,
 			errorTextFormat: common.errorTextFormat};
 	},
-	
+
 	showFilterOptions:{
 		// JSON stringify all data from search, including search toolbar operators
 		stringResult: true,
 		// instuct the grid toolbar to show the search options
 		searchOperators: true
 	},
-	
+
 	idTemplate: function(iname, irowpos, icolpos) {
-    	return {name: iname, key: true, hidden:true, editable: true, 
+    	return {name: iname, key: true, hidden:true, editable: true,
     		editrules: { edithidden: false }, hidedlg: true,
     		formoptions: { rowpos: irowpos, colpos: icolpos}};
 	},
-	
+
     passwordTemplate: function(iname, irowpos, icolpos) {
-        return {name: iname, hidden:true, edittype:"password", 
+        return {name: iname, hidden:true, edittype:"password",
 		editable: true, editrules: { edithidden: true},
 		/*editrules: { required:true },*/
 		formoptions: { rowpos: irowpos, colpos: icolpos}};
@@ -107,32 +110,32 @@ var Common = {
 
     textTemplate: function(iname, iwidth, irequired, iprefix, ieditable, irowpos, icolpos) {
     	var formoptions = {elmprefix: iprefix, rowpos: irowpos, colpos: icolpos};
-    	var editOptions = {}; 
+    	var editOptions = {};
     	var editrules = {required: irequired, edithidden: true}
-    	return generateFieldTemplate(iname, iwidth, ieditable, "text", editrules, 
+    	return generateFieldTemplate(iname, iwidth, ieditable, "text", editrules,
     			textSearchOptions, formoptions, {}, 'text');
     },
-    
+
     phoneTemplate: function(iname, iwidth, irequired, iprefix, ieditable, irowpos, icolpos) {
     	var editOptions = {dataInit: function (elem) { $(elem).mask("(999) 999-9999"); }};
     	var formoptions = {elmprefix: iprefix, rowpos: irowpos, colpos: icolpos};
     	var editrules = {required: irequired}
-    	return generateFieldTemplate(iname, iwidth, ieditable, "text", editrules, 
+    	return generateFieldTemplate(iname, iwidth, ieditable, "text", editrules,
     			textSearchOptions, formoptions, editOptions, 'text');
     },
-    
-    selectTemplate: function(iname, iwidth, irequired, iprefix, itype, editvalue, 
+
+    selectTemplate: function(iname, iwidth, irequired, iprefix, itype, editvalue,
     		searchvalue, ieditable, irowpos, icolpos) {
     	var searchOptions = {sopt: ['eq', 'ne'], value: searchvalue};
     	var editOptions = {value: editvalue};
     	var formoptions = {elmprefix: iprefix, rowpos: irowpos, colpos: icolpos};
     	var editrules = {required: irequired, edithidden: true}
-    	return generateFieldTemplate(iname, iwidth, ieditable, itype, editrules, 
+    	return generateFieldTemplate(iname, iwidth, ieditable, itype, editrules,
     			searchOptions, formoptions, editOptions, 'select');
     },
-    
+
     dateTemplate: function(iname, iwidth, irequired, iprefix, irowpos, icolpos) {
-    	 var searchOptions = { sopt: numberSearchOptions, 
+    	 var searchOptions = { sopt: numberSearchOptions,
 			dataInit:  function (elem) {
 		        setTimeout(function () {
 		            $(elem).datepicker({
@@ -158,41 +161,42 @@ var Common = {
 	            showOn: 'focus'
 	        });
 	    }};
-    	var formoptions = {srcformat:'mm/dd/YY', newformat:'ShortDate', 
+    	var formoptions = {srcformat:'mm/dd/YY', newformat:'ShortDate',
     			elmprefix: " * ", rowpos: irowpos, colpos: icolpos};
     	var editrules = {required: irequired}
     	var dateOptions = {align:'right'};
-    	var generateOptions = generateFieldTemplate(iname, iwidth, true, "text", editrules, 
+    	var generateOptions = generateFieldTemplate(iname, iwidth, true, "text", editrules,
 				searchOptions, formoptions, editOptions, 'text');
     	return $.extend( dateOptions, generateOptions );
     },
-     
+
     numberTemplate: function(iname, iwidth, irequired, iprefix, irowpos, icolpos) {
     	var searchOptions = { sopt: numberSearchOptions};
     	var editrules = {number:true, required: irequired}
     	var editOptions = {};
     	var formoptions = {elmprefix: " * ", rowpos: irowpos, colpos: icolpos};
     	var numberOptions = {align:'right'};
-    	var generateOptions = generateFieldTemplate(iname, iwidth, true, "text", editrules, 
+    	var generateOptions = generateFieldTemplate(iname, iwidth, true, "text", editrules,
 				searchOptions, formoptions, editOptions, 'text');
     	return $.extend( numberOptions, generateOptions );
-    },     
-    
+    },
+
     textAreaTemplate: function(iname, iwidth, irequired, iprefix, ieditable, irowpos, icolpos) {
     	var searchOptions = {};
     	var formoptions = {elmprefix: iprefix, rowpos: irowpos, colpos: icolpos};
     	var editOptions = {rows:"2",cols:"23"};
     	var textAreaOptions = {wrap:"on", hidden:true};
     	var editrules = {edithidden: true, required: irequired}
-    	var generateOptions = generateFieldTemplate(iname, iwidth, ieditable, "textarea", editrules, 
+    	var generateOptions = generateFieldTemplate(iname, iwidth, ieditable, "textarea", editrules,
     			searchOptions, formoptions, editOptions, 'text');
     	return $.extend( textAreaOptions, generateOptions );
     },
-   
-    ajaxCall: function(type, url, data, successCallback, errorCallback) {
+
+    ajaxCall: function(async, type, url, data, successCallback, errorCallback) {
 		$.ajax({
 			type: type,
 			url: url,
+			async: async,
 			data: data,
 			success: successCallback,
 			error: errorCallback
@@ -208,16 +212,18 @@ var Common = {
 		$(spanid).html(msg);
 		event.preventDefault();
 	},
-	
+
 	afterSubmit: function(response) {
+		debugger;
 		var res = common.decode(response.responseText)
 		if (res['error']) {
 			return [false, 'Error: ' + res['message']];
 		} else {
+			debugger;
 			fetchGridData();
 			return [true];
 		}
-	
+
 		/*var myInfo = '<div class="ui-state-highlight ui-corner-all">'+
          			 	'<span class="ui-icon ui-icon-info" ' +
          			 	'style="float: left; margin-right: .3em;"></span>' +
@@ -235,20 +241,20 @@ var Common = {
 
 	    return [true, "", ""];*/
 	},
-	
+
 	errorTextFormat: function (data) {
 		return 'Error: ' + data.responseText;
 		//return '<span class="ui-icon ui-icon-alert" ' +
         // 		'style="float:left; margin-right:.3em;"></span>' +
         // 		data.responseText;
 	},
-	
+
 	fieldsRequiredText: "Fields marked with * are required",
-	
-	setGridData: function(type, url, params, successCallback) {
+
+	setGridData: function(gridid, type, url, params, successCallback) {
 		var gridArrayData = [];
-		$("#jqGrid")[0].grid.beginReq();
-		common.ajaxCall(type, url, params,
+		$(gridid)[0].grid.beginReq();
+		common.ajaxCall(true, type, url, params,
 			function( response ) {
 				var res = common.decode(response);
 				if (res['error']) {
@@ -256,11 +262,11 @@ var Common = {
 				}else if (res['success']) {
 					gridArrayData = successCallback(res['data']);
 					// set the new data
-					$("#jqGrid").jqGrid('setGridParam', { data: gridArrayData});
+					$(gridid).jqGrid('setGridParam', { data: gridArrayData});
 					// hide the show message
-					$("#jqGrid")[0].grid.endReq();
+					$(gridid)[0].grid.endReq();
 					// refresh the grid
-					$("#jqGrid").trigger('reloadGrid');
+					$(gridid).trigger('reloadGrid');
 				}
 			},
 			function( response ) {
@@ -272,11 +278,11 @@ var Common = {
 
 var common = Common;
 
-function generateFieldTemplate(iname, iwidth, ieditable, iedittype, ieditrules, 
+function generateFieldTemplate(iname, iwidth, ieditable, iedittype, ieditrules,
 		isearchoptions, iformoptions, ieditoptions, istype) {
 	return {name: iname,
 	width: iwidth,
-	editable: ieditable, 
+	editable: ieditable,
 	edittype: iedittype,
 	editrules: ieditrules,
 	searchoptions : isearchoptions,

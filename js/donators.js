@@ -1,3 +1,18 @@
+var gridid = "#jqGrid";
+var gridpagerid  = "#jqGridPager";
+var state_id =':;';
+var state_value =':[All];';
+debugger;
+common.ajaxCall(false, "get", "json/select.json", null,
+	function( response ) {
+		state_id += response['state_id'][0];
+		state_value += response['state_id'][0];
+	},
+	function( response ) {
+		common.errorAlert(event, response.responseText);
+	}
+)
+
 var userColModel = [
 	{label: 'id', template:common.idTemplate('id',1,1)},
 	{label: 'Name (Company)', template:common.textTemplate('name_companyname', 100, true, ' * ', false,2,1)},
@@ -8,7 +23,7 @@ var userColModel = [
 	{label: '',  hidden:true, template:common.textTemplate('address2', 50, false, ' &nbsp; ', true,5,2)},
 	{label: 'City', hidden:true,template:common.textTemplate('city', 50, false, ' &nbsp; ', true,6,1)},
 	{label: 'State', hidden:true,template:common.selectTemplate('state', 50, false, ' &nbsp; ',
-			'select', ":;1:Super Admin;2:Admin", ':[All];Super Admin:Super Admin;Admin:Admin', true,6,2)},
+			'select', state_id, state_value, true,6,2)},
 	{label: 'Zip Code', hidden:true, template:common.textTemplate('zipcode', 50, false, ' &nbsp; ', true,6,3)},
 	{label: 'E-mail', formatter:'email', template:common.textTemplate('email', 100, false, ' &nbsp; ', true,7,1)},
 	{label: 'Phone', template:common.phoneTemplate('phone', 50, false, ' &nbsp; ', true,7,2)},
@@ -16,7 +31,7 @@ var userColModel = [
 ];
 
 function editSettings() {
-	return $.extend( common.modalEdit('auto', ''), {
+	return $.extend( common.modalEdit('auto', '',common.afterSubmit), {
 		beforeSubmit: function(postdata, formid) {
 			//debugger;
 			var validate = true;
@@ -26,14 +41,14 @@ function editSettings() {
 	})
 }
 
-$("#jqGrid").jqGrid(common.gridOptions(userColModel, 'Donator List', 'donators.php'));
+$(gridid).jqGrid(common.gridOptions(gridpagerid, userColModel, 'Donator List', 'donators.php', 900));
 
-$('#jqGrid').jqGrid('filterToolbar',common.showFilterOptions);
+$(gridid).jqGrid('filterToolbar',common.showFilterOptions);
 
-$("#jqGrid").navGrid("#jqGridPager",
+$(gridid).navGrid(gridpagerid,
 	gridFooterIcons,
 	editSettings(),
-	$.extend( common.modalCreate('auto'), {
+	$.extend( common.modalCreate('auto',common.afterSubmit), {
 		beforeSubmit: function(postdata, formid) {
 			//debugger;
 			var validate = true;
@@ -41,18 +56,19 @@ $("#jqGrid").navGrid("#jqGridPager",
 			return[validate,'E-mail: Field is not valid'];
 		},
 	}),
-	common.modalDelete()
+	common.modalDelete(common.afterSubmit)
 );
 
 fetchGridData();
 
 function fetchGridData() {
-	common.setGridData("get", "donators.php", {action: 'donatorlist'}, pushData) 
+	debugger;
+	common.setGridData(gridid, "get", "donators.php", {action: 'donatorlist'}, pushData)
 }
 
 function pushData(result) {
 	var arrayData = [];
-	//debugger;
+	debugger;
 	for (var i = 0; i < result.length; i++) {
 		var item = result[i];
 		var name_companyname = item.name;

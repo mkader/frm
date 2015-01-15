@@ -1,3 +1,3 @@
-<table id="jqGrid"></table>
-<div id="jqGridPager"></div>
+<table id="jqGridPledge"></table>
+<div id="jqGridPagerPledge"></div>
 <script type="text/javascript" src="js/pledges.js" ></script>

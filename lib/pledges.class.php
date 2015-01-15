@@ -65,7 +65,6 @@ class Pledges {
             	'payment_method' => $payment_method,
             	'payment_type' => $payment_type);
         }
-		$stmt->fetch();
 		$stmt->close();
 
         return $pledges;

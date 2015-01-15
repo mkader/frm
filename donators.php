@@ -11,7 +11,7 @@ function donatorlist() {
 
 	try {
 		$responseData = $donator->getDonatorList();
-		Logger::log('DonatorList complete');
+		Logger::log('Donator List complete');
 		$response['success'] = 1;
 		$response['data'] = $responseData;
 	} catch (DBException $e) {
@@ -35,7 +35,7 @@ function iuddonator($iud, $action_type, $action_type_done) {
     $phone =  '';
     $company_name =  '';
     $comments =  '';
-    
+
 	if ($iud!='d') {
 		$name = $_POST['name'];
 		$address1 = $_POST['address1'];
@@ -56,7 +56,7 @@ function iuddonator($iud, $action_type, $action_type_done) {
 	}
 
 	try {
-		$id = $donator->iudDonator($iud, $id, $name, $address1, $address2, $city, 
+		$id = $donator->iudDonator($iud, $id, $name, $address1, $address2, $city,
 			$state, $zipcode, $email, $phone, $company_name, $comments);
 		Logger::log($action_type. ' donator complete');
 		if ($id > 0) {

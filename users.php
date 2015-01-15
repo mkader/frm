@@ -43,7 +43,7 @@ function userlist() {
 
 	try {
 		$responseData = $user->getUserList();
-		Logger::log('UserList complete');
+		Logger::log('User List complete');
 		$response['success'] = 1;
 		$response['data'] = $responseData;
     } catch (DBException $e) {

@@ -2,16 +2,15 @@
 
 class Events {
     private $db;
-
     private $conn;
-
 	private $session;
-	
 	private $common;
+	private $select;
 
     function __construct(&$db) {
     	$this->session = new Sessions();
     	$this->common = new Commons();
+    	$this->select = new Selects($db);
         $this->db = $db;
         if (!$this->db) {
             $this->db = new Db();
@@ -56,12 +55,16 @@ class Events {
             	'created_by' => $created_by, 'modified_by' => $modified_by , 
             	'pledge_type' => $pledge_type);
         }
-		$stmt->fetch();
 		$stmt->close();
 
         return $events;
     }
 
+    function jsonEvent() {
+    	$jsonData = $this->select->jsonData('event', 'id, title value');
+    	Logger::JSON('event',$jsonData);
+    }
+    
     function iudEvent($dml, $id, $title, $event_date, $location, $description, $target_amount, $pledge_type_id) {
         global $session, $common;
         $tableName = 'event';
@@ -85,7 +88,7 @@ class Events {
        	} 
        	else if ($dml=='u') $this->db->update($tableName, $id, $data);
 	   	else if ($dml=='d') $this->db->delete($tableName, $id);
-
+	   	Events::jsonEvent();
         return $id;
     }
 }
