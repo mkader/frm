@@ -9,7 +9,7 @@ class Sessions {
 	function securityCode() {
 		return $_SESSION['mcc_security_code'];
 	}
-
+	
     function setLoginUserInfo($userInfoData) {
         $_SESSION["mcc_user_info"]= $userInfoData;
     }

@@ -1,21 +1,7 @@
 <table id="jqGrid"></table>
 <div id="jqGridPager"></div>
 
-  <script>
-  $(function() {
-    $( "#tabs" ).tabs({
-      beforeLoad: function( event, ui ) {
-        debugger;
-        updateContent("pledgelist.php", "#pledgelistid");
-        /*ui.jqXHR.error(function() {
-          ui.panel.html(
-            "Couldn't load this tab. We'll try to fix this as soon as possible. " +
-            "If this wouldn't be a demo." );
-        });*/
-      }
-    });
-  });
-  </script>
+<script>$(function() {$( "#tabs" ).tabs({}); });</script>
   
  
 <br>
@@ -27,11 +13,7 @@
     <li><a href="#tabs-3">Tab 3 (slow)</a></li>
     <li><a href="#tabs-4">Tab 4 (broken)</a></li>
   </ul>
-  <idv id="pledgelistid">
-  	<script>
-		updateContent("pledgelist.php", "#pledgelistid");
-	</script>
-  </div>
+  <div id="pledgelistid"></div>
 </div>
  
 

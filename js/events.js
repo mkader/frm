@@ -26,7 +26,7 @@ function editSettings() {
 	return common.modalEdit('auto','',common.afterSubmit);
 }
 
-$(gridid).jqGrid(common.gridOptions(gridpagerid, eventColModel, 'Event List', 'events.php', 900));
+$(gridid).jqGrid(common.gridOptions(gridpagerid, eventColModel, 'Event List', 'events.php', 900,null));
 
 // activate the toolbar searching
 $(gridid).jqGrid('filterToolbar',common.showFilterOptions);

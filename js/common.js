@@ -11,7 +11,7 @@ var Common = {
 	    return re.test(email);
 	},
 
-	gridOptions:function(ipager, icolModel, icaption, iediturl, iwidth) {
+	gridOptions:function(ipager, icolModel, icaption, iediturl, iwidth, ionSelectRow, igridComplete) {
 		//if(typeof(iwidth)==='undefined') iwidth = 900;
 		return {colModel: icolModel,
 			/*loadComplete: function () {
@@ -35,10 +35,8 @@ var Common = {
 			caption: icaption,
 			//type:"post",
 			editurl: iediturl,
-			/*onSelectRow: function (id) {
-				alert(id);
-			},*/
-			//reloadAfterSubmit:true,
+			onSelectRow:ionSelectRow,
+			gridComplete:igridComplete,
 			ondblClickRow: function(rowid, ri, ci) {
 				//alert(rowid + " - " + ri + " - " + ci)
 	            var p = $(this)[0].p;

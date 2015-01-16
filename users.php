@@ -145,6 +145,7 @@ if (isset($_POST['action'])) {
         Logger::log('Processing login request...');
         $response = login();
     }
+    Logger::log(print_r($response, true));
 } else if (isset($_GET['action'])) {
     $action = $_GET['action'];
    	if ($action == 'logout') {
@@ -157,11 +158,10 @@ if (isset($_POST['action'])) {
 } else {
     $response['error'] = 1;
     $response['message'] = 'There was no request action specified.';
+    Logger::log(print_r($response, true));
 }
 
 header('Content-type: text/plain');
-Logger::log(print_r($response, true));
 echo json_encode($response);
-
 ?>
 

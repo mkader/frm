@@ -11,9 +11,15 @@ $(function(){
 		else if (menu=="donator") updateContent("donatorlist.php", contentid);
 	});
 })
+
 function loadContent() {
 	$( "#menu-bar li" ).first().addClass( "menuClicked" );
 	updateContent("myprofile.php","#content");
+}
+
+function loadLastPageView(page) {
+	//$( "#menu-bar li" ).first().addClass( "menuClicked" );
+	updateContent(page,"#content");
 }
 
 function updateContent(url, contentid) {

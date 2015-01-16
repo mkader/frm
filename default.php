@@ -10,7 +10,7 @@
     <div>
         <?php include("header.php");?>
     	<div id="content" class="middle">
-			<?php if (!$session->isValidSession()) 	include("login.php"); ?>    	
+<?php if (!$session->isValidSession()) 	 include("login.php"); ?>
 		</div>
     	<?php include("html/footer.htm");?>
     </div>

@@ -84,6 +84,7 @@ if (isset($_POST['action'])) {
         Logger::log('Processing '. $action_type .' event request...');
         $response = iudevent($iud, $action_type, $action_type_done);
     }
+    Logger::log(print_r($response, true));
 } else if (isset($_GET['action'])) {
     $action = $_GET['action'];
    	if ($action == 'eventlist') {
@@ -93,10 +94,10 @@ if (isset($_POST['action'])) {
 } else {
     $response['error'] = 1;
     $response['message'] = 'There was no request action specified.';
+    Logger::log(print_r($response, true));
 }
 
 header('Content-type: text/plain');
-Logger::log(print_r($response, true));
 echo json_encode($response);
 
 ?>

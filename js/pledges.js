@@ -54,39 +54,8 @@ var pledgeColModel = [
 			'select', payment_type_id, payment_type_value, true,6,1)},
 ];
 
-function afterSubmit1(response) {
-	debugger;
-	var res = common.decode(response.responseText)
-	if (res['error']) {
-		return [false, 'Error: ' + res['message']];
-	} else {
-		debugger;
-		fetchGridData1();
-		return [true];
-	}
-};
-
-function editSettings() {
-	return common.modalEdit('auto','',afterSubmit1);
-}
-
-$(gridid1).jqGrid(common.gridOptions(gridpagerid1, pledgeColModel, 'Pledge List', 'pledges.php',900));
-
 // activate the toolbar searching
 $(gridid1).jqGrid('filterToolbar',common.showFilterOptions);
-
-$(gridid1).navGrid(gridpagerid1,
-	gridFooterIcons,
-	editSettings(),
-	common.modalCreate('auto', afterSubmit1),
-	common.modalDelete(afterSubmit1)
-);
-
-fetchGridData1();
-
-function fetchGridData1() {
-	common.setGridData(gridid1, "get", "pledges.php", {action: 'pledgelist'}, pushData1)
-}
 
 function pushData1(result) {
 	debugger;

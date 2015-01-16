@@ -41,7 +41,11 @@ function editSettings() {
 	})
 }
 
-$(gridid).jqGrid(common.gridOptions(gridpagerid, userColModel, 'Donator List', 'donators.php', 900));
+function loadPledges(id) {
+	debugger;
+	updateContent("donatorpledgelist.php?did="+id, "#pledgelistid");
+}
+$(gridid).jqGrid(common.gridOptions(gridpagerid, userColModel, 'Donator List', 'donators.php', 900, loadPledges));
 
 $(gridid).jqGrid('filterToolbar',common.showFilterOptions);
 

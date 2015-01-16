@@ -5,12 +5,28 @@ $db = new DB();
 $pledge = new Pledges($db);
 $session = new Sessions();
 $common = new Commons();
+
 function pledgelist() {
 	global $pledge;
 	$response = array();
-
 	try {
 		$responseData = $pledge->getPledgeList();
+		Logger::log('Pledge List complete');
+		$response['success'] = 1;
+		$response['data'] = $responseData;
+	} catch (DBException $e) {
+		$response['error'] = 1;
+		$response['message'] = $e->getMessage();
+	}
+	return $response;
+}
+
+function donatorspledgelist() {
+	global $pledge;
+	$response = array();
+	$id =  @intval($_GET['id']);
+	try {
+		$responseData = $pledge->getDonatorsPledgeList($id);
 		Logger::log('Pledge List complete');
 		$response['success'] = 1;
 		$response['data'] = $responseData;
@@ -82,19 +98,24 @@ if (isset($_POST['action'])) {
         Logger::log('Processing '. $action_type .' pledge request...');
         $response = iudpledge($iud, $action_type, $action_type_done);
     }
+    Logger::log(print_r($response, true));
 } else if (isset($_GET['action'])) {
     $action = $_GET['action'];
    	if ($action == 'pledgelist') {
         Logger::log('Processing list of pledge...');
         $response = pledgeList();
+    }else if ($action == 'donatorspledgelist') {
+    	Logger::log('Processing list of donatos pledge...');
+        $response = donatorspledgeList();
     }
 } else {
     $response['error'] = 1;
     $response['message'] = 'There was no request action specified.';
+    Logger::log(print_r($response, true));
 }
 
 header('Content-type: text/plain');
-Logger::log(print_r($response, true));
+
 echo json_encode($response);
 
 ?>

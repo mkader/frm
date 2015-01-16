@@ -110,7 +110,7 @@ class Users {
 
 	function getUserList() {
 	        $sql = 'SELECT
-	        	u.id, name, email, password, phone, u.user_type_id, active,
+	        	u.id, name, email, phone, u.user_type_id, active,
 	        	created_on, modified_on, created_by, modified_by, ut.user_type
 	        FROM
 	        	user u
@@ -122,10 +122,10 @@ class Users {
 
 
 	        $users = array();
-	        $stmt->bind_result($id, $name, $email, $password, $phone, $user_type_id,
+	        $stmt->bind_result($id, $name, $email, $phone, $user_type_id,
 	        	$active, $created_on, $modified_on, $created_by, $modified_by, $user_type);
 	        while ($stmt->fetch()) {
-	            $users[] = array('id' => $id, 'name' => $name, 'email' => $email, 'password' => $password,
+	            $users[] = array('id' => $id, 'name' => $name, 'email' => $email, 
 	            	'phone' => $phone, 'user_type_id' => $user_type_id, 'active' => ($active==1?'Yes':'No'),
 	            	'created_on' => $created_on, 'modified_on' => $modified_on,
 	            	'created_by' => $created_by, 'modified_by' => $modified_by , 'user_type' => $user_type);
@@ -151,8 +151,7 @@ class Users {
 	            'modified_on'  => array('type' => 's', 'value' => $timestamp)*/
 	        );
         }
-        
-       	if ($dml=='i') {
+        if ($dml=='i') {
        		$data['password'] = array('type' => 's', 'value' => sha1(AUTH_SALT.$password));
        		$data['created_by'] = array('type' => 'i', 'value' => $login_id);
        		//$data['created_on'] =  array('type' => 's', 'value' => $timestamp);
