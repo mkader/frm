@@ -14,7 +14,7 @@ if ($session->isValidSession()){
             </td>
 			<td style="color:gold;text-shadow: 2px 2px 3px;box-shadow: 2px 2px 3px #222222;">
 				Masjid us-Sunnah
-				<div id="header-top" style = "width:100%" >Fundraise App</div>
+				<div id="header-top" style = "width:100%" >FundRaise App</div>
 			</td>
 			<td width="50%">&nbsp;</td>
 		</tr>

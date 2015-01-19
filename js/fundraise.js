@@ -9,6 +9,7 @@ $(function(){
 		else if (menu=="event") updateContent("eventlist.php", contentid);
 		else if (menu=="pledge") updateContent("pledgelist.php", contentid);
 		else if (menu=="donator") updateContent("donatorlist.php", contentid);
+		else if (menu=="expense") updateContent("expenselist.php", contentid);
 	});
 })
 
