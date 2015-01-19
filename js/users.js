@@ -1,23 +1,6 @@
 var gridid = "#jqGrid";
 var gridpagerid  = "#jqGridPager";
 
-var user_type_id =':;';
-var user_type_value =':[All];';
-var active_id ='';
-var active_value =':[All];';
-debugger;
-common.ajaxCall(false, "get", "json/select.json", null,
-	function( response ) {
-		user_type_id += response['user_type_id'][0];
-		user_type_value += response['user_type_value'][0];
-		active_id += response['user_type_id'][0];
-		active_value += response['user_type_value'][0];
-	},
-	function( response ) {
-		common.errorAlert(event, response.responseText);
-	}
-)
-
 var userColModel = [
 	{label: 'id', template:common.idTemplate('id',7,1)},
 	{label: 'Name', template:common.textTemplate('name', 100, true, ' * ',true,1,1)},
@@ -29,8 +12,6 @@ var userColModel = [
 	{label: 'Active', template:common.selectTemplate('active', 50, true, ' &nbsp; ',
 		'checkbox', active_id, active_value, true,6,1)}
 ];
-
-
 
 function editSettings() {
 	return $.extend(common.modalEdit('auto',
@@ -53,7 +34,7 @@ function editSettings() {
 /*$(function(){
 	if ($("#userlist").length>0){
 		$("#userlist").ready(function () {*/
-			$(gridid).jqGrid(common.gridOptions(gridpagerid, userColModel, 'User List', 'users.php', 900, null));
+			$(gridid).jqGrid(common.gridOptions(gridpagerid, userColModel, 'User List', 'users.php', 900, null, null));
 			/*	numopts : ['eq','ne', 'lt', 'le', 'gt', 'ge', 'nu', 'nn', 'in', 'ni'],
 				sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'bw', 'bn', 'ew', 'en', 'cn', 'nc', 'nu', 'nn', 'in', 'ni']*/
 
@@ -62,7 +43,7 @@ function editSettings() {
 			$(gridid).navGrid(gridpagerid,
 				gridFooterIcons,
 				editSettings(),
-				$.extend( common.modalCreate('auto',common.afterSubmit), {
+				$.extend( common.modalCreate('auto',common.afterSubmit, null), {
 					// options for the Add Dialog
 					//mtype: "post",
 					/*onclickSubmit : function(params, posdata) {
@@ -80,7 +61,7 @@ function editSettings() {
 						//return[common.validateEmail(postdata.email),'E-mail: Field is not valid'];
 					},
 					/*afterComplete: function(response, postdata, formid) {
-						var res = common.decode(response['responseText'])
+						var res = common.JSONParse(response['responseText'])
 						if (res['error']) {
 							return [false, '', 'Error: ' + res['message']];
 							//return 'Error: ' + res['message'];

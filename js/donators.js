@@ -2,7 +2,7 @@ var gridid = "#jqGrid";
 var gridpagerid  = "#jqGridPager";
 var state_id =':;';
 var state_value =':[All];';
-debugger;
+//debugger;
 common.ajaxCall(false, "get", "json/select.json", null,
 	function( response ) {
 		state_id += response['state_id'][0];
@@ -42,17 +42,19 @@ function editSettings() {
 }
 
 function loadPledges(id) {
-	debugger;
+	$( "#tabs" ).show();
 	updateContent("donatorpledgelist.php?did="+id, "#pledgelistid");
+	updateContent("donatorpaymentlist.php?did="+id, "#paymentlistid");
 }
-$(gridid).jqGrid(common.gridOptions(gridpagerid, userColModel, 'Donator List', 'donators.php', 900, loadPledges));
+
+$(gridid).jqGrid(common.gridOptions(gridpagerid, userColModel, 'Donator List', 'donators.php', 900, loadPledges, null));
 
 $(gridid).jqGrid('filterToolbar',common.showFilterOptions);
 
 $(gridid).navGrid(gridpagerid,
 	gridFooterIcons,
 	editSettings(),
-	$.extend( common.modalCreate('auto',common.afterSubmit), {
+	$.extend( common.modalCreate('auto',common.afterSubmit, null), {
 		beforeSubmit: function(postdata, formid) {
 			//debugger;
 			var validate = true;
@@ -66,13 +68,13 @@ $(gridid).navGrid(gridpagerid,
 fetchGridData();
 
 function fetchGridData() {
-	debugger;
+	//debugger;
 	common.setGridData(gridid, "get", "donators.php", {action: 'donatorlist'}, pushData)
 }
 
 function pushData(result) {
 	var arrayData = [];
-	debugger;
+	//debugger;
 	for (var i = 0; i < result.length; i++) {
 		var item = result[i];
 		var name_companyname = item.name;

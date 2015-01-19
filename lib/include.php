@@ -8,6 +8,7 @@
 	require_once('events.class.php');
 	require_once('pledges.class.php');
 	require_once('donators.class.php');
+	require_once('payments.class.php');
 	require_once('selects.class.php');
 	require_once('commons.class.php');
 ?>

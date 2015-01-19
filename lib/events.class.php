@@ -19,19 +19,12 @@ class Events {
         $this->conn = $this->db->getConnection();
     }
 
-	/*
-	SELECT 
-		id, title, event_date, location, description, target_amount, pledge_type_id, created_on, modified_on, created_by, modified_by
-	FROM 
-		mcc_fundraise.event;
-	*/
-
-    function getEventList() {
+	function getEventList() {
     	global $common;
         $sql = 'SELECT
-        	e.id, title, event_date, location, description, target_amount, 
-        	e.pledge_type_id, created_on, modified_on, created_by, 
-        	modified_by, pt.pledge_type 
+        	e.id, title, event_date, location, description, target_amount,
+        	e.pledge_type_id, created_on, modified_on, created_by,
+        	modified_by, pt.pledge_type
         FROM
         	event e
         	inner join pledge_type pt on e.pledge_type_id = pt.id';
@@ -45,14 +38,15 @@ class Events {
         $stmt->bind_result($id, $title, $event_date, $location, $description, $target_amount,
         	$pledge_type_id, $created_on, $modified_on, $created_by, $modified_by, $pledge_type);
         while ($stmt->fetch()) {
-            $events[] = array('id' => $id, 'title' => $title, 
-            	'event_date' => $common->date_format_form($event_date), 
-            	'location' => $location, 'description' => $description, 
-            	'target_amount' => number_format($target_amount), 
+            $events[] = array('id' => $id, 'title' => $title,
+            	'event_date' => $common->date_format_form($event_date),
+            	'location' => $location, 'description' => $description,
+            	//'target_amount' => number_format($target_amount),
+            	'target_amount' => $target_amount,
             	'pledge_type_id' => $pledge_type_id,
-            	'created_on' => $common->date_format_form($created_on), 
+            	'created_on' => $common->date_format_form($created_on),
             	'modified_on' => $common->date_format_form($modified_on),
-            	'created_by' => $created_by, 'modified_by' => $modified_by , 
+            	'created_by' => $created_by, 'modified_by' => $modified_by ,
             	'pledge_type' => $pledge_type);
         }
 		$stmt->close();
@@ -61,10 +55,10 @@ class Events {
     }
 
     function jsonEvent() {
-    	$jsonData = $this->select->jsonData('event', 'id, title value');
+    	$jsonData = $this->select->jsonData('event', 'select id, title value from event');
     	Logger::JSON('event',$jsonData);
     }
-    
+
     function iudEvent($dml, $id, $title, $event_date, $location, $description, $target_amount, $pledge_type_id) {
         global $session, $common;
         $tableName = 'event';
@@ -85,7 +79,7 @@ class Events {
        	if ($dml=='i') {
        		$data['created_by'] = array('type' => 'i', 'value' => $login_id);
        		$id = $this->db->insert($tableName, $data);
-       	} 
+       	}
        	else if ($dml=='u') $this->db->update($tableName, $id, $data);
 	   	else if ($dml=='d') $this->db->delete($tableName, $id);
 	   	Events::jsonEvent();

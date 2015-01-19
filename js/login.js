@@ -14,7 +14,7 @@ $(function(){
 			};
 			common.ajaxCall(true, "post", "users.php", data,
 				function( response ) {
-					var res = common.decode(response);
+					var res = common.JSONParse(response);
 					if (res['error']) {
 						common.errorSpan(event, "#error", res['message']);
 					}else if (res['success']) {
@@ -31,7 +31,7 @@ $(function(){
 	$("#logout").click(function(event ) {
 		common.ajaxCall(true, "get", "users.php", {action: 'logout'},
 			function( response ) {
-				var res = common.decode(response);
+				var res = common.JSONParse(response);
 				if (res['error']) {
 					common.errorAlert(event, res['message']);
 				}else if (res['success']) {

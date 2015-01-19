@@ -1,26 +1,11 @@
 var gridid1 = "#jqGridPledge";
 var gridpagerid1 = "#jqGridPagerPledge";
 
-var payment_type_id =':;';
-var payment_type_value =':[All];';
-var payment_method_id =':;';
-var payment_method_value =':[All];';
 var event_id =':;';
 var event_value =':[All];';
 var donator_id =':;';
 var donator_value =':[All];';
-debugger;
-common.ajaxCall(false, "get", "json/select.json", null,
-	function( response ) {
-		payment_type_id += response['payment_type_id'][0];
-		payment_type_value += response['payment_type_value'][0];
-		payment_method_id += response['payment_method_id'][0];
-		payment_method_value += response['payment_method_value'][0];
-	},
-	function( response ) {
-		common.errorAlert(event, response.responseText);
-	}
-)
+
 common.ajaxCall(false, "get", "json/donator.json", null,
 	function( response ) {
 		donator_id += response['donator_id'][0];
@@ -30,6 +15,7 @@ common.ajaxCall(false, "get", "json/donator.json", null,
 		common.errorAlert(event, response.responseText);
 	}
 )
+
 common.ajaxCall(false, "get", "json/event.json", null,
 	function( response ) {
 		event_id += response['event_id'][0];
@@ -44,14 +30,16 @@ var pledgeColModel = [
 
 	{label: 'id', template:common.idTemplate('id',1,1)},
 	{label: 'Event', template:common.selectTemplate('event_id', 50, true, ' * ',
-			'select', event_id, event_value, true,2,1)},
-	{label: 'Donator', template:common.selectTemplate('donator_id', 50, true, ' * ',
-			'select', donator_id, donator_value, true,3,1)},
-	{label: 'Pledge Amount', template:common.numberTemplate('amount', 50, true, ' * ',4,1)},
+		'select', event_id, event_value, true,2,1)},
+	{label: 'Donator', hidden:true, template:common.selectTemplate('donator_id', 50, false, ' * ',
+		'select', donator_id, donator_value, true,3,1)},
+	{label: 'Pledge Amount', formatter:'currency',
+		formatoptions:{thousandsSeparator: ",", decimalPlaces: 2, prefix: "$ "},
+		template:common.numberTemplate('amount', 50, true, ' * ',4,1)},
 	{label: 'Payment Method', template:common.selectTemplate('payment_method_id', 50, true, ' * ',
-			'select', payment_method_id, payment_method_value, true,5,1)},
+		'select', payment_method_id, payment_method_value, true,5,1)},
 	{label: 'Payment Type', template:common.selectTemplate('payment_type_id', 50, true, ' * ',
-			'select', payment_type_id, payment_type_value, true,6,1)},
+		'select', payment_type_id, payment_type_value, true,6,1)},
 ];
 
 // activate the toolbar searching

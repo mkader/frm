@@ -2,8 +2,8 @@
 if (isset($_GET['did']))
 	$did = $_GET['did'];
 ?>
-<table id="jqGridPledge"></table>
-<div id="jqGridPagerPledge"></div>
+<table id="jqGridPayment"></table>
+<div id="jqGridPagerPayment"></div>
 
 <div class="contextMenu" id="contextMenu" style="display:none">
         <ul style="width: 400px; font-size: 65%;">
@@ -22,33 +22,54 @@ if (isset($_GET['did']))
         </ul>
     </div>
 
-<script type="text/javascript" src="js/pledges.js" ></script>
+<script>
+var pledge_id =':;';
+var pledge_value =':[All];';
+
+common.ajaxCall(false, "get", "pledges.php?action=donatorspledgelistjson&id=<?php echo $did ?>", null,
+	function( response ) {
+		var res = common.JSONParse(response);
+		if (res['error']) {
+			common.errorAlert(event, res['message']);
+		}else if (res['success']) {
+			var item = common.JSONParse(res['data']);
+			pledge_id += item.pledge_id;
+			pledge_value += item.pledge_value; 
+		}
+	},
+	function( response ) {
+		common.errorAlert(event, response.responseText);
+	}
+)
+</script>
+<script type="text/javascript" src="js/payments.js" ></script>
 
 <script type="text/javascript">
-function initGrid() {
+debugger;
+function initGrid2() {
 	//debugger;
 	$(this).contextMenu('contextMenu', {
 		bindings: {
 			'edit': function (t) {
-				var grid = $(gridid1);
+				var grid = $(gridid2);
 				var selRowId = $(grid).jqGrid('getGridParam','selrow');
 
 				grid.editGridRow(selRowId,editSettings());
 
 			},
 			'add': function (t) {
-				var grid = $(gridid1);
+				var grid = $(gridid2);
 				grid.editGridRow("new",common.modalCreate('auto', afterSubmitDonatorsPledge, beforeShowFormDonatorsPledge));
 			},
 			'del': function (t) {
-				var grid = $(gridid1);
+				var grid = $(gridid2);
 				var selRowId = $(grid).jqGrid('getGridParam','selrow');
 				grid.delGridRow(selRowId,common.modalDelete(afterSubmitDonatorsPledge));
 			}
 		},
 		onContextMenu: function (event, menu) {
 			var rowId = $(event.target).parent("tr").attr("id")
-			var grid = $(gridid1);
+			var grid = $(gridid2);
 			grid.setSelection(rowId);
 
 			return true;
@@ -56,42 +77,42 @@ function initGrid() {
 	});
 }
 
-$(gridid1).jqGrid(common.gridOptions(gridpagerid1, pledgeColModel, 'Pledge List', 'pledges.php',900,null, initGrid));
+$(gridid2).jqGrid(common.gridOptions(gridpagerid2, paymentColModel, 'Payment List', 'payments.php',900,null, initGrid2));
 
-function afterSubmitDonatorsPledge(response) {
+function afterSubmitDonatorsPayment(response) {
 	//debugger;
 	var res = common.JSONParse(response.responseText)
 	if (res['error']) {
 		return [false, 'Error: ' + res['message']];
 	} else {
 		//debugger;
-		fetchDonatorsPledgeData(<?php echo $did ?>);
+		fetchDonatorsPaymentData(<?php echo $did ?>);
 		return [true];
 	}
 };
 
-function beforeShowFormDonatorsPledge(form) {
+function beforeShowFormDonatorsPayment(form) {
 	$("#donator_id", form).val(<?php echo $did ?>);
 	$('#donator_id',form).attr('disabled','true');
 };
 
 
 function editSettings() {
-	return $.extend(common.modalEdit('auto','', afterSubmitDonatorsPledge), {beforeShowForm: beforeShowFormDonatorsPledge});
+	return $.extend(common.modalEdit('auto','',afterSubmitDonatorsPayment), {beforeShowForm: beforeShowFormDonatorsPayment});
 }
 
-$(gridid1).navGrid(gridpagerid1,
+$(gridid2).navGrid(gridpagerid2,
 	gridFooterIcons,
 	editSettings(),
-	common.modalCreate('auto', afterSubmitDonatorsPledge, beforeShowFormDonatorsPledge),
-	common.modalDelete(afterSubmitDonatorsPledge)
+	common.modalCreate('auto', afterSubmitDonatorsPayment, beforeShowFormDonatorsPayment),
+	common.modalDelete(afterSubmitDonatorsPayment)
 );
 
-fetchDonatorsPledgeData(<?php echo $did ?>);
+fetchDonatorsPaymentData(<?php echo $did ?>);
 
-function fetchDonatorsPledgeData(did) {
-	debugger;
-	common.setGridData(gridid1, "get", "pledges.php", {action: 'donatorspledgelist',id:did}, pushData1)
+function fetchDonatorsPaymentData(did) {
+	//debugger;
+	common.setGridData(gridid2, "get", "payments.php", {action: 'donatorspaymentlist',id:did}, pushData2)
 }
 
 </script>

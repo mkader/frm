@@ -14,18 +14,18 @@ class Selects {
         $this->conn = $this->db->getConnection();
     }
 
-	function jsonData($tablename, $value) {
-	        $sql = 'SELECT '.$value.' FROM '.$tablename;
+	function jsonData($tablename, $sql) {
+	        //$sql = 'SELECT '.$value.' FROM '.$tablename;
 	        $stmt = $this->conn->prepare($sql);
 	        $this->db->checkError();
 	        $stmt->execute();
 	        $this->db->checkError();
 
 	        $stmt->bind_result($id, $value);
-	        
+
 	        $ids = '"'.$tablename.'_id":["';
 	        $values = '"'.$tablename.'_value":["';
-	        
+
 	        $row=0;
 	        $stmt->store_result();
 	        $total = $stmt->num_rows-1;
@@ -42,19 +42,19 @@ class Selects {
 			$values .= '"]';
 	        return $ids.$values;
     }
-    
+
     function generateJSON() {
-    	
+
     	$jsons = '"active_id":["1:Yes;2:No"],"active_value":["Yes:Yes;No:No"],';
-    	$jsons .= Selects::jsonData('user_type', 'id, user_type value').',';
-    	$jsons .= Selects::jsonData('send_type', 'id, send_type value').',';
-    	$jsons .= Selects::jsonData('pledge_type', 'id, pledge_type value').',';
-    	$jsons .= Selects::jsonData('payment_type', 'id, payment_type value').',';
-    	$jsons .= Selects::jsonData('payment_method', 'id, payment_method value').',';
-    	$jsons .= Selects::jsonData('log_table', 'id, log_table value').',';
-    	$jsons .= Selects::jsonData('log_action', 'id, log_action value').',';
-    	$jsons .= Selects::jsonData('state', 'shortname id, longname value');
-    	
+    	$jsons .= Selects::jsonData('user_type', 'select id, user_type value from user_type').',';
+    	$jsons .= Selects::jsonData('send_type', 'select id, send_type value from send_type').',';
+    	$jsons .= Selects::jsonData('pledge_type', 'select id, pledge_type value from pledge_type').',';
+    	$jsons .= Selects::jsonData('payment_type', 'select id, payment_type value from payment_type').',';
+    	$jsons .= Selects::jsonData('payment_method', 'select id, payment_method value from payment_method').',';
+    	$jsons .= Selects::jsonData('log_table', 'select id, log_table value from log_table').',';
+    	$jsons .= Selects::jsonData('log_action', 'select id, log_action value from log_action').',';
+    	$jsons .= Selects::jsonData('state', 'select shortname id, longname value from state');
+
     	return $jsons;
     }
 }

@@ -2,7 +2,7 @@ var textSearchOptions = {sopt:['eq', 'ne', 'bw', 'bn', 'ew', 'en', 'cn', 'nc']};
 var numberSearchOptions = ['eq','ne','lt','le','gt','ge'];
 var gridFooterIcons = {search: false, view: true, add: true, edit: true, del: true, refresh: true};
 var Common = {
-	decode:function(a){
+	JSONParse:function(a){
 		return JSON.parse(a)
 	},
 
@@ -26,7 +26,8 @@ var Common = {
 			ignoreCase: true,
 			datatype: 'local',
 			multiSort: true,
-			altRows: true,
+			//toppager: true,
+            altRows: true,
 			rownumbers: true,
 	        rownumWidth: 25,
 	        rowList: [10,20,40],
@@ -64,11 +65,12 @@ var Common = {
 			errorTextFormat: common.errorTextFormat};
 	},
 
-	modalCreate:function(iwidth, iafterSubmit) {
+	modalCreate:function(iwidth, iafterSubmit, ibeforeShowForm) {
 		return{// options for the Add Dialog
 			width:iwidth,
 			bottominfo: common.fieldsRequiredText,
 			closeAfterAdd: true,
+			beforeShowForm: ibeforeShowForm,
 			recreateForm: true,
 			editData: {action:"iud",iud:"i"},
 			afterSubmit: iafterSubmit,
@@ -169,6 +171,7 @@ var Common = {
     },
 
     numberTemplate: function(iname, iwidth, irequired, iprefix, irowpos, icolpos) {
+    	//formatter:'currency', formatoptions:{decimalSeparator:",", thousandsSeparator: ",", decimalPlaces: 2, prefix: "$ "}
     	var searchOptions = { sopt: numberSearchOptions};
     	var editrules = {number:true, required: irequired}
     	var editOptions = {};
@@ -212,12 +215,12 @@ var Common = {
 	},
 
 	afterSubmit: function(response) {
-		debugger;
-		var res = common.decode(response.responseText)
+		//debugger;
+		var res = common.JSONParse(response.responseText)
 		if (res['error']) {
 			return [false, 'Error: ' + res['message']];
 		} else {
-			debugger;
+			//debugger;
 			fetchGridData();
 			return [true];
 		}
@@ -254,7 +257,7 @@ var Common = {
 		$(gridid)[0].grid.beginReq();
 		common.ajaxCall(true, type, url, params,
 			function( response ) {
-				var res = common.decode(response);
+				var res = common.JSONParse(response);
 				if (res['error']) {
 					common.errorAlert(event, res['message']);
 				}else if (res['success']) {

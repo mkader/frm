@@ -2,16 +2,15 @@
 
 class Pledges {
     private $db;
-
     private $conn;
-
 	private $session;
-	
 	private $common;
-
+	private $select;
+	
     function __construct(&$db) {
     	$this->session = new Sessions();
     	$this->common = new Commons();
+        $this->select = new Selects($db);
         $this->db = $db;
         if (!$this->db) {
             $this->db = new Db();
@@ -20,14 +19,7 @@ class Pledges {
         $this->conn = $this->db->getConnection();
     }
 
-	/*
-	SELECT 
-		id, event_id, donator_id, amount, payment_method_id, payment_type_id, created_on, modified_on, created_by,  modified_by
-	FROM 
-		mcc_fundraise.pledge;
-	*/
-
-    function getPledgeList() {
+	function getPledgeList() {
     	global $common;
         $sql = 'SELECT
         	p.id, p.event_id, p.donator_id, amount, p.payment_method_id, 
@@ -53,7 +45,7 @@ class Pledges {
         while ($stmt->fetch()) {
             $pledges[] = array('id' => $id, 'event_id' => $event_id, 
             	'donator_id' => $donator_id, 
-            	'amount' => number_format($amount), 
+            	'amount' => $amount, 
             	'payment_method_id' => $payment_method_id,
             	'payment_type_id' => $payment_type_id,
             	'title' => $title, 
@@ -69,7 +61,7 @@ class Pledges {
 
         return $pledges;
     }
-    
+
     function getDonatorsPledgeList($donatorid) {
     	global $common;
     	$sql = 'SELECT
@@ -99,7 +91,7 @@ class Pledges {
     	while ($stmt->fetch()) {
     		$pledges[] = array('id' => $id, 'event_id' => $event_id,
     				'donator_id' => $donator_id,
-    				'amount' => number_format($amount),
+    				'amount' => $amount,
     				'payment_method_id' => $payment_method_id,
     				'payment_type_id' => $payment_type_id,
     				'title' => $title,
@@ -116,6 +108,20 @@ class Pledges {
     	return $pledges;
     }
 
+    function getDonatorsPledgeJSONList($donatorid) {
+    	//global $select;
+    	$sql  ='SELECT
+        	p.id,  e.title value
+        FROM
+        	pledge p
+        	inner join event e on e.id = p.event_id
+        	inner join donator d on d.id = p.donator_id
+    	WHERE
+    		p.donator_id = '.$donatorid;
+    	$jsonData = $this->select->jsonData('pledge', $sql);
+    	return $jsonData;
+    }
+    
     function iudPledge($dml, $id, $event_id, $donator_id, $amount, $payment_method_id, $payment_type_id) {
         global $session, $common;
         $tableName ='pledge';
