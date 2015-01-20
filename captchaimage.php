@@ -8,7 +8,6 @@
 	function generateimage($iwidth='120',$iheight='40',$scharacters='6')
 	{
 		require_once('/lib/sessions.class.php');
-		$session = new Sessions();
 
 		$sfontname = getcwd().'/css/monofont.ttf';
 
@@ -53,7 +52,7 @@
 		header('Content-Type: image/jpeg');
 		imagejpeg($simagename);
 		imagedestroy($simagename);
-		$session->setSecurityCode($ssecuritycode);
+		Sessions::setSecurityCode($ssecuritycode);
 }
 
 ?>

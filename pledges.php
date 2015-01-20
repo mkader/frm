@@ -3,8 +3,6 @@ require_once('lib/include.php');
 
 $db = new DB();
 $pledge = new Pledges($db);
-$session = new Sessions();
-$common = new Commons();
 
 function pledgelist() {
 	global $pledge;
@@ -54,7 +52,7 @@ function donatorspledgejsonlist() {
 }
 
 function iudpledge($iud, $action_type, $action_type_done) {
-    global $pledge, $session, $common;
+    global $pledge;
     $response = array();
     $id =  @intval($_POST['id']);
     $event_id = 0;

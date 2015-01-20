@@ -3,8 +3,7 @@ require_once('lib/include.php');
 
 $db = new DB();
 $event = new Events($db);
-$session = new Sessions();
-$common = new Commons();
+
 function eventlist() {
 	global $event;
 	$response = array();
@@ -22,7 +21,7 @@ function eventlist() {
 }
 
 function iudevent($iud, $action_type, $action_type_done) {
-    global $event, $session, $common;
+    global $event;
     $response = array();
     $id =  @intval($_POST['id']);
     $title = '';

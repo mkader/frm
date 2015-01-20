@@ -17,7 +17,7 @@ var eventColModel = [
 	{label: 'Event Date', template:common.dateTemplate('event_date', 50, true, ' * ',2,1)},
 	{label: 'Target Amount', formatter:'currency',
 		formatoptions:{thousandsSeparator: ",", decimalPlaces: 0, prefix: "$ "},
-		template:common.numberTemplate('target_amount', 50, true, ' * ',3,1)},
+		template:common.numberTemplate('target_amount', 50, true, ' * ',3,1, {})},
 	{label: 'Event Type', template:common.selectTemplate('pledge_type', 50, true, ' * ',
 			'select', pledge_type_id, pledge_type_value,true,4,1)},
 	{label: 'Location', template:common.textTemplate('location', 150, true, ' * ',true,5,1)},

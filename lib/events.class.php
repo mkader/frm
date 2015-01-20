@@ -3,12 +3,9 @@
 class Events {
     private $db;
     private $conn;
-	private $session;
-	private $common;
 	private $select;
 
     function __construct(&$db) {
-    	$this->session = new Sessions();
     	$this->common = new Commons();
     	$this->select = new Selects($db);
         $this->db = $db;
@@ -20,8 +17,7 @@ class Events {
     }
 
 	function getEventList() {
-    	global $common;
-        $sql = 'SELECT
+    	 $sql = 'SELECT
         	e.id, title, event_date, location, description, target_amount,
         	e.pledge_type_id, created_on, modified_on, created_by,
         	modified_by, pt.pledge_type
@@ -39,13 +35,12 @@ class Events {
         	$pledge_type_id, $created_on, $modified_on, $created_by, $modified_by, $pledge_type);
         while ($stmt->fetch()) {
             $events[] = array('id' => $id, 'title' => $title,
-            	'event_date' => $common->date_format_form($event_date),
+            	'event_date' => Commons::date_format_form($event_date),
             	'location' => $location, 'description' => $description,
-            	//'target_amount' => number_format($target_amount),
             	'target_amount' => $target_amount,
             	'pledge_type_id' => $pledge_type_id,
-            	'created_on' => $common->date_format_form($created_on),
-            	'modified_on' => $common->date_format_form($modified_on),
+            	'created_on' => Commons::date_format_form($created_on),
+            	'modified_on' => Commons::date_format_form($modified_on),
             	'created_by' => $created_by, 'modified_by' => $modified_by ,
             	'pledge_type' => $pledge_type);
         }
@@ -60,14 +55,13 @@ class Events {
     }
 
     function iudEvent($dml, $id, $title, $event_date, $location, $description, $target_amount, $pledge_type_id) {
-        global $session, $common;
         $tableName = 'event';
         //$timestamp = date('Y-m-d H:i:s');
-        $login_id = @intval($session->loginUserID());
+        $login_id = @intval(Sessions::loginUserID());
         if ($dml!='d') {
         	$data = array(
 	            'title'  => array('type' => 's', 'value' => $title),
-	            'event_date'     => array('type' => 's', 'value' => $common->date_format_sql($event_date)),
+	            'event_date'     => array('type' => 's', 'value' => Commons::date_format_sql($event_date)),
 	            'location'     => array('type' => 's', 'value' => $location),
 	            'description'     => array('type' => 's', 'value' => $description),
 	            'target_amount'     => array('type' => 'i', 'value' => $target_amount),

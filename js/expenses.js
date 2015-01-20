@@ -20,7 +20,7 @@ var eventColModel = [
 	{label: 'Title', template:common.textTemplate('title', 100, true, ' * ',true,4,1)},
 	{label: 'Amount', formatter:'currency',
 		formatoptions:{thousandsSeparator: ",", decimalPlaces: 0, prefix: "$ "},
-		template:common.numberTemplate('amount', 50, true, ' * ',5,1)},
+		template:common.numberTemplate('amount', 50, true, ' * ',5,1, {})},
 	{label: 'Comments', template:common.textAreaTemplate('comments', 100, false, ' &nbsp; ',true,6,1)},
 ];
 
@@ -48,12 +48,10 @@ $(gridid).navGrid(gridpagerid,
 fetchGridData();
 
 function fetchGridData() {
-	debugger;
 	common.setGridData(gridid, "get", "expenses.php", {action: 'expenselist'}, pushData)
 }
 
 function pushData(result) {
-	debugger;
 	var arrayData = [];
 	//var result = res['data'];
 	for (var i = 0; i < result.length; i++) {

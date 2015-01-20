@@ -170,11 +170,11 @@ var Common = {
     	return $.extend( dateOptions, generateOptions );
     },
 
-    numberTemplate: function(iname, iwidth, irequired, iprefix, irowpos, icolpos) {
+    numberTemplate: function(iname, iwidth, irequired, iprefix, irowpos, icolpos, ieditOptions) {
     	//formatter:'currency', formatoptions:{decimalSeparator:",", thousandsSeparator: ",", decimalPlaces: 2, prefix: "$ "}
     	var searchOptions = { sopt: numberSearchOptions};
     	var editrules = {number:true, required: irequired}
-    	var editOptions = {};
+    	var editOptions = ieditOptions;
     	var formoptions = {elmprefix: " * ", rowpos: irowpos, colpos: icolpos};
     	var numberOptions = {align:'right'};
     	var generateOptions = generateFieldTemplate(iname, iwidth, true, "text", editrules,
@@ -215,12 +215,10 @@ var Common = {
 	},
 
 	afterSubmit: function(response) {
-		//debugger;
 		var res = common.JSONParse(response.responseText)
 		if (res['error']) {
 			return [false, 'Error: ' + res['message']];
 		} else {
-			//debugger;
 			fetchGridData();
 			return [true];
 		}

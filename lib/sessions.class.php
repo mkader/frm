@@ -39,8 +39,12 @@ class Sessions {
     	}
     }
 
-    function loginUserName() {
+    function loginName() {
     	return Sessions::attributeValue('name');
+    }
+    
+    function loginUserName() {
+    	return Sessions::attributeValue('username');
     }
 
     function loginUserID() {

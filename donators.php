@@ -3,8 +3,7 @@ require_once('lib/include.php');
 
 $db = new DB();
 $donator = new Donators($db);
-$session = new Sessions();
-$common = new Commons();
+
 function donatorlist() {
 	global $donator;
 	$response = array();
@@ -22,7 +21,7 @@ function donatorlist() {
 }
 
 function iuddonator($iud, $action_type, $action_type_done) {
-    global $donator, $session, $common;
+    global $donator;
     $response = array();
     $id =  @intval($_POST['id']);
     $name = '';

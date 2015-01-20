@@ -26,7 +26,6 @@ if (isset($_GET['did']))
 
 <script type="text/javascript">
 function initGrid() {
-	//debugger;
 	$(this).contextMenu('contextMenu', {
 		bindings: {
 			'edit': function (t) {
@@ -59,12 +58,10 @@ function initGrid() {
 $(gridid1).jqGrid(common.gridOptions(gridpagerid1, pledgeColModel, 'Pledge List', 'pledges.php',900,null, initGrid));
 
 function afterSubmitDonatorsPledge(response) {
-	//debugger;
 	var res = common.JSONParse(response.responseText)
 	if (res['error']) {
 		return [false, 'Error: ' + res['message']];
 	} else {
-		//debugger;
 		fetchDonatorsPledgeData(<?php echo $did ?>);
 		return [true];
 	}
@@ -90,7 +87,6 @@ $(gridid1).navGrid(gridpagerid1,
 fetchDonatorsPledgeData(<?php echo $did ?>);
 
 function fetchDonatorsPledgeData(did) {
-	debugger;
 	common.setGridData(gridid1, "get", "pledges.php", {action: 'donatorspledgelist',id:did}, pushData1)
 }
 

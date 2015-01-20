@@ -35,7 +35,7 @@ var pledgeColModel = [
 		'select', donator_id, donator_value, true,3,1)},
 	{label: 'Pledge Amount', formatter:'currency',
 		formatoptions:{thousandsSeparator: ",", decimalPlaces: 2, prefix: "$ "},
-		template:common.numberTemplate('amount', 50, true, ' * ',4,1)},
+		template:common.numberTemplate('amount', 50, true, ' * ',4,1, {})},
 	{label: 'Payment Method', template:common.selectTemplate('payment_method_id', 50, true, ' * ',
 		'select', payment_method_id, payment_method_value, true,5,1)},
 	{label: 'Payment Type', template:common.selectTemplate('payment_type_id', 50, true, ' * ',
@@ -46,7 +46,6 @@ var pledgeColModel = [
 $(gridid1).jqGrid('filterToolbar',common.showFilterOptions);
 
 function pushData1(result) {
-	debugger;
 	var arrayData = [];
 	//var result = res['data'];
 	for (var i = 0; i < result.length; i++) {

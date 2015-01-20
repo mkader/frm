@@ -25,7 +25,7 @@ if (isset($_GET['did']))
 <script>
 var pledge_id =':;';
 var pledge_value =':[All];';
-
+var taxyear = "<?php echo date("Y"); ?>";
 common.ajaxCall(false, "get", "pledges.php?action=donatorspledgelistjson&id=<?php echo $did ?>", null,
 	function( response ) {
 		var res = common.JSONParse(response);
@@ -34,7 +34,7 @@ common.ajaxCall(false, "get", "pledges.php?action=donatorspledgelistjson&id=<?ph
 		}else if (res['success']) {
 			var item = common.JSONParse(res['data']);
 			pledge_id += item.pledge_id;
-			pledge_value += item.pledge_value; 
+			pledge_value += item.pledge_value;
 		}
 	},
 	function( response ) {
@@ -45,9 +45,7 @@ common.ajaxCall(false, "get", "pledges.php?action=donatorspledgelistjson&id=<?ph
 <script type="text/javascript" src="js/payments.js" ></script>
 
 <script type="text/javascript">
-debugger;
 function initGrid2() {
-	//debugger;
 	$(this).contextMenu('contextMenu', {
 		bindings: {
 			'edit': function (t) {
@@ -80,12 +78,10 @@ function initGrid2() {
 $(gridid2).jqGrid(common.gridOptions(gridpagerid2, paymentColModel, 'Payment List', 'payments.php',900,null, initGrid2));
 
 function afterSubmitDonatorsPayment(response) {
-	//debugger;
 	var res = common.JSONParse(response.responseText)
 	if (res['error']) {
 		return [false, 'Error: ' + res['message']];
 	} else {
-		//debugger;
 		fetchDonatorsPaymentData(<?php echo $did ?>);
 		return [true];
 	}
@@ -111,7 +107,6 @@ $(gridid2).navGrid(gridpagerid2,
 fetchDonatorsPaymentData(<?php echo $did ?>);
 
 function fetchDonatorsPaymentData(did) {
-	//debugger;
 	common.setGridData(gridid2, "get", "payments.php", {action: 'donatorspaymentlist',id:did}, pushData2)
 }
 

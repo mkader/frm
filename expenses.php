@@ -3,8 +3,7 @@ require_once('lib/include.php');
 
 $db = new DB();
 $expense = new Expenses($db);
-$session = new Sessions();
-$common = new Commons();
+
 function expenselist() {
 	global $expense;
 	$response = array();
@@ -22,7 +21,7 @@ function expenselist() {
 }
 
 function iudexpense($iud, $action_type, $action_type_done) {
-    global $expense, $session, $common;
+    global $expense;
     $response = array();
     $id =  @intval($_POST['id']);
     $title = '';

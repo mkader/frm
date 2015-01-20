@@ -4,13 +4,12 @@
 	require_once('dnsconfig.php');
 	require_once('/lib/sessions.class.php');
 	include("html/head.htm");
-	$session = new Sessions();
 ?>
-<body onload="<?php if ($session->isValidSession()) echo "loadContent()"; ?>">
+<body onload="<?php if (Sessions::isValidSession()) echo "loadContent()"; ?>">
     <div>
         <?php include("header.php");?>
     	<div id="content" class="middle">
-<?php if (!$session->isValidSession()) 	 include("login.php"); ?>
+<?php if (!Sessions::isValidSession()) 	 include("login.php"); ?>
 		</div>
     	<?php include("html/footer.htm");?>
     </div>

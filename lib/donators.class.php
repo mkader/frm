@@ -2,16 +2,10 @@
 
 class Donators {
     private $db;
-
     private $conn;
-
-	private $session;
-
-	private $common;
 	private $select;
 
     function __construct(&$db) {
-    	$this->session = new Sessions();
     	$this->common = new Commons();
     	$this->select = new Selects($db);
         $this->db = $db;
@@ -23,8 +17,7 @@ class Donators {
     }
 
     function getDonatorList() {
-    	global $common;
-        $sql = 'SELECT
+    	 $sql = 'SELECT
 					id, name, address1, address2, city, state, zipcode, email,
         			phone, company_name, comments, created_on, modified_on,
         			created_by, modified_by
@@ -44,8 +37,8 @@ class Donators {
             	'address2' => $address2, 'city' => $city, 'state' => $state,
             	'zipcode' => $zipcode, 'email' => $email, 'phone' => $phone,
             	'company_name' => $company_name, 'comments' => $comments,
-            	'created_on' => $common->date_format_form($created_on),
-            	'modified_on' => $common->date_format_form($modified_on),
+            	'created_on' => Commons::date_format_form($created_on),
+            	'modified_on' => Commons::date_format_form($modified_on),
             	'created_by' => $created_by, 'modified_by' => $modified_by);
         }
 		$stmt->close();
@@ -61,9 +54,8 @@ class Donators {
 
     function iudDonator($dml, $id, $name, $address1, $address2, $city, $state,
     		$zipcode, $email, $phone, $company_name, $comments) {
-        global $session, $common;
         $tableName = 'donator';
-        $login_id = @intval($session->loginUserID());
+        $login_id = @intval(Sessions::loginUserID());
         if ($dml!='d') {
         	$data = array(
 	            'name'  => array('type' => 's', 'value' => $name),

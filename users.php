@@ -3,19 +3,43 @@ require_once('lib/include.php');
 
 $db = new DB();
 $user = new Users($db);
-$session = new Sessions();
 
-function login() {
-    global $user, $session;
+function myprofileupdate() {
+    global $user;
     $response = array();
 
-    $username = $_POST['username'];
     $password = $_POST['password'];
-    $securitycode = $_POST['securitycode'];
+    $phone = $_POST['phone'];
 
 	try {
-    	//if($session->securityCode() != $securitycode) {
-    	//	$response['error'] = 1;
+    	$responseData = $user->myprofileUpdate($phone, $password);
+		Logger::log('Myprofile Update complete');
+		if (!$responseData) {
+			$response['error'] = 1;
+		    $response['message'] = 'Could not complete myprofile update user request. Please check the details you entered and try again.';
+	    } else {
+			$response['success'] = 1;
+			$response['message'] = 'MyProfile updated successfully.';
+		}
+	} catch (DBException $e) {
+        $response['error'] = 1;
+        $response['message'] = $e->getMessage();
+    }
+
+    return $response;
+}
+
+function login() {
+	global $user;
+	$response = array();
+
+	$username = $_POST['username'];
+	$password = $_POST['password'];
+	$securitycode = $_POST['securitycode'];
+
+	try {
+		//if(Sessions::securityCode() != $securitycode) {
+		//	$response['error'] = 1;
 		//	$response['message'] = 'Invalid security code. Please try again.';
 		//} else {
 			$responseData = $user->login($username, $password);
@@ -26,15 +50,15 @@ function login() {
 			} else {
 				$response['success'] = 1;
 				$response['data'] = $responseData;
-				$session->setLoginUserInfo($responseData);
+				Sessions::setLoginUserInfo($responseData);
 			}
 		//}
-    } catch (DBException $e) {
-        $response['error'] = 1;
-        $response['message'] = $e->getMessage();
-    }
+	} catch (DBException $e) {
+		$response['error'] = 1;
+		$response['message'] = $e->getMessage();
+	}
 
-    return $response;
+	return $response;
 }
 
 function userlist() {
@@ -69,7 +93,7 @@ function logout() {
 }
 
 function iuduser($iud, $action_type, $action_type_done) {
-    global $user, $session;
+    global $user;
     $response = array();
     $id =  @intval($_POST['id']);
     $name = '';
@@ -93,7 +117,7 @@ function iuduser($iud, $action_type, $action_type_done) {
 		return $response;
 	}
 
-	/*if ($iud=='d' && !$session->isLoginUserSuperAdmin()) {
+	/*if ($iud=='d' && !Sessions::isLoginUserSuperAdmin()) {
 		$response['error'] = 1;
 		$response['message'] = 'You do not have sufficient privileges to complete this request.';
 		return $response;
@@ -144,6 +168,9 @@ if (isset($_POST['action'])) {
     } else if ($action == 'login') {
         Logger::log('Processing login request...');
         $response = login();
+    } else if ($action == 'myprofileupdate') {
+        Logger::log('Processing update myprofile request...');
+        $response = myprofileupdate();
     }
     Logger::log(print_r($response, true));
 } else if (isset($_GET['action'])) {

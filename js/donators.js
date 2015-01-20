@@ -2,7 +2,6 @@ var gridid = "#jqGrid";
 var gridpagerid  = "#jqGridPager";
 var state_id =':;';
 var state_value =':[All];';
-//debugger;
 common.ajaxCall(false, "get", "json/select.json", null,
 	function( response ) {
 		state_id += response['state_id'][0];
@@ -33,7 +32,6 @@ var userColModel = [
 function editSettings() {
 	return $.extend( common.modalEdit('auto', '',common.afterSubmit), {
 		beforeSubmit: function(postdata, formid) {
-			//debugger;
 			var validate = true;
 			if (postdata.email.length>0) validate = common.validateEmail(postdata.email);
 			return[validate,'E-mail: Field is not valid'];
@@ -56,7 +54,6 @@ $(gridid).navGrid(gridpagerid,
 	editSettings(),
 	$.extend( common.modalCreate('auto',common.afterSubmit, null), {
 		beforeSubmit: function(postdata, formid) {
-			//debugger;
 			var validate = true;
 			if (postdata.email.length>0) validate = common.validateEmail(postdata.email);
 			return[validate,'E-mail: Field is not valid'];
@@ -68,13 +65,11 @@ $(gridid).navGrid(gridpagerid,
 fetchGridData();
 
 function fetchGridData() {
-	//debugger;
 	common.setGridData(gridid, "get", "donators.php", {action: 'donatorlist'}, pushData)
 }
 
 function pushData(result) {
 	var arrayData = [];
-	//debugger;
 	for (var i = 0; i < result.length; i++) {
 		var item = result[i];
 		var name_companyname = item.name;

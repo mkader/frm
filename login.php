@@ -1,52 +1,69 @@
-<div class="middle"  style="margin-left: -150px">
-<table width="100%" cellpadding="1" cellspacing="0" style="border-collapse:collapse;" border="0">
-	<tr>
-		<td width="40%">&nbsp;</td>
-		<td  valign="top">
-			<table cellpadding="0" border="0">
-				<tr><td colspan="2"><br /></td></tr>
-				<tr>
-					<td align="center" colspan="2" style="font-weight: bold; color: white; background-color: #5d7b9d">Log In</td>
-				</tr>
-				<tr><td colspan="2"><br /></td></tr>
-				<tr>
-					<td align="right"><span class="NormalTextBold">E-mail:</span></td>
-					<td align="left">
-						<input type="text" id="username" style="width:150px;" />
-					</td>
-				</tr>
-				<tr>
-					<td align="right"><span class="NormalTextBold">Password:</span></td>
-					<td align="left">
-						<input type="password" id="password" style="width:150px;" />
-					</td>
-				</tr>
-				<tr>
-					<td align="right"><span class="NormalTextBold">Security Code:</span></td>
-					<td align="left">
-						<input type="text" id="securitycode" style="width:150px;" />
-					</td>
-				</tr>
-				<tr>
-					<td></td>
-					<td align="left"><span ><img src="captchaimage.php?width=156&height=35&characters=5" /></span><br /></td>
-				</tr>
-				<tr><td colspan="2"><br /></td></tr>
-				<tr>
-					<td></td>
-					<td align="left">
-						<button  id="login" class="DefaultButton">Log In</button>
-					</td>
-				</tr>
-				<tr>
-					<td></td>
-					<td>
-						<span id="error" style="font-size:small;font-weight:bold;color:red"></span>
-					</td>
-				</tr>
-				<tr><td colspan="2"><br /></td></tr>
-			</table>
-		</td>
-	</tr>
-</table>
+<style>
+
+h1
+{
+	font-size:20px;
+	padding:0px 20px 20px;
+	margin:0px;
+	text-align:center;
+}
+
+input,textarea { padding:7px; font-size:14px !important; width:250px; }
+
+p > label:first-child
+{
+	display: inline-block;
+	font-weight: 700;
+	margin-bottom: 5px;
+	padding-right: 35px;
+	text-align: right;
+	width: 135px;
+}
+
+#container
+{
+	margin:0px auto;
+	width:500px;
+	background-color:#eee;
+	padding:20px;	
+	border-radius: 5px;
+	clear: both;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+	-moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+	box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+</style>
+
+<div id="container">
+	<h1>Log In</h1>
+	<p>
+		<label for="username">E-mail:</label>
+		<input type="text" name="username" id="username" />
+	</p>
+	
+	<p>
+		<label for="password">Password:</label>
+		<input type="password" name="password" id="password" />
+	</p>
+
+	<p>
+		<label for="email">Security Code:</label>
+		<input type="text" name="securitycode" id="securitycode" />
+	</p>
+	<p>
+		<label></label>
+		<span ><img src="captchaimage.php?width=156&height=35&characters=5" /></span>
+	</p>
+	
+	<p>
+		<label></label>
+		<input type="button" value="Log In" id="login"/>
+	</p>
+	<p>
+		<label></label>
+		<span id="error" style="font-size:small;font-weight:bold;color:red"></span>
+	</p>
 </div>

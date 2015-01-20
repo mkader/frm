@@ -3,8 +3,6 @@ require_once('lib/include.php');
 
 $db = new DB();
 $payment = new Payments($db);
-$session = new Sessions();
-$common = new Commons();
 
 function paymentlist() {
 	global $payment;
@@ -38,15 +36,16 @@ function donatorspaymentlist() {
 }
 
 function iudpayment($iud, $action_type, $action_type_done) {
-    global $payment, $session, $common;
+    global $payment;
     $response = array();
     $id =  @intval($_POST['id']);
-    $event_id = 0;
+    $pledge_id = 0;
 	$donator_id = 0;
 	$amount = 0;
 	$payment_method_id = 0;
-	$payment_type_id = 0;
+	$tax_year = 0;
 	$payment_date = '';
+	$comments = '';
 
 	if ($iud!='d') {
 		$payment_date = $_POST['payment_date'];
@@ -65,7 +64,7 @@ function iudpayment($iud, $action_type, $action_type_done) {
 	}
 
 	try {
-		$id = $payment->iudPayment($iud, $id, $payment_date, $amount, $payment_method_id, 
+		$id = $payment->iudPayment($iud, $id, $payment_date, $amount, $payment_method_id,
     		$tax_year, $donator_id,  $pledge_id, $comments);
     	Logger::log($action_type. ' payment complete');
         if ($id > 0) {

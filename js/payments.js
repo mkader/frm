@@ -1,5 +1,3 @@
-debugger;
-
 var gridid2= "#jqGridPayment";
 var gridpagerid2 = "#jqGridPagerPayment";
 
@@ -13,11 +11,11 @@ var paymentColModel = [
 	{label: 'Payment Date', template:common.dateTemplate('payment_date', 50, true, ' * ',4,1)},
 	{label: 'Amount', formatter:'currency',
 		formatoptions:{thousandsSeparator: ",", decimalPlaces: 2, prefix: "$ "},
-		template:common.numberTemplate('amount', 50, true, ' * ',5,1)},
+		template:common.numberTemplate('amount', 50, true, ' * ',5,1, {})},
 	{label: 'Payment Method', template:common.selectTemplate('payment_method_id', 50, true, ' * ',
 			'select', payment_method_id, payment_method_value, true,6,1)},
-	{label: 'Tax Year', formatter:'integer', formatoptions:{thousandsSeparator: "", },
-		template:common.numberTemplate('tax_year', 50, true, ' * ',8,1)},
+	{label: 'Tax Year', formatter:'integer',formatoptions:{thousandsSeparator: "",},
+		template:common.numberTemplate('tax_year', 50, true, ' * ',8,1, {defaultValue:taxyear})},
 	{label: 'Comments', template:common.textAreaTemplate('comments', 100, false, ' &nbsp; ',true,9,1)},
 ];
 
@@ -25,7 +23,6 @@ var paymentColModel = [
 $(gridid2).jqGrid('filterToolbar',common.showFilterOptions);
 
 function pushData2(result) {
-	debugger;
 	var arrayData = [];
 	//var result = res['data'];
 	for (var i = 0; i < result.length; i++) {

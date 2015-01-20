@@ -1,4 +1,8 @@
+
 $(function(){
+	
+	$("#phone").mask("(999) 999-9999"); 
+	
 	$("#login").click(function(event ) {
 		var username = $( "#username" ).val();
 		var password = $( "#password" ).val();
@@ -42,5 +46,37 @@ $(function(){
 				common.errorAlert(event, response);
 			}
 		)
+	});
+	
+	
+	$('#frmmyprofile').validate({
+		rules: {password: {required: true, minlength: 6, maxlength: 10,} , 
+			confirmpassword: {equalTo: "#password", minlength: 6, maxlength: 10,},
+			phone: {required:true,}}
+   });
+	
+	$("#updatemyprofile").click(function(event ) {
+		if($("#frmmyprofile").valid()) {
+			var password = $( "#password" ).val();
+			var phone = $( "#phone" ).val();
+			var data = {
+					action: 'myprofileupdate',
+					password: password,
+					phone: phone,
+			};
+			common.ajaxCall(true, "post", "users1.php", data,
+				function( response ) {
+					var res = common.JSONParse(response);
+					if (res['error']) {
+						common.errorSpan(event, "#error", res['message']);
+					}else if (res['success']) {
+						common.errorSpan(event, "#error", res['message']);
+					}
+				},
+				function( response ) {
+					common.errorSpan(event, "#error", response.statusText);
+				}
+			)
+		}
 	});
 });
