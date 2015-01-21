@@ -11,5 +11,6 @@
 	require_once('payments.class.php');
 	require_once('expenses.class.php');
 	require_once('selects.class.php');
+	require_once('logs.class.php');
 	require_once('commons.class.php');
 ?>

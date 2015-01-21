@@ -34,7 +34,7 @@ function editSettings() {
 /*$(function(){
 	if ($("#userlist").length>0){
 		$("#userlist").ready(function () {*/
-			$(gridid).jqGrid(common.gridOptions(gridpagerid, userColModel, 'User List', 'users.php', 900, null, null));
+			$(gridid).jqGrid(common.gridOptions(gridpagerid, userColModel, 'User List', 'users.php', 900, null, null, 10, 230, common.ondblClickRow));
 			/*	numopts : ['eq','ne', 'lt', 'le', 'gt', 'ge', 'nu', 'nn', 'in', 'ni'],
 				sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'bw', 'bn', 'ew', 'en', 'cn', 'nc', 'nu', 'nn', 'in', 'ni']*/
 

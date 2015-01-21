@@ -75,7 +75,7 @@ function initGrid2() {
 	});
 }
 
-$(gridid2).jqGrid(common.gridOptions(gridpagerid2, paymentColModel, 'Payment List', 'payments.php',900,null, initGrid2));
+$(gridid2).jqGrid(common.gridOptions(gridpagerid2, paymentColModel, 'Payment List', 'payments.php',900,null, initGrid2, 5, 115, common.ondblClickRow));
 
 function afterSubmitDonatorsPayment(response) {
 	var res = common.JSONParse(response.responseText)

@@ -21,7 +21,7 @@ var eventColModel = [
 	{label: 'Event Type', template:common.selectTemplate('pledge_type', 50, true, ' * ',
 			'select', pledge_type_id, pledge_type_value,true,4,1)},
 	{label: 'Location', template:common.textTemplate('location', 150, true, ' * ',true,5,1)},
-	{label: 'Description', template:common.textAreaTemplate('description', 100, false, ' &nbsp; ',true,6,1)},
+	{label: 'Description', template:common.textAreaTemplate('description', 100, false, ' &nbsp; ',true,6,1, '2', '23')},
 ];
 
 
@@ -30,7 +30,7 @@ function editSettings() {
 	return common.modalEdit('auto','',common.afterSubmit);
 }
 
-$(gridid).jqGrid(common.gridOptions(gridpagerid, eventColModel, 'Event List', 'events.php', 900, null, null));
+$(gridid).jqGrid(common.gridOptions(gridpagerid, eventColModel, 'Event List', 'events.php', 900, null, null, 10, 230, common.ondblClickRow));
 
 //$(gridid).jqGrid('navGrid', gridpagerid, {cloneToTop: true});
 

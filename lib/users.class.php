@@ -44,7 +44,7 @@ class Users {
 
     function myprofileUpdate($phone, $password) {
     	$encPassword = sha1(AUTH_SALT.$password);
-    	$tableName = 'user1';
+    	$tableName = 'user';
         $timestamp = date('Y-m-d H:i:s');
         $login_id = @intval(Sessions::loginUserID());
         $data = array(

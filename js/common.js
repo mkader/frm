@@ -11,7 +11,20 @@ var Common = {
 	    return re.test(email);
 	},
 
-	gridOptions:function(ipager, icolModel, icaption, iediturl, iwidth, ionSelectRow, igridComplete) {
+	ondblClickRow: function(rowid, ri, ci) {
+		//alert(rowid + " - " + ri + " - " + ci)
+        var p = $(this)[0].p;
+        if (p.selrow !== rowid) {
+        	// prevent the row from be unselected on double-click
+            // the implementation is for "multiselect:false" which we use,
+            // but one can easy modify the code for "multiselect:true"
+        	$(this).jqGrid('setSelection', rowid);
+        }
+        $(this).jqGrid('editGridRow', rowid,  editSettings());
+    },
+    
+	gridOptions:function(ipager, icolModel, icaption, iediturl, iwidth, ionSelectRow, 
+			igridComplete, irowNum, iheight, iondblClickRow) {
 		//if(typeof(iwidth)==='undefined') iwidth = 900;
 		return {colModel: icolModel,
 			/*loadComplete: function () {
@@ -21,8 +34,8 @@ var Common = {
 	        //autowidth: true,
 	        height: "auto",
 	        width: iwidth,
-			height: 230,
-			rowNum: 10,
+			height: iheight,
+			rowNum: irowNum,
 			ignoreCase: true,
 			datatype: 'local',
 			multiSort: true,
@@ -30,7 +43,7 @@ var Common = {
             altRows: true,
 			rownumbers: true,
 	        rownumWidth: 25,
-	        rowList: [10,20,40],
+	        rowList: [irowNum,irowNum*2,irowNum*4],
 			pager: ipager,
 			mtype:"POST",
 			caption: icaption,
@@ -38,17 +51,7 @@ var Common = {
 			editurl: iediturl,
 			onSelectRow:ionSelectRow,
 			gridComplete:igridComplete,
-			ondblClickRow: function(rowid, ri, ci) {
-				//alert(rowid + " - " + ri + " - " + ci)
-	            var p = $(this)[0].p;
-	            if (p.selrow !== rowid) {
-	            	// prevent the row from be unselected on double-click
-	                // the implementation is for "multiselect:false" which we use,
-	                // but one can easy modify the code for "multiselect:true"
-	            	$(this).jqGrid('setSelection', rowid);
-	            }
-	            $(this).jqGrid('editGridRow', rowid,  editSettings());
-	        }
+			ondblClickRow: iondblClickRow,
 		}
 	},
 
@@ -162,7 +165,7 @@ var Common = {
 	        });
 	    }};
     	var formoptions = {srcformat:'mm/dd/YY', newformat:'ShortDate',
-    			elmprefix: " * ", rowpos: irowpos, colpos: icolpos};
+    			elmprefix: iprefix, rowpos: irowpos, colpos: icolpos};
     	var editrules = {required: irequired}
     	var dateOptions = {align:'right'};
     	var generateOptions = generateFieldTemplate(iname, iwidth, true, "text", editrules,
@@ -175,17 +178,17 @@ var Common = {
     	var searchOptions = { sopt: numberSearchOptions};
     	var editrules = {number:true, required: irequired}
     	var editOptions = ieditOptions;
-    	var formoptions = {elmprefix: " * ", rowpos: irowpos, colpos: icolpos};
+    	var formoptions = {elmprefix: iprefix, rowpos: irowpos, colpos: icolpos};
     	var numberOptions = {align:'right'};
     	var generateOptions = generateFieldTemplate(iname, iwidth, true, "text", editrules,
 				searchOptions, formoptions, editOptions, 'text');
     	return $.extend( numberOptions, generateOptions );
     },
 
-    textAreaTemplate: function(iname, iwidth, irequired, iprefix, ieditable, irowpos, icolpos) {
+    textAreaTemplate: function(iname, iwidth, irequired, iprefix, ieditable, irowpos, icolpos, irows, icols) {
     	var searchOptions = {};
     	var formoptions = {elmprefix: iprefix, rowpos: irowpos, colpos: icolpos};
-    	var editOptions = {rows:"2",cols:"23"};
+    	var editOptions = {rows:irows,cols:icols};
     	var textAreaOptions = {wrap:"on", hidden:true};
     	var editrules = {edithidden: true, required: irequired}
     	var generateOptions = generateFieldTemplate(iname, iwidth, ieditable, "textarea", editrules,

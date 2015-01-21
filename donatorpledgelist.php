@@ -55,7 +55,7 @@ function initGrid() {
 	});
 }
 
-$(gridid1).jqGrid(common.gridOptions(gridpagerid1, pledgeColModel, 'Pledge List', 'pledges.php',900,null, initGrid));
+$(gridid1).jqGrid(common.gridOptions(gridpagerid1, pledgeColModel, 'Pledge List', 'pledges.php',900,null, initGrid, 5, 115, common.ondblClickRow));
 
 function afterSubmitDonatorsPledge(response) {
 	var res = common.JSONParse(response.responseText)

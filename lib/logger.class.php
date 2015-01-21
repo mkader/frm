@@ -22,7 +22,7 @@ class Logger {
 			}
 		}
     }
-    
+     
     static function JSON($jsonfile, $jsondata) {
     	$data ="{".$jsondata."}";
     	$jsonpath = 'json/'.$jsonfile.'.json';

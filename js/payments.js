@@ -16,7 +16,7 @@ var paymentColModel = [
 			'select', payment_method_id, payment_method_value, true,6,1)},
 	{label: 'Tax Year', formatter:'integer',formatoptions:{thousandsSeparator: "",},
 		template:common.numberTemplate('tax_year', 50, true, ' * ',8,1, {defaultValue:taxyear})},
-	{label: 'Comments', template:common.textAreaTemplate('comments', 100, false, ' &nbsp; ',true,9,1)},
+	{label: 'Comments', template:common.textAreaTemplate('comments', 100, false, ' &nbsp; ',true,9,1, '2', '23')},
 ];
 
 // activate the toolbar searching

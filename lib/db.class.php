@@ -1,7 +1,6 @@
 <?php
 class DB {
     private $connection;
-
     private $inTransaction;
 
     function __construct() {
@@ -44,6 +43,38 @@ class DB {
         }
     }
 
+    function log($action_id, $table, $id, $data = array()) {
+    	$sdata = array();
+    	//$sdata['id'] = $id;
+    	foreach ($data as $key => $value) {
+    		$sdata[$key] = $value['value'];
+    	}
+    	
+    	if ($table=='user') $table_id = Table::User;
+    	else if ($table=='donator') $table_id = Table::Donator;
+    	else if ($table=='event') $table_id = Table::Event;
+    	else if ($table=='expense') $table_id = Table::Expense;
+    	else if ($table=='payment') $table_id = Table::Payment;
+    	else if ($table=='pledge') $table_id = Table::Pledge;
+    	else if ($table=='pledgeremainder') $table_id = Table::PledgeRemainder;
+    	
+    	// Build the insert SQL statement
+    	$sql = "INSERT INTO log (record_id, log_table_id, log_action_id, log) values(?, ?, ?, ?)";
+
+    	// Create the statement to be executed
+    	$stmt = $this->connection->prepare($sql);
+    	$this->checkError();
+    
+    	$stmt->bind_param('iiis', $id, $table_id, $action_id, print_r($sdata,true));
+    	$this->checkError();
+    
+    	// Execute the statement and close
+    	$stmt->execute();
+    	$this->checkError();
+    
+    	$stmt->close();
+    }
+    
     function insert($tableName, $data = array()) {
         $colNames = array();
         $values = array();
@@ -90,9 +121,12 @@ class DB {
         $stmt->close();
 
         // Get the inserted ID
-        return $this->connection->insert_id;
+        $id = $this->connection->insert_id;
+        Db::log(Action::Insert, $tableName, $id, $data);
+       
+        return $id;
     }
-
+    
     function update($tableName, $idValue, $data = array()) {
         $colNames = array();
         $values = array();
@@ -131,6 +165,10 @@ class DB {
 
         $stmt->execute();
         $this->checkError();
+        
+        $stmt->close();
+        
+        Db::log(Action::Update, $tableName, $idValue, $data);
     }
 
     function delete($tableName, $idValue) {
@@ -143,6 +181,8 @@ class DB {
         $this->checkError();
 
         $stmt->close();
+        
+        Db::log(Action::Delete, $tableName, $idValue, array());
     }
 
     function checkError() {
@@ -157,6 +197,24 @@ class DB {
             throw new DBException("[MySQLi Error #" . $errorNum . "] " . $error);
         }
     }
+}
+
+abstract class Table {
+	const User  =  1;
+	const Donator  =  2;
+	const Event  =  3;
+	const Expense  =  4;
+	const Payment  =  5;
+	const Pledge  =  6;
+	const PledgeRemainder  =  7;
+}
+
+abstract  class Action {
+	const Login  =   1;
+	const Logout  =  2;
+	const Insert  =  3;
+	const Update  =  4;
+	const Delete  =  5;
 }
 
 

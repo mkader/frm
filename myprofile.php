@@ -28,7 +28,6 @@ $(function(){
 			};
 			common.ajaxCall(true, "post", "users.php", data,
 				function( response ) {
-					alert(response);
 					var res = common.JSONParse(response);
 					if (res['error']) {
 						common.errorSpan(event, "#error", res['message']);

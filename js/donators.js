@@ -26,7 +26,7 @@ var userColModel = [
 	{label: 'Zip Code', hidden:true, template:common.textTemplate('zipcode', 50, false, ' &nbsp; ', true,6,3)},
 	{label: 'E-mail', formatter:'email', template:common.textTemplate('email', 100, false, ' &nbsp; ', true,7,1)},
 	{label: 'Phone', template:common.phoneTemplate('phone', 50, false, ' &nbsp; ', true,7,2)},
-	{label: 'Comments', template:common.textAreaTemplate('comments', 100, false, " &nbsp; ", true,8,1)}
+	{label: 'Comments', template:common.textAreaTemplate('comments', 100, false, " &nbsp; ", true,8,1, '2', '23')}
 ];
 
 function editSettings() {
@@ -45,7 +45,7 @@ function loadPledges(id) {
 	updateContent("donatorpaymentlist.php?did="+id, "#paymentlistid");
 }
 
-$(gridid).jqGrid(common.gridOptions(gridpagerid, userColModel, 'Donator List', 'donators.php', 900, loadPledges, null));
+$(gridid).jqGrid(common.gridOptions(gridpagerid, userColModel, 'Donator List', 'donators.php', 900, loadPledges, null, 10, 230, common.ondblClickRow));
 
 $(gridid).jqGrid('filterToolbar',common.showFilterOptions);
 
@@ -59,7 +59,8 @@ $(gridid).navGrid(gridpagerid,
 			return[validate,'E-mail: Field is not valid'];
 		},
 	}),
-	common.modalDelete(common.afterSubmit)
+	common.modalDelete(common.afterSubmit),
+	{},{width: 900}
 );
 
 fetchGridData();
