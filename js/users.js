@@ -15,7 +15,7 @@ var userColModel = [
 
 function editSettings() {
 	return $.extend(common.modalEdit('auto',
-		"<br><font color='red'>Leave password blank if dont want to change</font>",common.afterSubmit), {
+		"<br><font color='red'>Leave password blank if dont want to change</font>",common.afterSubmit, null), {
 		beforeInitData: function(formid) {
 			$(gridid).jqGrid('setColProp', 'password',
 					{formoptions: {elmprefix: "  &nbsp;  ", rowpos: 2, colpos: 1}},
@@ -57,8 +57,7 @@ function editSettings() {
 						$(gridid).jqGrid('setColProp', 'password', {editrules: {required: true}});
 					},
 					beforeSubmit: function(postdata, formid) {
-						return[true];
-						//return[common.validateEmail(postdata.email),'E-mail: Field is not valid'];
+						return[common.validateEmail(postdata.email),'E-mail: Field is not valid'];
 					},
 					/*afterComplete: function(response, postdata, formid) {
 						var res = common.JSONParse(response['responseText'])

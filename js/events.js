@@ -8,7 +8,7 @@ common.ajaxCall(false, "get", "json/select.json", null,
 		pledge_type_value += response['pledge_type_value'][0];
 	},
 	function( response ) {
-		common.errorAlert(event, response.responseText);
+		common.errorAlert(response.responseText);
 	}
 )
 var eventColModel = [
@@ -17,20 +17,15 @@ var eventColModel = [
 	{label: 'Event Date', template:common.dateTemplate('event_date', 50, true, ' * ',2,1)},
 	{label: 'Target Amount', formatter:'currency',
 		formatoptions:{thousandsSeparator: ",", decimalPlaces: 0, prefix: "$ "},
-		template:common.numberTemplate('target_amount', 50, true, ' * ',3,1, {})},
+		template:common.numberTemplate('target_amount', 50, true, ' * ',3,1, {maxlength: 8})},
 	{label: 'Event Type', template:common.selectTemplate('pledge_type', 50, true, ' * ',
 			'select', pledge_type_id, pledge_type_value,true,4,1)},
 	{label: 'Location', template:common.textTemplate('location', 150, true, ' * ',true,5,1)},
 	{label: 'Description', template:common.textAreaTemplate('description', 100, false, ' &nbsp; ',true,6,1, '2', '23')},
 ];
 
-
-
-function editSettings() {
-	return common.modalEdit('auto','',common.afterSubmit);
-}
-
-$(gridid).jqGrid(common.gridOptions(gridpagerid, eventColModel, 'Event List', 'events.php', 900, null, null, 10, 230, common.ondblClickRow));
+$(gridid).jqGrid(common.gridOptions(gridpagerid, eventColModel, 'Event List',
+	'events.php', 900, null, null, 10, 230, common.onDblClickRow));
 
 //$(gridid).jqGrid('navGrid', gridpagerid, {cloneToTop: true});
 
@@ -39,11 +34,14 @@ $(gridid).jqGrid('filterToolbar',common.showFilterOptions);
 
 $(gridid).navGrid(gridpagerid,
 	gridFooterIcons,
-	editSettings(),
-	common.modalCreate('auto',common.afterSubmit, null),
+	common.modalEdit('auto','',common.afterSubmit, beforeShowForm),
+	common.modalCreate('auto',common.afterSubmit, beforeShowForm),
 	common.modalDelete(common.afterSubmit)
 );
 
+function beforeShowForm(form) {
+	common.numberOnly('#target_amount');
+};
 
 fetchGridData();
 

@@ -51,7 +51,7 @@ class Events {
 
     function jsonEvent() {
     	$jsonData = $this->select->jsonData('event', 'select id, title value from event');
-    	Logger::JSON('event',$jsonData);
+    	Logger::JSON('event',"{".$jsonData."}");
     }
 
     function iudEvent($dml, $id, $title, $event_date, $location, $description, $target_amount, $pledge_type_id) {

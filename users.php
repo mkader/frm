@@ -38,10 +38,10 @@ function login() {
 	$securitycode = $_POST['securitycode'];
 
 	try {
-		//if(Sessions::securityCode() != $securitycode) {
-		//	$response['error'] = 1;
-		//	$response['message'] = 'Invalid security code. Please try again.';
-		//} else {
+		if(Sessions::securityCode() != $securitycode) {
+			$response['error'] = 1;
+			$response['message'] = 'Invalid security code. Please try again.';
+		} else {
 			$responseData = $user->login($username, $password);
 			Logger::log('Login complete');
 			if (!$responseData) {
@@ -52,7 +52,7 @@ function login() {
 				$response['data'] = $responseData;
 				Sessions::setLoginUserInfo($responseData);
 			}
-		//}
+		}
 	} catch (DBException $e) {
 		$response['error'] = 1;
 		$response['message'] = $e->getMessage();

@@ -55,10 +55,11 @@ function initGrid() {
 	});
 }
 
-$(gridid1).jqGrid(common.gridOptions(gridpagerid1, pledgeColModel, 'Pledge List', 'pledges.php',900,null, initGrid, 5, 115, common.ondblClickRow));
+$(gridid1).jqGrid(common.gridOptions(gridpagerid1, pledgeColModel, 'Pledge List',
+	'pledges.php',900,null, initGrid, 5, 115, common.onDblClickRow));
 
 function afterSubmitDonatorsPledge(response) {
-	var res = common.JSONParse(response.responseText)
+	var res = common.jsonParse(response.responseText)
 	if (res['error']) {
 		return [false, 'Error: ' + res['message']];
 	} else {
@@ -70,16 +71,12 @@ function afterSubmitDonatorsPledge(response) {
 function beforeShowFormDonatorsPledge(form) {
 	$("#donator_id", form).val(<?php echo $did ?>);
 	$('#donator_id',form).attr('disabled','true');
+	common.decimalOnly('#amount');
 };
-
-
-function editSettings() {
-	return $.extend(common.modalEdit('auto','', afterSubmitDonatorsPledge), {beforeShowForm: beforeShowFormDonatorsPledge});
-}
 
 $(gridid1).navGrid(gridpagerid1,
 	gridFooterIcons,
-	editSettings(),
+	common.modalEdit('auto','', afterSubmitDonatorsPledge, beforeShowFormDonatorsPledge),
 	common.modalCreate('auto', afterSubmitDonatorsPledge, beforeShowFormDonatorsPledge),
 	common.modalDelete(afterSubmitDonatorsPledge)
 );

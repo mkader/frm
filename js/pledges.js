@@ -12,7 +12,7 @@ common.ajaxCall(false, "get", "json/donator.json", null,
 		donator_value += response['donator_value'][0];
 	},
 	function( response ) {
-		common.errorAlert(event, response.responseText);
+		common.errorAlert(response.responseText);
 	}
 )
 
@@ -22,7 +22,7 @@ common.ajaxCall(false, "get", "json/event.json", null,
 		event_value += response['event_value'][0];
 	},
 	function( response ) {
-		common.errorAlert(event, response.responseText);
+		common.errorAlert(response.responseText);
 	}
 )
 
@@ -35,7 +35,7 @@ var pledgeColModel = [
 		'select', donator_id, donator_value, true,3,1)},
 	{label: 'Pledge Amount', formatter:'currency',
 		formatoptions:{thousandsSeparator: ",", decimalPlaces: 2, prefix: "$ "},
-		template:common.numberTemplate('amount', 50, true, ' * ',4,1, {})},
+		template:common.numberTemplate('amount', 50, true, ' * ',4,1, {maxlength: 8})},
 	{label: 'Payment Method', template:common.selectTemplate('payment_method_id', 50, true, ' * ',
 		'select', payment_method_id, payment_method_value, true,5,1)},
 	{label: 'Payment Type', template:common.selectTemplate('payment_type_id', 50, true, ' * ',

@@ -42,6 +42,31 @@ class Selects {
 			$values .= '"]';
 	        return $ids.$values;
     }
+    
+    function jsonAutoCompleteData($tablename, $sql) {
+    	//$sql = 'SELECT '.$value.' FROM '.$tablename;
+    	$stmt = $this->conn->prepare($sql);
+    	$this->db->checkError();
+    	$stmt->execute();
+    	$this->db->checkError();
+    
+    	$stmt->bind_result($value);
+    
+    	$values = '[';
+    
+    	$row=0;
+    	$stmt->store_result();
+    	$total = $stmt->num_rows-1;
+    	while ($stmt->fetch()) {
+    		$comma = ($row!=$total?',':'');
+    		$values .= '"'.$value.'"'.$comma;
+    		$row++;
+    	}
+    	$stmt->close();
+    
+    	$values .= ']';
+    	return $values;
+    }
 
     function generateJSON() {
 

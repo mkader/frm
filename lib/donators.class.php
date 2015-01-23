@@ -49,7 +49,7 @@ class Donators {
     function jsonDonator() {
     	//global $select;
     	$jsonData = $this->select->jsonData('donator', 'select id, name value from donator');
-    	Logger::JSON('donator',$jsonData);
+    	Logger::JSON('donator',"{".$jsonData."}");
     }
 
     function iudDonator($dml, $id, $name, $address1, $address2, $city, $state,

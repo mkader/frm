@@ -8,15 +8,15 @@ $phone = Sessions::loginUserPhone();
 
 <script>
 $(function(){
-	
-	$("#phone").mask("(999) 999-9999"); 
-	
+
+	$("#phone").mask("(999) 999-9999");
+
 	$('#frmmyprofile').validate({
-		rules: {password: {required: true, minlength: 6, maxlength: 10,} , 
+		rules: {password: {required: true, minlength: 6, maxlength: 10,} ,
 			confirmpassword: {equalTo: "#password", minlength: 6, maxlength: 10,},
 			phone: {required:true,}}
    });
-	
+
 	$("#updatemyprofile").click(function(event ) {
 		if($("#frmmyprofile").valid()) {
 			var password = $( "#password" ).val();
@@ -28,7 +28,7 @@ $(function(){
 			};
 			common.ajaxCall(true, "post", "users.php", data,
 				function( response ) {
-					var res = common.JSONParse(response);
+					var res = common.jsonParse(response);
 					if (res['error']) {
 						common.errorSpan(event, "#error", res['message']);
 					}else if (res['success']) {
@@ -70,7 +70,7 @@ p > label:first-child
 	margin:1px 1px 1px 1px;
 	width:450px;
 	background-color:#eee;
-	padding:5px;	
+	padding:5px;
 	border-radius: 5px;
 	clear: both;
 	-webkit-border-radius: 5px;
@@ -90,7 +90,7 @@ label.error, span.error {
 }
 input.error { border: 1px dotted red; }
 </style>
-	
+
 <div id="container">
 	<h1>My Profile</h1>
 	<form id="frmmyprofile" name="frmmyprofile">
@@ -98,7 +98,7 @@ input.error { border: 1px dotted red; }
 			<label for="name">Name:</label>
 			<input type="text" name="name" id="name" value="<?php echo $name ?>" readonly />
 		</p>
-		
+
 		<p>
 			<label for="username">E-mail:</label>
 			<input type="text" name="email" id="email" value="<?php echo $username ?>" readonly />

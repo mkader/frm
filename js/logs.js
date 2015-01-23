@@ -12,7 +12,7 @@ common.ajaxCall(false, "get", "json/select.json", null,
 		log_action_value += response['log_action_value'][0];
 	},
 	function( response ) {
-		common.errorAlert(event, response.responseText);
+		common.errorAlert(response.responseText);
 	}
 )
 var eventColModel = [
@@ -37,11 +37,7 @@ function beforeShowForm(form) {
 	$('#created_on',form).attr('disabled','true');
 };
 
-function editSettings() {
-	return $.extend(common.modalEdit('auto','',common.afterSubmit), {beforeShowForm: beforeShowForm});
-}
-
-function ondblClickRow(rowid, ri, ci) {
+function onDblClickRow(rowid, ri, ci) {
 	//alert(rowid + " - " + ri + " - " + ci)
     var p = $(this)[0].p;
     if (p.selrow !== rowid)
@@ -50,7 +46,8 @@ function ondblClickRow(rowid, ri, ci) {
 }
 
 
-$(gridid).jqGrid(common.gridOptions(gridpagerid, eventColModel, 'Log List', 'logs.php', 900, null, null, 10, 230, ondblClickRow));
+$(gridid).jqGrid(common.gridOptions(gridpagerid, eventColModel, 'Log List',
+	'logs.php', 900, null, null, 10, 230, onDblClickRow));
 
 //$(gridid).jqGrid('navGrid', gridpagerid, {cloneToTop: true});
 

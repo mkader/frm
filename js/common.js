@@ -2,7 +2,62 @@ var textSearchOptions = {sopt:['eq', 'ne', 'bw', 'bn', 'ew', 'en', 'cn', 'nc']};
 var numberSearchOptions = ['eq','ne','lt','le','gt','ge'];
 var gridFooterIcons = {search: false, view: true, add: true, edit: true, del: true, refresh: true};
 var Common = {
-	JSONParse:function(a){
+
+	autoComplete:function(fldName, iurl, idataType){	
+		$(fldName ).autocomplete({
+			source: function( request, response ) {
+				var regex = new RegExp(request.term, 'i');
+				common.ajaxCall(false, "get", iurl, null,
+					function( data ) {
+						response($.map(data, function(item) {
+							if(regex.test(item)) return item;
+			            }));
+					},
+					function( data ) {
+						common.errorAlert(data.responseText);
+					}
+				)
+			},
+				
+		    minLength: 1,
+		    select: function( event, ui ) {
+		    	return ui.item;
+		      /*log( ui.item ?
+		        "Selected: " + ui.item.label :
+		        "Nothing selected, input was " + this.value);*/
+		    },
+		    open: function() {
+		      $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+		    },
+		    close: function() {
+		      $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+		    }
+		});
+		$(".ui-autocomplete").css("zIndex", parseInt($("[style*=z-index]:last").css("zIndex"), 10) + 2);
+	},
+	
+	decimalOnly: function(fldName) {
+		$(fldName).keypress(function (event) {
+		    if ((event.which != 46 || $(this).val().indexOf('.') != -1) 
+		    	&& (event.which < 48 || event.which > 57)) {
+		        event.preventDefault();
+		    }
+	
+		    var text = $(this).val();
+	
+		    if ((text.indexOf('.') != -1) && (text.substring(text.indexOf('.')).length > 2)) {
+		        event.preventDefault();
+		    }
+		});
+	},
+	
+	numberOnly: function(fldName) {
+		$(fldName).keypress(function (event) {
+			if (event.which < 48 || event.which > 57) event.preventDefault();
+		});
+	},
+
+	jsonParse:function(a){
 		return JSON.parse(a)
 	},
 
@@ -11,7 +66,7 @@ var Common = {
 	    return re.test(email);
 	},
 
-	ondblClickRow: function(rowid, ri, ci) {
+	onDblClickRow: function(rowid, ri, ci) {
 		//alert(rowid + " - " + ri + " - " + ci)
         var p = $(this)[0].p;
         if (p.selrow !== rowid) {
@@ -22,8 +77,8 @@ var Common = {
         }
         $(this).jqGrid('editGridRow', rowid,  editSettings());
     },
-    
-	gridOptions:function(ipager, icolModel, icaption, iediturl, iwidth, ionSelectRow, 
+
+	gridOptions:function(ipager, icolModel, icaption, iediturl, iwidth, ionSelectRow,
 			igridComplete, irowNum, iheight, iondblClickRow) {
 		//if(typeof(iwidth)==='undefined') iwidth = 900;
 		return {colModel: icolModel,
@@ -80,12 +135,13 @@ var Common = {
 			errorTextFormat: common.errorTextFormat};
 	},
 
-	modalEdit:function(iwidth, ibottominfo, iafterSubmit) {// options for the Edit Dialog
+	modalEdit:function(iwidth, ibottominfo, iafterSubmit, ibeforeShowForm) {// options for the Edit Dialog
 		return {
 			width:iwidth,
 			bottominfo: common.fieldsRequiredText+ibottominfo,
 			recreateForm: true,
 			closeAfterEdit: true,
+			beforeShowForm: ibeforeShowForm,
 			editData: {action:"iud",iud:"u"},
 			afterSubmit: iafterSubmit,
 			errorTextFormat: common.errorTextFormat};
@@ -207,9 +263,8 @@ var Common = {
 		});
 	},
 
-	errorAlert:function(event,msg){
+	errorAlert:function(msg){
 		alert(msg);
-		event.preventDefault();
 	},
 
 	errorSpan:function(event,spanid, msg){
@@ -218,7 +273,7 @@ var Common = {
 	},
 
 	afterSubmit: function(response) {
-		var res = common.JSONParse(response.responseText)
+		var res = common.jsonParse(response.responseText)
 		if (res['error']) {
 			return [false, 'Error: ' + res['message']];
 		} else {
@@ -258,9 +313,9 @@ var Common = {
 		$(gridid)[0].grid.beginReq();
 		common.ajaxCall(true, type, url, params,
 			function( response ) {
-				var res = common.JSONParse(response);
+				var res = common.jsonParse(response);
 				if (res['error']) {
-					common.errorAlert(event, res['message']);
+					common.errorAlert(res['message']);
 				}else if (res['success']) {
 					gridArrayData = successCallback(res['data']);
 					// set the new data
@@ -272,7 +327,7 @@ var Common = {
 				}
 			},
 			function( response ) {
-				common.errorAlert(event, response);
+				common.errorAlert(response);
 			}
 		)
 	}

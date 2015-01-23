@@ -22,7 +22,9 @@ class Logs {
         FROM
         	log l
         	inner join log_table lt on l.log_table_id = lt.id
-    	 	inner join log_action la on l.log_action_id = la.id';
+    	 	inner join log_action la on l.log_action_id = la.id
+    	 order by
+    	 		l.created_on desc';
         $stmt = $this->conn->prepare($sql);
         $this->db->checkError();
         $stmt->execute();

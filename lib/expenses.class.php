@@ -48,6 +48,11 @@ class Expenses {
         return $events;
     }
 
+    function jsonEvent() {
+    	$jsonData = $this->select->jsonAutoCompleteData('title', 'select distinct title value from expense order by title asc');
+    	Logger::JSON('title',$jsonData);
+    }
+
     function iudExpense($dml, $id, $expense_date, $event_id, $title, $comments, $amount) {
         $tableName = 'expense';
         //$timestamp = date('Y-m-d H:i:s');
@@ -69,6 +74,7 @@ class Expenses {
        	}
        	else if ($dml=='u') $this->db->update($tableName, $id, $data);
 	   	else if ($dml=='d') $this->db->delete($tableName, $id);
+	   	Expenses::jsonEvent();
         return $id;
     }
 }

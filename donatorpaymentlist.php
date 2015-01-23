@@ -28,11 +28,11 @@ var pledge_value =':[All];';
 var taxyear = "<?php echo date("Y"); ?>";
 common.ajaxCall(false, "get", "pledges.php?action=donatorspledgelistjson&id=<?php echo $did ?>", null,
 	function( response ) {
-		var res = common.JSONParse(response);
+		var res = common.jsonParse(response);
 		if (res['error']) {
 			common.errorAlert(event, res['message']);
 		}else if (res['success']) {
-			var item = common.JSONParse(res['data']);
+			var item = common.jsonParse(res['data']);
 			pledge_id += item.pledge_id;
 			pledge_value += item.pledge_value;
 		}
@@ -75,10 +75,11 @@ function initGrid2() {
 	});
 }
 
-$(gridid2).jqGrid(common.gridOptions(gridpagerid2, paymentColModel, 'Payment List', 'payments.php',900,null, initGrid2, 5, 115, common.ondblClickRow));
+$(gridid2).jqGrid(common.gridOptions(gridpagerid2, paymentColModel,
+	'Payment List', 'payments.php',900,null, initGrid2, 5, 115, common.onDblClickRow));
 
 function afterSubmitDonatorsPayment(response) {
-	var res = common.JSONParse(response.responseText)
+	var res = common.jsonParse(response.responseText)
 	if (res['error']) {
 		return [false, 'Error: ' + res['message']];
 	} else {
@@ -90,16 +91,13 @@ function afterSubmitDonatorsPayment(response) {
 function beforeShowFormDonatorsPayment(form) {
 	$("#donator_id", form).val(<?php echo $did ?>);
 	$('#donator_id',form).attr('disabled','true');
+	common.numberOnly('#tax_year');
+	common.decimalOnly('#amount');
 };
-
-
-function editSettings() {
-	return $.extend(common.modalEdit('auto','',afterSubmitDonatorsPayment), {beforeShowForm: beforeShowFormDonatorsPayment});
-}
 
 $(gridid2).navGrid(gridpagerid2,
 	gridFooterIcons,
-	editSettings(),
+	common.modalEdit('auto','',afterSubmitDonatorsPayment, beforeShowFormDonatorsPayment),
 	common.modalCreate('auto', afterSubmitDonatorsPayment, beforeShowFormDonatorsPayment),
 	common.modalDelete(afterSubmitDonatorsPayment)
 );

@@ -8,7 +8,7 @@ common.ajaxCall(false, "get", "json/select.json", null,
 		state_value += response['state_id'][0];
 	},
 	function( response ) {
-		common.errorAlert(event, response.responseText);
+		common.errorAlert(response.responseText);
 	}
 )
 
@@ -29,15 +29,17 @@ var userColModel = [
 	{label: 'Comments', template:common.textAreaTemplate('comments', 100, false, " &nbsp; ", true,8,1, '2', '23')}
 ];
 
-function editSettings() {
-	return $.extend( common.modalEdit('auto', '',common.afterSubmit), {
-		beforeSubmit: function(postdata, formid) {
-			var validate = true;
-			if (postdata.email.length>0) validate = common.validateEmail(postdata.email);
-			return[validate,'E-mail: Field is not valid'];
-		},
+/*function editSettings() {
+	return $.extend( common.modalEdit('auto', '',common.afterSubmit, null), {
+		beforeSubmit: beforeSubmit,
 	})
-}
+}*/
+
+function beforeSubmit(postdata, form) {
+	var validate = true;
+	if (postdata.email.length>0) validate = common.validateEmail(postdata.email);
+	return[validate,'E-mail: Field is not valid'];
+};
 
 function loadPledges(id) {
 	$( "#tabs" ).show();
@@ -45,19 +47,18 @@ function loadPledges(id) {
 	updateContent("donatorpaymentlist.php?did="+id, "#paymentlistid");
 }
 
-$(gridid).jqGrid(common.gridOptions(gridpagerid, userColModel, 'Donator List', 'donators.php', 900, loadPledges, null, 10, 230, common.ondblClickRow));
+$(gridid).jqGrid(common.gridOptions(gridpagerid, userColModel, 'Donator List',
+	'donators.php', 900, loadPledges, null, 10, 230, common.onDblClickRow));
 
 $(gridid).jqGrid('filterToolbar',common.showFilterOptions);
 
 $(gridid).navGrid(gridpagerid,
 	gridFooterIcons,
-	editSettings(),
+	$.extend( common.modalEdit('auto', '',common.afterSubmit, null), {
+		beforeSubmit: beforeSubmit,
+	}),
 	$.extend( common.modalCreate('auto',common.afterSubmit, null), {
-		beforeSubmit: function(postdata, formid) {
-			var validate = true;
-			if (postdata.email.length>0) validate = common.validateEmail(postdata.email);
-			return[validate,'E-mail: Field is not valid'];
-		},
+		beforeSubmit: beforeSubmit,
 	}),
 	common.modalDelete(common.afterSubmit),
 	{},{width: 900}

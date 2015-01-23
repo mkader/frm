@@ -50,7 +50,7 @@ common.ajaxCall(false, "get", "json/select.json", null,
 		payment_method_value += response['payment_method_value'][0];
 	},
 	function( response ) {
-		common.errorAlert(event, response.responseText);
+		common.errorAlert(response.responseText);
 	}
 )
 

@@ -1,8 +1,8 @@
 
 $(function(){
-	
-	$("#phone").mask("(999) 999-9999"); 
-	
+
+	$("#phone").mask("(999) 999-9999");
+
 	$("#login").click(function(event ) {
 		var username = $( "#username" ).val();
 		var password = $( "#password" ).val();
@@ -18,7 +18,7 @@ $(function(){
 			};
 			common.ajaxCall(true, "post", "users.php", data,
 				function( response ) {
-					var res = common.JSONParse(response);
+					var res = common.jsonParse(response);
 					if (res['error']) {
 						common.errorSpan(event, "#error", res['message']);
 					}else if (res['success']) {
@@ -35,17 +35,19 @@ $(function(){
 	$("#logout").click(function(event ) {
 		common.ajaxCall(true, "get", "users.php", {action: 'logout'},
 			function( response ) {
-				var res = common.JSONParse(response);
+				var res = common.jsonParse(response);
 				if (res['error']) {
-					common.errorAlert(event, res['message']);
+					common.errorAlert(res['message']);
+					event.preventDefault();
 				}else if (res['success']) {
 					location.href="default.php";
 				}
 			},
 			function( response ) {
-				common.errorAlert(event, response);
+				common.errorAlert(response);
+				event.preventDefault();
 			}
 		)
 	});
-	
+
 });

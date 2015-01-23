@@ -2,10 +2,16 @@
 	session_start();
 
 	//laptop sql
-	$mysql_host  	= 	"localhost";
-	$mysql_db     	= 	"mcc_fundraise";
-	$mysql_user   	= 	"root";
-	$mysql_pass   	= 	"pwd1";
+	$mysql_host  	= 	"localhost"; //76.162.254.166
+	$mysql_db     	= 	"mcc_fundraise"; //C370011_mccfr
+	$mysql_user   	= 	"root"; //C370011_mccfr
+	$mysql_pass   	= 	"pwd1"; //FRApp1!
+
+	//ix sql
+	/*$mysql_host  	= 	"76.162.254.166";
+	$mysql_db     	= 	"C370011_mccfr";
+	$mysql_user   	= 	"C370011_mccfr";
+	$mysql_pass   	= 	"FRApp1!";*/
 
 	define('DB_SERVER', $mysql_host);
 	define('DB_DATABASE', $mysql_db);
