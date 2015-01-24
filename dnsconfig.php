@@ -2,23 +2,17 @@
 	session_start();
 
 	//laptop sql
-	$mysql_host  	= 	"localhost"; //76.162.254.166
-	$mysql_db     	= 	"mcc_fundraise"; //C370011_mccfr
-	$mysql_user   	= 	"root"; //C370011_mccfr
-	$mysql_pass   	= 	"pwd1"; //FRApp1!
-
-	//ix sql
-	/*$mysql_host  	= 	"76.162.254.166";
-	$mysql_db     	= 	"C370011_mccfr";
-	$mysql_user   	= 	"C370011_mccfr";
-	$mysql_pass   	= 	"FRApp1!";*/
-
+	$mysql_host  	= 	"localhost";
+	$mysql_db     	= 	"mcc_fundraise"; 
+	$mysql_user   	= 	"root"; 
+	$mysql_pass   	= 	"pwd1"; 
+	
 	define('DB_SERVER', $mysql_host);
 	define('DB_DATABASE', $mysql_db);
 	define('DB_USERNAME', $mysql_user);
 	define('DB_PASSWORD', $mysql_pass);
 
-	define('ADMIN_EMAIL_FROM', "sa_mak@yahoo.com");
+	define('ADMIN_EMAIL_FROM', "DayNightSoft@gmail.com");
 	define('EMAIL_HEADER', "MIME-Version: 1.0\nContent-type: text/html; charset=iso-8859-1");
 
 	define('PRODUCT_COMPANY_NAME',"DayNightSoft@gmail.com");
