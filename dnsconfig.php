@@ -1,4 +1,8 @@
 <?php
+	error_reporting(E_ALL);
+	ini_set('display_errors', TRUE);
+	ini_set('display_startup_errors', TRUE);
+	
 	session_start();
 
 	//laptop sql
@@ -28,6 +32,8 @@
 
 	ini_set('display_errors',1);
 	ini_set('allow_url_include', 'on');
+	//date_default_timezone_set('America/Chicago');
 	date_default_timezone_set('UTC');
+	setlocale(LC_MONETARY,"en_US");
 	set_time_limit(3600);
 ?>
