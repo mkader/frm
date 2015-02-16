@@ -1,5 +1,7 @@
 <?php
-if (isset($_GET['did']))
+session_start();
+require_once('/lib/sessions.class.php');
+if (isset($_GET['did']) && Sessions::isValidSession())  {
 	$did = $_GET['did'];
 ?>
 <table id="jqGridPledge"></table>
@@ -88,3 +90,6 @@ function fetchDonatorsPledgeData(did) {
 }
 
 </script>
+<?php
+} 
+?>

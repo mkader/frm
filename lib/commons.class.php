@@ -1,12 +1,12 @@
 <?php
 
 class Commons {
-    function isMenuClicked($currentForm, $menuForm) {
+    static function isMenuClicked($currentForm, $menuForm) {
     	if ($currentForm==$menuForm) return "menuClicked";
     	return "";
     }
     
-    function date_format_sql($value) {
+    static function date_format_sql($value) {
     	if ((! (strcmp($value,"0000-00-00")) ) || (! (strlen($value)) )) {
     		$value="0000-00-00";
     	} else {
@@ -16,7 +16,7 @@ class Commons {
     	return $value;
     }
     
-    function date_format_form($value) {
+    static function date_format_form($value) {
     	if ((! (strcmp($value,"0000-00-00")) ) || (! (strlen($value)) )) {
     		$value="";
     	} else {
@@ -24,6 +24,10 @@ class Commons {
     		$value=sprintf("%s/%s/%s",$month,$day,$year);
     		return $value;
     	}
+    }
+    
+    static function money_format($value) {
+    	return number_format($value, 2, '.', ',');
     }
 }
 ?>

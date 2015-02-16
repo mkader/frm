@@ -22,18 +22,19 @@ function loglist() {
 
 // Request Handler
 $response = array();
-if (isset($_GET['action'])) {
-    $action = $_GET['action'];
-   	if ($action == 'loglist') {
-        Logger::log('Processing list of log...');
-        $response = loglist();
-    }
-} else {
-    $response['error'] = 1;
-    $response['message'] = 'There was no request action specified.';
-    Logger::log(print_r($response, true));
+if (Sessions::isValidSession()) {
+	if (isset($_GET['action'])) {
+	    $action = $_GET['action'];
+	   	if ($action == 'loglist') {
+	        Logger::log('Processing list of log...');
+	        $response = loglist();
+	    }
+	} else {
+	    $response['error'] = 1;
+	    $response['message'] = 'There was no request action specified.';
+	    Logger::log(print_r($response, true));
+	}
 }
-
 header('Content-type: text/plain');
 echo json_encode($response);
 

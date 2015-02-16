@@ -65,7 +65,9 @@ class DB {
     	$stmt = $this->connection->prepare($sql);
     	$this->checkError();
     
-    	$stmt->bind_param('iiis', $id, $table_id, $action_id, print_r($sdata,true));
+    	$log_data = print_r($sdata,true);
+    	$stmt->bind_param('iiis', $id, $table_id, $action_id, $log_data);
+    	//call_user_func_array(array($stmt, 'bind_param'), $args);
     	$this->checkError();
     
     	// Execute the statement and close
@@ -105,15 +107,24 @@ class DB {
         $this->checkError();
 
         // Build the arguments to be passed to the bind_param method
+    	array_unshift($values,implode('', $types));
+        
         $args = array();
+        foreach ($values as $key => $value)
+        {
+        	$args[$key] = &$values[$key];
+        }
+        
+        /*$args = array();
         $args[] = &implode('', $types);
         for ($i = 0; $i < count($values); $i++) {
             $args[] = &$values[$i];
-        }
+        }*/
 
         call_user_func_array(array($stmt, 'bind_param'), $args);
         $this->checkError();
-
+        
+        
         // Execute the statement and close
         $stmt->execute();
         $this->checkError();
@@ -153,12 +164,21 @@ class DB {
         $stmt = $this->connection->prepare($sql);
         $this->checkError();
 
+        $values[] = &$idValue;
+        array_unshift($values,implode('', $types));
+        
         $args = array();
-        $args[] = &implode('', $types);
-        for ($i = 0; $i < count($values); $i++) {
-            $args[] = &$values[$i];
+        foreach ($values as $key => $value)
+        {
+        	$args[$key] = &$values[$key];
         }
-        $args[] = &$idValue;
+        
+        //$args = array();
+        //$args[] = &implode('', $types);
+        //for ($i = 0; $i < count($values); $i++) {
+        //    $args[] = &$values[$i];
+        //}
+        //$args[] = &$idValue;
 
         call_user_func_array(array($stmt, 'bind_param'), $args);
         $this->checkError();

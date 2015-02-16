@@ -1,10 +1,11 @@
 var gridid2= "#jqGridPayment";
 var gridpagerid2 = "#jqGridPagerPayment";
-
+//alert(payment_method_id);
+//alert(payment_method_value);
 var paymentColModel = [
 
 	{label: 'id', template:common.idTemplate('id',1,1)},
-	{label: 'Pledge', template:common.selectTemplate('pledge_id', 50, true, ' * ',
+	{label: 'Pledge', template:common.selectTemplate('pledge_id', 50, false, '',
 		'select', pledge_id, pledge_value, true,2,1)},
 	{label: 'Donator', hidden:true,template:common.selectTemplate('donator_id', 50, false, ' * ',
 		'select', donator_id, donator_value, true,3,1)},
@@ -34,6 +35,7 @@ function pushData2(result) {
 			tax_year: item.tax_year,
 			pledge_id: item.title,
 			payment_method_id: item.payment_method,
+			comments:item.comments
 		});
 	}
 	return arrayData;

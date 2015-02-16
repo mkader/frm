@@ -3,7 +3,7 @@
 <?php
 	require_once('dnsconfig.php');
 	require_once('/lib/sessions.class.php');
-	include("html/head.htm");
+	include("/html/head.htm");
 ?>
 <body onload="<?php if (Sessions::isValidSession()) echo "loadContent()"; ?>">
     <div>

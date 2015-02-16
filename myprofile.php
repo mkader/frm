@@ -1,5 +1,5 @@
 <?php
-require_once('lib/include.php');
+require_once('/lib/include.php');
 $name =Sessions::loginName();
 $username = Sessions::loginUserName();
 $id = Sessions::loginUserID();

@@ -24,8 +24,8 @@ class Payments {
         	payment p
         	inner join donator d on d.id = p.donator_id
         	inner join payment_method pm on pm.id = p.payment_method_id
-    		inner join pledge pl on pl.id = p.pledge_id
-    		inner join event e on e.id = pl.event_id
+    		left join pledge pl on pl.id = p.pledge_id
+    		left join event e on e.id = pl.event_id
        WHERE
     		p.donator_id = ?';
     	$stmt = $this->conn->prepare($sql);

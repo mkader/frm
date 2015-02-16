@@ -23,7 +23,7 @@ var eventColModel = [
 			'select', log_table_id, log_table_value,true,3,1)},
 	{label: 'Action', template:common.selectTemplate('log_action', 50, true, '',
 			'select', log_action_id, log_action_value,true,4,1)},
-	{label: 'Log', template:common.textAreaTemplate('log', 100, false, '',true,5,1, '10', '40')},
+	{label: 'Log', template:common.textAreaTemplate('log', 100, false, '',true,5,1, '10', '40','')},
 	{label: 'Log Date', template:common.dateTemplate('created_on', 100, true, '',6,1)},
 
 ];
@@ -70,7 +70,7 @@ function fetchGridData() {
 }
 
 function pushData(result) {
-	debugger;
+	//debugger;
 	var arrayData = [];
 	//var result = res['data'];
 	for (var i = 0; i < result.length; i++) {

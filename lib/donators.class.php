@@ -22,7 +22,9 @@ class Donators {
         			phone, company_name, comments, created_on, modified_on,
         			created_by, modified_by
 				FROM
-					donator';
+					donator
+    	 		order by
+    	 			created_on desc';
         $stmt = $this->conn->prepare($sql);
         $this->db->checkError();
         $stmt->execute();

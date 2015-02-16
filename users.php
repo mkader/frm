@@ -1,18 +1,25 @@
 <?php
 require_once('lib/include.php');
 
-$db = new DB();
-$user = new Users($db);
+$clsDB = new DB();
+$clsUsers = new Users($clsDB);
 
-function myprofileupdate() {
-    global $user;
+/**
+ *	Update login user profile.
+ *	Returns an array of success or error message.
+ *
+ *	@return	array
+ *	@throws	DBException
+ */
+function myProfileUpdate() {
+    global $clsUsers;
     $response = array();
 
     $password = $_POST['password'];
     $phone = $_POST['phone'];
 
 	try {
-    	$responseData = $user->myprofileUpdate($phone, $password);
+    	$responseData = $clsUsers->myprofileUpdate($phone, $password);
 		Logger::log('Myprofile Update complete');
 		if (!$responseData) {
 			$response['error'] = 1;
@@ -29,20 +36,27 @@ function myprofileupdate() {
     return $response;
 }
 
+/**
+ *	user login.
+ *	Returns an array of success user info or error message.
+ *
+ *	@return	array
+ *	@throws	DBException
+ */
 function login() {
-	global $user;
+	global $clsUsers;
 	$response = array();
 
-	$username = $_POST['username'];
+	$usersName = $_POST['username'];
 	$password = $_POST['password'];
-	$securitycode = $_POST['securitycode'];
+	$securityCode = $_POST['securitycode'];
 
 	try {
-		if(Sessions::securityCode() != $securitycode) {
+		if(Sessions::securityCode() != $securityCode) {
 			$response['error'] = 1;
 			$response['message'] = 'Invalid security code. Please try again.';
 		} else {
-			$responseData = $user->login($username, $password);
+			$responseData = $clsUsers->login($usersName, $password);
 			Logger::log('Login complete');
 			if (!$responseData) {
 				$response['error'] = 1;
@@ -61,12 +75,19 @@ function login() {
 	return $response;
 }
 
-function userlist() {
-    global $user;
+/**
+ *	list of users.
+ *	Returns an array of success user list or error message.
+ *
+ *	@return	array
+ *	@throws	DBException
+ */
+function userList() {
+    global $clsUsers;
     $response = array();
 
 	try {
-		$responseData = $user->getUserList();
+		$responseData = $clsUsers->getUserList();
 		Logger::log('User List complete');
 		$response['success'] = 1;
 		$response['data'] = $responseData;
@@ -77,6 +98,13 @@ function userlist() {
     return $response;
 }
 
+/**
+ *	logout.
+ *	Returns an array of success or error message.
+ *
+ *	@return	array
+ *	@throws	DBException
+ */
 function logout() {
     $response = array();
 	try {
@@ -92,23 +120,33 @@ function logout() {
     return $response;
 }
 
-function iuduser($iud, $action_type, $action_type_done) {
-    global $user;
+/**
+ *	create, modify and delete user.
+ *	Returns an array of success or error message
+ *
+ *	@param	string	$iud - i (insert) or u (update) or d (delete).
+ *	@param	string	$actionType
+ *	@param	string	$actionTypeDone
+ *	@return	array
+ *	@throws	DBException
+ */
+function iudUser($iud, $actionType, $actionTypeDone) {
+    global $clsUsers;
     $response = array();
     $id =  @intval($_POST['id']);
     $name = '';
 	$password = '';
 	$phone = '';
 	$email = '';
-	$user_type_id = 0;
+	$userTypeID = 0;
 	$active = 0;
 	if ($iud!='d') {
 		$name = $_POST['name'];
 		$password = $_POST['password'];
 		$phone = $_POST['phone'];
 		$email = $_POST['email'];
-		$user_type_id =  @intval($_POST['user_type']);
-		$active = $_POST['active'];
+		$userTypeID =  @intval($_POST['user_type']);
+		$active = @intval($_POST['active']);
 	}
 
 	if (($iud=='u' || $iud=='d') && $id<=0) {
@@ -124,13 +162,13 @@ function iuduser($iud, $action_type, $action_type_done) {
 	}*/
 
 	try {
-		if(($iud=='d') ||($iud!='d' && !$user->isUserExists($id, $email))) {
-			$id = $user->iudUser($iud, $id, $name, $email, $password, $phone, $user_type_id, $active);
-	    	Logger::log($action_type. ' user complete');
+		if(($iud=='d') ||($iud!='d' && !$clsUsers->isUserExists($id, $email))) {
+			$id = $clsUsers->iudUser($iud, $id, $name, $email, $password, $phone, $userTypeID, $active);
+	    	Logger::log($actionType. ' user complete');
 	        if ($id > 0) {
 	            $response['success'] = 1;
 	            $response['id'] = $id;
-	            $response['message'] = 'The user was successfully '. $action_type_done;
+	            $response['message'] = 'The user was successfully '. $actionTypeDone;
 	        } else {
 	            $response['error'] = 1;
 	            $response['message'] = 'Could not complete '. $action_type .' user request. Please check the details you entered and try again.';
@@ -151,26 +189,26 @@ function iuduser($iud, $action_type, $action_type_done) {
 $response = array();
 if (isset($_POST['action'])) {
     $action = $_POST['action'];
-    if ($action == 'iud') {
-    	$action_type ="insert";
-    	$action_type_done ="inserted";
+    if ($action == 'iud'  && Sessions::isValidSession()) {
+    	$actionType ="insert";
+    	$actionTypeDone ="inserted";
     	$iud = $_POST['iud'];
     	if ($iud=='u') {
-    		$action_type ="update";
-    		$action_type_done ="updated";
+    		$actionType ="update";
+    		$actionTypeDdone ="updated";
     	}
     	else if ($iud=='d') {
-    		$action_type ="delete";
-    		$action_type_done ="deleted";
+    		$actionType ="delete";
+    		$actionTypeDone ="deleted";
     	}
-        Logger::log('Processing '. $action_type .' user request...');
-        $response = iuduser($iud, $action_type, $action_type_done);
+        Logger::log('Processing '. $actionType .' user request...');
+        $response = iudUser($iud, $actionType, $actionTypeDone);
     } else if ($action == 'login') {
         Logger::log('Processing login request...');
         $response = login();
-    } else if ($action == 'myprofileupdate') {
+    } else if ($action == 'myprofileupdate' && Sessions::isValidSession()) {
         Logger::log('Processing update myprofile request...');
-        $response = myprofileupdate();
+        $response = myProfileUpdate();
     }
     Logger::log(print_r($response, true));
 } else if (isset($_GET['action'])) {
@@ -178,7 +216,7 @@ if (isset($_POST['action'])) {
    	if ($action == 'logout') {
         Logger::log('Processing logout request...');
         $response = logout();
-    }  else if ($action == 'userlist') {
+    }  else if ($action == 'userlist'  && Sessions::isValidSession()) {
         Logger::log('Processing list of user...');
         $response = userList();
     }

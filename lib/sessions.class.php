@@ -2,23 +2,23 @@
 
 class Sessions {
 
-	function setSecurityCode($code) {
+	public static function setSecurityCode($code) {
 		$_SESSION['mcc_security_code']= $code;
     }
 
-	function securityCode() {
+	public static function securityCode() {
 		return $_SESSION['mcc_security_code'];
 	}
 	
-    function setLoginUserInfo($userInfoData) {
+    public static function setLoginUserInfo($userInfoData) {
         $_SESSION["mcc_user_info"]= $userInfoData;
     }
 
-    function loginUserInfo() {
+    public static function loginUserInfo() {
 		return $_SESSION["mcc_user_info"];
     }
 
-    function isValidSession(){
+    public static function  isValidSession(){
     	if (!isset($_SESSION["mcc_user_info"])) return false;
     	else return true;
     	/*if (!isset($_SESSION["mcc_user_info"])){
@@ -30,7 +30,7 @@ class Sessions {
     	}*/
     }
 
-    function attributeValue($attributeName) {
+    public static function attributeValue($attributeName) {
     	if (Sessions::isValidSession()) {
     		$userinfo = Sessions::loginUserInfo();
     		return $userinfo[$attributeName];
@@ -39,23 +39,23 @@ class Sessions {
     	}
     }
 
-    function loginName() {
+    public static function loginName() {
     	return Sessions::attributeValue('name');
     }
     
-    function loginUserName() {
+    public static function loginUserName() {
     	return Sessions::attributeValue('username');
     }
 
-    function loginUserID() {
+    public static function loginUserID() {
     	return Sessions::attributeValue('id');
     }
 
-    function loginUserPhone() {
+    public static function loginUserPhone() {
     	return Sessions::attributeValue('phone');
     }
 
-    function isLoginUserSuperAdmin() {
+    public static function isLoginUserSuperAdmin() {
     	if (Sessions::attributeValue('user_type_id')==1) return true;
     	return false;
     }

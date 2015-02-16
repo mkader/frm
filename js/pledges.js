@@ -1,12 +1,13 @@
 var gridid1 = "#jqGridPledge";
 var gridpagerid1 = "#jqGridPagerPledge";
 
-var event_id =':;';
+var event_id ='';
 var event_value =':[All];';
 var donator_id =':;';
 var donator_value =':[All];';
+var d = (new Date()).getTime();
 
-common.ajaxCall(false, "get", "json/donator.json", null,
+common.ajaxCall(false, "get", "json/donator.json?nocache="+d, null,
 	function( response ) {
 		donator_id += response['donator_id'][0];
 		donator_value += response['donator_value'][0];
@@ -16,7 +17,7 @@ common.ajaxCall(false, "get", "json/donator.json", null,
 	}
 )
 
-common.ajaxCall(false, "get", "json/event.json", null,
+common.ajaxCall(false, "get", "json/event.json?nocache="+d, null,
 	function( response ) {
 		event_id += response['event_id'][0];
 		event_value += response['event_value'][0];

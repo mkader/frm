@@ -22,6 +22,8 @@ var eventColModel = [
 			'select', pledge_type_id, pledge_type_value,true,4,1)},
 	{label: 'Location', template:common.textTemplate('location', 150, true, ' * ',true,5,1)},
 	{label: 'Description', template:common.textAreaTemplate('description', 100, false, ' &nbsp; ',true,6,1, '2', '23')},
+	{label: 'Active', template:common.selectTemplate('active', 50, true, ' &nbsp; ',
+			'checkbox', active_id, active_value, true,7,1)}
 ];
 
 $(gridid).jqGrid(common.gridOptions(gridpagerid, eventColModel, 'Event List',
@@ -62,7 +64,8 @@ function pushData(result) {
 			location: item.location,
 			description: item.description,
 			target_amount: item.target_amount,
-			pledge_type: item.pledge_type
+			pledge_type: item.pledge_type,
+			active: item.active
 		});
 	}
 	return arrayData;

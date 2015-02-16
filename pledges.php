@@ -1,14 +1,21 @@
 <?php
 require_once('lib/include.php');
 
-$db = new DB();
-$pledge = new Pledges($db);
+$clsDB = new DB();
+$clsPledges = new Pledges($clsDB);
 
-function pledgelist() {
-	global $pledge;
+/**
+ *	list of pledges.
+ *	Returns an array of success pledge list or error message.
+ *
+ *	@return	array
+ *	@throws	DBException
+ */
+function pledgeList() {
+	global $clsPledges;
 	$response = array();
 	try {
-		$responseData = $pledge->getPledgeList();
+		$responseData = $clsPledges->getPledgeList();
 		Logger::log('Pledge List complete');
 		$response['success'] = 1;
 		$response['data'] = $responseData;
@@ -19,12 +26,19 @@ function pledgelist() {
 	return $response;
 }
 
-function donatorspledgelist() {
-	global $pledge;
+/**
+ *	list of donators pledges.
+ *	Returns an array of success donators pledge list or error message.
+ *
+ *	@return	array
+ *	@throws	DBException
+ */
+function donatorsPledgeList() {
+	global $clsPledges;
 	$response = array();
 	$id =  @intval($_GET['id']);
 	try {
-		$responseData = $pledge->getDonatorsPledgeList($id);
+		$responseData = $clsPledges->getDonatorsPledgeList($id);
 		Logger::log('Pledge List complete');
 		$response['success'] = 1;
 		$response['data'] = $responseData;
@@ -35,12 +49,19 @@ function donatorspledgelist() {
 	return $response;
 }
 
-function donatorspledgejsonlist() {
-	global $pledge;
+/**
+ *	list of donators pledges.
+ *	Returns an array of success donators pledge list JSON format or error message.
+ *
+ *	@return	array
+ *	@throws	DBException
+ */
+function donatorsPledgeJSONList() {
+	global $clsPledges;
 	$response = array();
 	$id =  @intval($_GET['id']);
 	try {
-		$responseData = $pledge->getDonatorsPledgeJSONList($id);
+		$responseData = $clsPledges->getDonatorsPledgeJSONList($id);
 		Logger::log('Pledge List complete');
 		$response['success'] = 1;
 		$response['data'] = "{".$responseData ."}";
@@ -51,22 +72,32 @@ function donatorspledgejsonlist() {
 	return $response;
 }
 
-function iudpledge($iud, $action_type, $action_type_done) {
-    global $pledge;
+/**
+ *	create, modify and delete pledge.
+ *	Returns an array of success or error message
+ *
+ *	@param	string	$iud - i (insert) or u (update) or d (delete).
+ *	@param	string	$actionType
+ *	@param	string	$actionTypeDone
+ *	@return	array
+ *	@throws	DBException
+ */
+function iudPledge($iud, $actionType, $actionTypeDone) {
+    global $clsPledges;
     $response = array();
     $id =  @intval($_POST['id']);
-    $event_id = 0;
-	$donator_id = 0;
+    $eventID = 0;
+	$donatorID = 0;
 	$amount = 0;
-	$payment_method_id = 0;
-	$payment_type_id = 0;
+	$paymentMethodID = 0;
+	$paymentTypeID = 0;
 
 	if ($iud!='d') {
-		$event_id = @intval($_POST['event_id']);
-		$donator_id = @intval($_POST['donator_id']);
+		$eventID = @intval($_POST['event_id']);
+		$donatorID = @intval($_POST['donator_id']);
 		$amount = $_POST['amount'];
-		$payment_method_id = @intval($_POST['payment_method_id']);
-		$payment_type_id =  @intval($_POST['payment_type_id']);
+		$paymentMethodID = @intval($_POST['payment_method_id']);
+		$paymentTypeID =  @intval($_POST['payment_type_id']);
 	}
 
 	if (($iud=='u' || $iud=='d') && $id<=0) {
@@ -76,15 +107,15 @@ function iudpledge($iud, $action_type, $action_type_done) {
 	}
 
 	try {
-		$id = $pledge->iudPledge($iud, $id, $event_id, $donator_id, $amount, $payment_method_id, $payment_type_id);
-    	Logger::log($action_type. ' pledge complete');
+		$id = $clsPledges->iudPledge($iud, $id, $eventID, $donatorID, $amount, $paymentMethodID, $paymentTypeID);
+    	Logger::log($actionType. ' pledge complete');
         if ($id > 0) {
             $response['success'] = 1;
             $response['id'] = $id;
-            $response['message'] = 'The pledge was successfully '. $action_type_done;
+            $response['message'] = 'The pledge was successfully '. $actionTypeDone;
         } else {
             $response['error'] = 1;
-            $response['message'] = 'Could not complete '. $action_type .' pledge request. Please check the details you entered and try again.';
+            $response['message'] = 'Could not complete '. $actionType .' pledge request. Please check the details you entered and try again.';
         }
     } catch (DBException $e) {
         $response['error'] = 1;
@@ -96,39 +127,41 @@ function iudpledge($iud, $action_type, $action_type_done) {
 
 // Request Handler
 $response = array();
-if (isset($_POST['action'])) {
-    $action = $_POST['action'];
-    if ($action == 'iud') {
-    	$action_type ="insert";
-    	$action_type_done ="inserted";
-    	$iud = $_POST['iud'];
-    	if ($iud=='u') {
-    		$action_type ="update";
-    		$action_type_done ="updated";
-    	} else if ($iud=='d') {
-    		$action_type ="delete";
-    		$action_type_done ="deleted";
-    	}
-        Logger::log('Processing '. $action_type .' pledge request...');
-        $response = iudpledge($iud, $action_type, $action_type_done);
-    }
-    Logger::log(print_r($response, true));
-} else if (isset($_GET['action'])) {
-    $action = $_GET['action'];
-   	if ($action == 'pledgelist') {
-        Logger::log('Processing list of pledge...');
-        $response = pledgelist();
-    }else if ($action == 'donatorspledgelist') {
-    	Logger::log('Processing list of donatos pledge...');
-        $response = donatorspledgelist();
-    }else if ($action == 'donatorspledgelistjson') {
-    	Logger::log('Processing list of donatos pledge JSON ...');
-        $response = donatorspledgejsonlist();
-    }
-} else {
-    $response['error'] = 1;
-    $response['message'] = 'There was no request action specified.';
-    Logger::log(print_r($response, true));
+if (Sessions::isValidSession()) {
+	if (isset($_POST['action'])) {
+	    $action = $_POST['action'];
+	    if ($action == 'iud') {
+	    	$actionType ="insert";
+	    	$actionTypeDone ="inserted";
+	    	$iud = $_POST['iud'];
+	    	if ($iud=='u') {
+	    		$actionType ="update";
+	    		$actionTypeDone ="updated";
+	    	} else if ($iud=='d') {
+	    		$actionType ="delete";
+	    		$actionTypeDone ="deleted";
+	    	}
+	        Logger::log('Processing '. $actionType .' pledge request...');
+	        $response = iudPledge($iud, $actionType, $actionTypeDone);
+	    }
+	    Logger::log(print_r($response, true));
+	} else if (isset($_GET['action'])) {
+	    $action = $_GET['action'];
+	   	if ($action == 'pledgelist') {
+	        Logger::log('Processing list of pledge...');
+	        $response = pledgeList();
+	    }else if ($action == 'donatorspledgelist') {
+	    	Logger::log('Processing list of donatos pledge...');
+	        $response = donatorsPledgeList();
+	    }else if ($action == 'donatorspledgelistjson') {
+	    	Logger::log('Processing list of donatos pledge JSON ...');
+	        $response = donatorsPledgeJSONList();
+	    }
+	} else {
+	    $response['error'] = 1;
+	    $response['message'] = 'There was no request action specified.';
+	    Logger::log(print_r($response, true));
+	}
 }
 
 header('Content-type: text/plain');

@@ -10,6 +10,7 @@ $(function(){
 		else if (menu=="pledge") updateContent("pledgelist.php", contentid);
 		else if (menu=="donator") updateContent("donatorlist.php", contentid);
 		else if (menu=="expense") updateContent("expenselist.php", contentid);
+		else if (menu=="report") updateContent("report.php", contentid);
 		else if (menu=="log") updateContent("loglist.php", contentid);
 	});
 })
@@ -37,13 +38,14 @@ var payment_type_id =':;';
 var payment_type_value =':[All];';
 var payment_method_id =':;';
 var payment_method_value =':[All];';
+var d = (new Date()).getTime();
 
-common.ajaxCall(false, "get", "json/select.json", null,
+common.ajaxCall(false, "get", "json/select.json?nocache="+d, null,
 	function( response ) {
 		user_type_id += response['user_type_id'][0];
 		user_type_value += response['user_type_value'][0];
-		active_id += response['user_type_id'][0];
-		active_value += response['user_type_value'][0];
+		active_id += response['active_id'][0];
+		active_value += response['active_value'][0];
 		payment_type_id += response['payment_type_id'][0];
 		payment_type_value += response['payment_type_value'][0];
 		payment_method_id += response['payment_method_id'][0];

@@ -111,38 +111,43 @@ var Common = {
 	},
 
 	modalDelete:function(iafterSubmit) {
+		var d = (new Date()).getTime();
 		return {// options for the Delete Dailog
 			/*beforeShowForm: function ($form) {
 			    $("td.delmsg", $form[0]).html("Do you really want delete the row with <b>id=" +
 			         $(this).jqGrid('getGridParam','selrow') + "</b>?");
 			},*/
 			onclickSubmit : function(params, posdata) {
-				return {action:"iud",iud:"d",id:posdata}
+				return {action:"iud",iud:"d",id:posdata,nocache:d}
 			},
 			afterSubmit : iafterSubmit,
 			errorTextFormat: common.errorTextFormat};
 	},
 
 	modalCreate:function(iwidth, iafterSubmit, ibeforeShowForm) {
+		var d = (new Date()).getTime();
 		return{// options for the Add Dialog
 			width:iwidth,
+			modal:true,
+			jqModal:true,
 			bottominfo: common.fieldsRequiredText,
 			closeAfterAdd: true,
 			beforeShowForm: ibeforeShowForm,
 			recreateForm: true,
-			editData: {action:"iud",iud:"i"},
+			editData: {action:"iud",iud:"i",nocache:d},
 			afterSubmit: iafterSubmit,
 			errorTextFormat: common.errorTextFormat};
 	},
 
 	modalEdit:function(iwidth, ibottominfo, iafterSubmit, ibeforeShowForm) {// options for the Edit Dialog
+		var d = (new Date()).getTime();
 		return {
 			width:iwidth,
 			bottominfo: common.fieldsRequiredText+ibottominfo,
 			recreateForm: true,
 			closeAfterEdit: true,
 			beforeShowForm: ibeforeShowForm,
-			editData: {action:"iud",iud:"u"},
+			editData: {action:"iud",iud:"u",nocache:d},
 			afterSubmit: iafterSubmit,
 			errorTextFormat: common.errorTextFormat};
 	},
@@ -185,14 +190,16 @@ var Common = {
 
     selectTemplate: function(iname, iwidth, irequired, iprefix, itype, editvalue,
     		searchvalue, ieditable, irowpos, icolpos) {
-    	var searchOptions = {sopt: ['eq', 'ne'], value: searchvalue};
-    	var editOptions = {value: editvalue};
+    	var searchOptions = {};
+    	var editOptions = {};
+		var searchOptions = {sopt: ['eq', 'ne'], value: searchvalue};
+		var editOptions = {value: editvalue};
     	var formoptions = {elmprefix: iprefix, rowpos: irowpos, colpos: icolpos};
     	var editrules = {required: irequired, edithidden: true}
     	return generateFieldTemplate(iname, iwidth, ieditable, itype, editrules,
     			searchOptions, formoptions, editOptions, 'select');
     },
-
+   
     dateTemplate: function(iname, iwidth, irequired, iprefix, irowpos, icolpos) {
     	 var searchOptions = { sopt: numberSearchOptions,
 			dataInit:  function (elem) {

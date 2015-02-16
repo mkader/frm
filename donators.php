@@ -76,35 +76,36 @@ function iuddonator($iud, $action_type, $action_type_done) {
 
 // Request Handler
 $response = array();
-if (isset($_POST['action'])) {
-    $action = $_POST['action'];
-    if ($action == 'iud') {
-    	$action_type ="insert";
-    	$action_type_done ="inserted";
-    	$iud = $_POST['iud'];
-    	if ($iud=='u') {
-    		$action_type ="update";
-    		$action_type_done ="updated";
-    	} else if ($iud=='d') {
-    		$action_type ="delete";
-    		$action_type_done ="deleted";
-    	}
-        Logger::log('Processing '. $action_type .' donator request...');
-        $response = iuddonator($iud, $action_type, $action_type_done);
-    }
-    Logger::log(print_r($response, true));
-} else if (isset($_GET['action'])) {
-    $action = $_GET['action'];
-   	if ($action == 'donatorlist') {
-        Logger::log('Processing list of donator...');
-        $response = donatorList();
-    }
-} else {
-    $response['error'] = 1;
-    $response['message'] = 'There was no request action specified.';
-    Logger::log(print_r($response, true));
+if (Sessions::isValidSession()) {
+	if (isset($_POST['action'])) {
+	    $action = $_POST['action'];
+	    if ($action == 'iud') {
+	    	$action_type ="insert";
+	    	$action_type_done ="inserted";
+	    	$iud = $_POST['iud'];
+	    	if ($iud=='u') {
+	    		$action_type ="update";
+	    		$action_type_done ="updated";
+	    	} else if ($iud=='d') {
+	    		$action_type ="delete";
+	    		$action_type_done ="deleted";
+	    	}
+	        Logger::log('Processing '. $action_type .' donator request...');
+	        $response = iuddonator($iud, $action_type, $action_type_done);
+	    }
+	    Logger::log(print_r($response, true));
+	} else if (isset($_GET['action'])) {
+	    $action = $_GET['action'];
+	   	if ($action == 'donatorlist') {
+	        Logger::log('Processing list of donator...');
+	        $response = donatorList();
+	    }
+	} else {
+	    $response['error'] = 1;
+	    $response['message'] = 'There was no request action specified.';
+	    Logger::log(print_r($response, true));
+	}
 }
-
 header('Content-type: text/plain');
 echo json_encode($response);
 
