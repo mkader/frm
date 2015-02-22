@@ -51,7 +51,8 @@ function paymentListWorkSheet($objPHPExcel, $workSheetNum, $paymentsList, $title
 				 ->setCellValue('E1', "EMAIL")
 				 ->setCellValue('F1', "PAID")
 				 ->setCellValue('G1', "DONATION DATE")
-				 ->setCellValue('H1', "PAYMENT METHOD");
+				 ->setCellValue('H1', "PAYMENT METHOD")
+				 ->setCellValue('I1', "COMMENTS");
 	
 	$objWorksheet->getColumnDimension('A')->setWidth(30);
 	$objWorksheet->getColumnDimension('B')->setWidth(30);
@@ -61,11 +62,12 @@ function paymentListWorkSheet($objPHPExcel, $workSheetNum, $paymentsList, $title
 	$objWorksheet->getColumnDimension('F')->setWidth(18);
 	$objWorksheet->getColumnDimension('G')->setWidth(18);
 	$objWorksheet->getColumnDimension('H')->setWidth(18);
-	$objWorksheet->getStyle('A1:H1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objWorksheet->getColumnDimension('I')->setWidth(25);
+	$objWorksheet->getStyle('A1:I1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 	
 	$objWorksheet->freezePane('A2');
 	
-	$objWorksheet->getStyle('A1:H1')->applyFromArray(
+	$objWorksheet->getStyle('A1:I1')->applyFromArray(
 			array(
 					'font'    => array('bold' => true),
 					'borders' => array(
@@ -95,7 +97,8 @@ function paymentListWorkSheet($objPHPExcel, $workSheetNum, $paymentsList, $title
 					 ->setCellValue('E' . $row, $key_value["email"])
 					 ->setCellValue('F' . $row, $key_value["amount"])
 					 ->setCellValue('G' . $row, $key_value["payment_date"])
-					 ->setCellValue('H' . $row, $key_value["payment_method"]);
+					 ->setCellValue('H' . $row, $key_value["payment_method"])
+					 ->setCellValue('I' . $row, $key_value["payment_comments"]);
 		$row++;
 	}
 	
@@ -117,6 +120,9 @@ function paymentListWorkSheet($objPHPExcel, $workSheetNum, $paymentsList, $title
 	
 	$objWorksheet->getStyle('F2:'. $objWorksheet->getHighestColumn() . $objWorksheet->getHighestRow())
 				 ->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
+	
+	$objWorksheet->getStyle('I2:'. $objWorksheet->getHighestColumn() . $objWorksheet->getHighestRow())
+				 ->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 	
 	$styleArray = array(
 			'borders' => array(

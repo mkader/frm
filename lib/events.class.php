@@ -23,7 +23,9 @@ class Events {
         	event e
         	inner join pledge_type pt on e.pledge_type_id = pt.id
     	WHERE
-    		e.active = 1';
+    		e.active = 1
+    	order by
+    		e.id desc';
     	$stmt = $this->conn->prepare($sql);
     	$this->db->checkError();
     	$stmt->execute();
@@ -47,7 +49,9 @@ class Events {
         	modified_by, pt.pledge_type
         FROM
         	event e
-        	inner join pledge_type pt on e.pledge_type_id = pt.id';
+        	inner join pledge_type pt on e.pledge_type_id = pt.id
+    	order by
+    	 	e.id desc';
         $stmt = $this->conn->prepare($sql);
         $this->db->checkError();
         $stmt->execute();

@@ -26,8 +26,10 @@ class Payments {
         	inner join payment_method pm on pm.id = p.payment_method_id
     		left join pledge pl on pl.id = p.pledge_id
     		left join event e on e.id = pl.event_id
-       WHERE
-    		p.donator_id = ?';
+       	WHERE
+    		p.donator_id = ?
+    	ORDER BY
+    		p.payment_date DESC';
     	$stmt = $this->conn->prepare($sql);
     	$this->db->checkError();
     	$stmt->bind_param('i', $donatorid);

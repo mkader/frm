@@ -1,30 +1,22 @@
 <?php
 require_once('lib/include.php');
 
-$db = new DB();
-$payment = new Payments($db);
+$clsDB = new DB();
+$clsPayment = new Payments($clsDB);
 
-function paymentlist() {
-	global $payment;
-	$response = array();
-	try {
-		$responseData = $payment->getPaymentList();
-		Logger::log('Payment List complete');
-		$response['success'] = 1;
-		$response['data'] = $responseData;
-	} catch (DBException $e) {
-		$response['error'] = 1;
-		$response['message'] = $e->getMessage();
-	}
-	return $response;
-}
-
-function donatorspaymentlist() {
-	global $payment;
+/**
+ *	list of donators payment.
+ *	Returns an array of success donators payment list or error message.
+ *
+ *	@return	array
+ *	@throws	DBException
+ */
+function donatorsPaymentList() {
+	global $clsPayment;
 	$response = array();
 	$id =  @intval($_GET['id']);
 	try {
-		$responseData = $payment->getDonatorsPaymentList($id);
+		$responseData = $clsPayment->getDonatorsPaymentList($id);
 		Logger::log('Payment List complete');
 		$response['success'] = 1;
 		$response['data'] = $responseData;
@@ -35,26 +27,36 @@ function donatorspaymentlist() {
 	return $response;
 }
 
-function iudpayment($iud, $action_type, $action_type_done) {
-    global $payment;
+/**
+ *	create, modify and delete payment.
+ *	Returns an array of success or error message
+ *
+ *	@param	string	$iud - i (insert) or u (update) or d (delete).
+ *	@param	string	$actionType
+ *	@param	string	$actionTypeDone
+ *	@return	array
+ *	@throws	DBException
+ */
+function iudPayment($iud, $actionType, $actionTypeDone) {
+    global $clsPayment;
     $response = array();
     $id =  @intval($_POST['id']);
-    $pledge_id = 0;
-	$donator_id = 0;
+    $pledgeID = 0;
+	$donatorID = 0;
 	$amount = 0;
-	$payment_method_id = 0;
-	$tax_year = 0;
-	$payment_date = '';
+	$paymentMethodID = 0;
+	$taxYear = 0;
+	$paymentDate = '';
 	$comments = '';
 
 	if ($iud!='d') {
-		$payment_date = $_POST['payment_date'];
+		$paymentDate = $_POST['payment_date'];
 		$amount = $_POST['amount'];
-		$payment_method_id = @intval($_POST['payment_method_id']);
-		$tax_year = $_POST['tax_year'];
+		$paymentMethodID = @intval($_POST['payment_method_id']);
+		$taxYear = $_POST['tax_year'];
 		$comments = $_POST['comments'];
-		$donator_id = @intval($_POST['donator_id']);
-		$pledge_id = @intval($_POST['pledge_id']);
+		$donatorID = @intval($_POST['donator_id']);
+		$pledgeID = @intval($_POST['pledge_id']);
 	}
 
 	if (($iud=='u' || $iud=='d') && $id<=0) {
@@ -64,16 +66,16 @@ function iudpayment($iud, $action_type, $action_type_done) {
 	}
 
 	try {
-		$id = $payment->iudPayment($iud, $id, $payment_date, $amount, $payment_method_id,
-    		$tax_year, $donator_id,  $pledge_id, $comments);
-    	Logger::log($action_type. ' payment complete');
+		$id = $clsPayment->iudPayment($iud, $id, $paymentDate, $amount,
+			$paymentMethodID, $taxYear, $donatorID,  $pledgeID, $comments);
+    	Logger::log($actionType. ' payment complete');
         if ($id > 0) {
             $response['success'] = 1;
             $response['id'] = $id;
-            $response['message'] = 'The payment was successfully '. $action_type_done;
+            $response['message'] = 'The payment was successfully '. $actionTypeDone;
         } else {
             $response['error'] = 1;
-            $response['message'] = 'Could not complete '. $action_type .' payment request. Please check the details you entered and try again.';
+            $response['message'] = 'Could not complete '. $actionType .' payment request. Please check the details you entered and try again.';
         }
     } catch (DBException $e) {
         $response['error'] = 1;
@@ -89,18 +91,18 @@ if (Sessions::isValidSession()) {
 	if (isset($_POST['action'])) {
 	    $action = $_POST['action'];
 	    if ($action == 'iud') {
-	    	$action_type ="insert";
-	    	$action_type_done ="inserted";
+	    	$actionType ="insert";
+	    	$actionTypeDone ="inserted";
 	    	$iud = $_POST['iud'];
 	    	if ($iud=='u') {
-	    		$action_type ="update";
-	    		$action_type_done ="updated";
+	    		$actionType ="update";
+	    		$actionTypeDone ="updated";
 	    	} else if ($iud=='d') {
-	    		$action_type ="delete";
-	    		$action_type_done ="deleted";
+	    		$actionType ="delete";
+	    		$actionTypeDone ="deleted";
 	    	}
-	        Logger::log('Processing '. $action_type .' payment request...');
-	        $response = iudpayment($iud, $action_type, $action_type_done);
+	        Logger::log('Processing '. $actionType .' payment request...');
+	        $response = iudPayment($iud, $actionType, $actionTypeDone);
 	    }
 	    Logger::log(print_r($response, true));
 	} else if (isset($_GET['action'])) {
@@ -110,7 +112,7 @@ if (Sessions::isValidSession()) {
 	        $response = paymentList();
 	    }else if ($action == 'donatorspaymentlist') {
 	    	Logger::log('Processing list of donatos payment...');
-	        $response = donatorspaymentList();
+	        $response = donatorsPaymentList();
 	    }
 	} else {
 	    $response['error'] = 1;

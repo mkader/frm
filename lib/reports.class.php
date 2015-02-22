@@ -140,8 +140,8 @@ class Reports {
     				SUM(p.amount) paid
     			FROM
 					pledge pl
-					left join payment p  on pl.id  = p.pledge_id
-					inner join donator d on  d.id = p.donator_id
+					inner join donator d on  d.id = pl.donator_id
+    				left join payment p  on pl.id  = p.pledge_id
 				where
 					pl.event_id = ?
     			GROUP BY

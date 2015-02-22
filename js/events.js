@@ -21,10 +21,11 @@ var eventColModel = [
 	{label: 'Event Type', template:common.selectTemplate('pledge_type', 50, true, ' * ',
 			'select', pledge_type_id, pledge_type_value,true,4,1)},
 	{label: 'Location', template:common.textTemplate('location', 150, true, ' * ',true,5,1)},
-	{label: 'Description', template:common.textAreaTemplate('description', 100, false, ' &nbsp; ',true,6,1, '2', '23')},
 	{label: 'Active', template:common.selectTemplate('active', 50, true, ' &nbsp; ',
-			'checkbox', active_id, active_value, true,7,1)}
+			'checkbox', active_id, active_value, true,6,1)},
+	{label: 'Description', template:common.textAreaTemplate('description', 100, false, ' &nbsp; ',true,8,1, '2', '23')},
 ];
+
 
 $(gridid).jqGrid(common.gridOptions(gridpagerid, eventColModel, 'Event List',
 	'events.php', 900, null, null, 10, 230, common.onDblClickRow));

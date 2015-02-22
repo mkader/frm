@@ -195,9 +195,12 @@ var Common = {
 		var searchOptions = {sopt: ['eq', 'ne'], value: searchvalue};
 		var editOptions = {value: editvalue};
     	var formoptions = {elmprefix: iprefix, rowpos: irowpos, colpos: icolpos};
-    	var editrules = {required: irequired, edithidden: true}
-    	return generateFieldTemplate(iname, iwidth, ieditable, itype, editrules,
+    	var editrules = {required: irequired, edithidden: true};
+    	var formatter = {formatter:{}};
+    	if (itype=='checkbox') formatter = {formatter:itype};
+    	var generateOptions = generateFieldTemplate(iname, iwidth, ieditable, itype, editrules,
     			searchOptions, formoptions, editOptions, 'select');
+    	return $.extend( formatter, generateOptions );
     },
    
     dateTemplate: function(iname, iwidth, irequired, iprefix, irowpos, icolpos) {

@@ -1,15 +1,22 @@
 <?php
 require_once('lib/include.php');
 
-$db = new DB();
-$log = new Logs($db);
+$clsDB = new DB();
+$clsLog = new Logs($clsDB);
 
-function loglist() {
-	global $log;
+/**
+ *	list of logs.
+ *	Returns an array of success logs list or error message.
+ *
+ *	@return	array
+ *	@throws	DBException
+ */
+function logList() {
+	global $clsLog;
 	$response = array();
 
 	try {
-		$responseData = $log->getLogList();
+		$responseData = $clsLog->getLogList();
 		Logger::log('Log List complete');
 		$response['success'] = 1;
 		$response['data'] = $responseData;
@@ -27,7 +34,7 @@ if (Sessions::isValidSession()) {
 	    $action = $_GET['action'];
 	   	if ($action == 'loglist') {
 	        Logger::log('Processing list of log...');
-	        $response = loglist();
+	        $response = logList();
 	    }
 	} else {
 	    $response['error'] = 1;

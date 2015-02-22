@@ -1,15 +1,22 @@
 <?php
 require_once('lib/include.php');
 
-$db = new DB();
-$expense = new Expenses($db);
+$clsDB = new DB();
+$clsExpense = new Expenses($clsDB);
 
-function expenselist() {
-	global $expense;
+/**
+ *	list of expenses.
+ *	Returns an array of success expenses list or error message.
+ *
+ *	@return	array
+ *	@throws	DBException
+ */
+function expenseList() {
+	global $clsExpense;
 	$response = array();
 
 	try {
-		$responseData = $expense->getExpenseList();
+		$responseData = $clsExpense->getExpenseList();
 		Logger::log('Expense List complete');
 		$response['success'] = 1;
 		$response['data'] = $responseData;
@@ -20,22 +27,32 @@ function expenselist() {
 	return $response;
 }
 
-function iudexpense($iud, $action_type, $action_type_done) {
-    global $expense;
+/**
+ *	create, modify and delete expense.
+ *	Returns an array of success or error message
+ *
+ *	@param	string	$iud - i (insert) or u (update) or d (delete).
+ *	@param	string	$actionType
+ *	@param	string	$actionTypeDone
+ *	@return	array
+ *	@throws	DBException
+ */
+function iudExpense($iud, $actionType, $actionTypeDone) {
+    global $clsExpense;
     $response = array();
     $id =  @intval($_POST['id']);
     $title = '';
-	$expense_date = '';
+	$expenseDate = '';
 	$comments = '';
 	$amount = 0;
-	$event_id = 0;
+	$eventID = 0;
 
 	if ($iud!='d') {
 		$title = $_POST['title'];
-		$expense_date = $_POST['expense_date'];
+		$expenseDate = $_POST['expense_date'];
 		$comments = $_POST['comments'];
 		$amount = $_POST['amount'];
-		$event_id =  @intval($_POST['event_id']);
+		$eventID =  @intval($_POST['event_id']);
 	}
 
 	if (($iud=='u' || $iud=='d') && $id<=0) {
@@ -45,15 +62,15 @@ function iudexpense($iud, $action_type, $action_type_done) {
 	}
 
 	try {
-		$id = $expense->iudExpense($iud, $id, $expense_date, $event_id, $title, $comments, $amount);
-		Logger::log($action_type. ' expense complete');
+		$id = $clsExpense->iudExpense($iud, $id, $expenseDate, $eventID, $title, $comments, $amount);
+		Logger::log($actionType. ' expense complete');
 		if ($id > 0) {
 			$response['success'] = 1;
 			$response['id'] = $id;
-			$response['message'] = 'The expense was successfully '. $action_type_done;
+			$response['message'] = 'The expense was successfully '. $actionTypeDone;
 		} else {
 			$response['error'] = 1;
-			$response['message'] = 'Could not complete '. $action_type .' expense request. Please check the details you entered and try again.';
+			$response['message'] = 'Could not complete '. $actionType .' expense request. Please check the details you entered and try again.';
 		}
     } catch (DBException $e) {
         $response['error'] = 1;
@@ -69,18 +86,18 @@ if (Sessions::isValidSession()) {
 	if (isset($_POST['action'])) {
 	    $action = $_POST['action'];
 	    if ($action == 'iud') {
-	    	$action_type ="insert";
-	    	$action_type_done ="inserted";
+	    	$actionType ="insert";
+	    	$actionTypeDone ="inserted";
 	    	$iud = $_POST['iud'];
 	    	if ($iud=='u') {
-	    		$action_type ="update";
-	    		$action_type_done ="updated";
+	    		$actionType ="update";
+	    		$actionTypeDone ="updated";
 	    	} else if ($iud=='d') {
-	    		$action_type ="delete";
-	    		$action_type_done ="deleted";
+	    		$actionType ="delete";
+	    		$actionTypeDone ="deleted";
 	    	}
-	        Logger::log('Processing '. $action_type .' expense request...');
-	        $response = iudexpense($iud, $action_type, $action_type_done);
+	        Logger::log('Processing '. $actionType .' expense request...');
+	        $response = iudExpense($iud, $actionType, $actionTypeDone);
 	    }
 	    Logger::log(print_r($response, true));
 	} else if (isset($_GET['action'])) {
