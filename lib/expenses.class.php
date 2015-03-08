@@ -23,7 +23,9 @@ class Expenses {
         	ev.title event_title
         FROM
         	expense e
-        	inner join event ev on e.event_id = ev.id';
+        	left join event ev on e.event_id = ev.id
+    	 ORDER BY
+    	 	e.expense_date desc';
         $stmt = $this->conn->prepare($sql);
         $this->db->checkError();
         $stmt->execute();
@@ -33,7 +35,8 @@ class Expenses {
         $stmt->bind_result($id, $expense_date, $event_id, $title, $comments, $amount,
         	$created_on, $modified_on, $created_by, $modified_by, $event_title);
         while ($stmt->fetch()) {
-            $events[] = array('id' => $id, 'title' => $title,
+            $events[] = array('id' => $id, 
+            	'title' => $title,
             	'expense_date' => Commons::date_format_form($expense_date),
             	'comments' => $comments,
             	'amount' => $amount,
@@ -41,7 +44,7 @@ class Expenses {
             	'created_on' => Commons::date_format_form($created_on),
             	'modified_on' => Commons::date_format_form($modified_on),
             	'created_by' => $created_by, 'modified_by' => $modified_by ,
-            	'event_title' => $event_title);
+            	'event_title' => $event_title===NULL?"":$event_title);
         }
 		$stmt->close();
 

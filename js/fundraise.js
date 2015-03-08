@@ -12,6 +12,9 @@ $(function(){
 		else if (menu=="expense") updateContent("expenselist.php", contentid);
 		else if (menu=="report") updateContent("report.php", contentid);
 		else if (menu=="log") updateContent("loglist.php", contentid);
+		else if (menu=="member") updateContent("memberlist.php", contentid);
+		else if (menu=="meeting") updateContent("meetinglist.php", contentid);
+		else if (menu=="masjid") updateContent("masjidlist.php", contentid);
 	});
 })
 

@@ -22,6 +22,8 @@
 	define('PRODUCT_COMPANY_NAME',"DayNightSoft@gmail.com");
 	define('LOG_FILE', 'log/fundraise_' . date('Y-m-d') . '.log');
 	define('AUTH_SALT','smoims928sds0zsms280!');
+	//store log in the database, 1 is yes to store, 0 is no to store.
+	define('DB_LOG', 0);
 
 	//unix path code
 	//$project_path	= 	$_SERVER['DOCUMENT_ROOT']. '/';

@@ -44,37 +44,40 @@ class DB {
     }
 
     function log($action_id, $table, $id, $data = array()) {
-    	$sdata = array();
-    	//$sdata['id'] = $id;
-    	foreach ($data as $key => $value) {
-    		$sdata[$key] = $value['value'];
+    	if (DB_LOG==1) {
+	    	$sdata = array();
+	    	//$sdata['id'] = $id;
+	    	foreach ($data as $key => $value) {
+	    		$sdata[$key] = $value['value'];
+	    	}
+	    	
+	    	if ($table=='user') $table_id = Table::User;
+	    	else if ($table=='donator') $table_id = Table::Donator;
+	    	else if ($table=='event') $table_id = Table::Event;
+	    	else if ($table=='expense') $table_id = Table::Expense;
+	    	else if ($table=='payment') $table_id = Table::Payment;
+	    	else if ($table=='pledge') $table_id = Table::Pledge;
+	    	else if ($table=='pledgeremainder') $table_id = Table::PledgeRemainder;
+	    	else if ($table=='member') $table_id = Table::Member;
+	    	
+	    	// Build the insert SQL statement
+	    	$sql = "INSERT INTO log (record_id, log_table_id, log_action_id, log) values(?, ?, ?, ?)";
+	
+	    	// Create the statement to be executed
+	    	$stmt = $this->connection->prepare($sql);
+	    	$this->checkError();
+	    
+	    	$log_data = print_r($sdata,true);
+	    	$stmt->bind_param('iiis', $id, $table_id, $action_id, $log_data);
+	    	//call_user_func_array(array($stmt, 'bind_param'), $args);
+	    	$this->checkError();
+	    
+	    	// Execute the statement and close
+	    	$stmt->execute();
+	    	$this->checkError();
+	    
+	    	$stmt->close();
     	}
-    	
-    	if ($table=='user') $table_id = Table::User;
-    	else if ($table=='donator') $table_id = Table::Donator;
-    	else if ($table=='event') $table_id = Table::Event;
-    	else if ($table=='expense') $table_id = Table::Expense;
-    	else if ($table=='payment') $table_id = Table::Payment;
-    	else if ($table=='pledge') $table_id = Table::Pledge;
-    	else if ($table=='pledgeremainder') $table_id = Table::PledgeRemainder;
-    	
-    	// Build the insert SQL statement
-    	$sql = "INSERT INTO log (record_id, log_table_id, log_action_id, log) values(?, ?, ?, ?)";
-
-    	// Create the statement to be executed
-    	$stmt = $this->connection->prepare($sql);
-    	$this->checkError();
-    
-    	$log_data = print_r($sdata,true);
-    	$stmt->bind_param('iiis', $id, $table_id, $action_id, $log_data);
-    	//call_user_func_array(array($stmt, 'bind_param'), $args);
-    	$this->checkError();
-    
-    	// Execute the statement and close
-    	$stmt->execute();
-    	$this->checkError();
-    
-    	$stmt->close();
     }
     
     function insert($tableName, $data = array()) {
@@ -227,6 +230,9 @@ abstract class Table {
 	const Payment  =  5;
 	const Pledge  =  6;
 	const PledgeRemainder  =  7;
+	const Member  =  8;
+	const Metting  =  9;
+	const Masjid  =  10;
 }
 
 abstract  class Action {

@@ -48,7 +48,7 @@ class Payments {
     				'payment_method_id' => $payment_method_id,
     				'tax_year' => $tax_year,
     				'donator_id' => $donator_id,
-    				'title' => $title,
+    				'title' => $title===NULL?"":$title,
     				'pledge_id' => $pledge_id,
     				'comments' => $comments,
     				'created_on' => Commons::date_format_form($created_on),

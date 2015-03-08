@@ -255,8 +255,8 @@ var Common = {
     	var searchOptions = {};
     	var formoptions = {elmprefix: iprefix, rowpos: irowpos, colpos: icolpos};
     	var editOptions = {rows:irows,cols:icols};
-    	var textAreaOptions = {wrap:"on", hidden:true};
-    	var editrules = {edithidden: true, required: irequired}
+    	var textAreaOptions = {wrap:"on", hidden:false};
+    	var editrules = {edithidden: false, required: irequired}
     	var generateOptions = generateFieldTemplate(iname, iwidth, ieditable, "textarea", editrules,
     			searchOptions, formoptions, editOptions, 'text');
     	return $.extend( textAreaOptions, generateOptions );

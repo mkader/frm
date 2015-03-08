@@ -79,6 +79,7 @@ function beforeInitDataDonatorsPayment(form) {
 	//debugger;
 	common.ajaxCall(false, "get", "pledges.php?action=donatorspledgelistjson&id=<?php echo $did ?>", null,
 		function( response ) {
+		debugger;
 			var res = common.jsonParse(response);
 			if (res['error']) {
 				common.errorAlert(event, res['message']);
@@ -97,6 +98,7 @@ function beforeInitDataDonatorsPayment(form) {
 }
 
 function beforeShowFormDonatorsPayment(form) {
+	debugger;
 	$("#donator_id", form).val(<?php echo $did ?>);
 	$('#donator_id',form).attr('disabled','true');
 	common.numberOnly('#tax_year');

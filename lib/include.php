@@ -13,4 +13,7 @@
 	require_once('selects.class.php');
 	require_once('logs.class.php');
 	require_once('commons.class.php');
+	require_once('members.class.php');
+	require_once('meetings.class.php');
+	require_once('masjids.class.php');
 ?>

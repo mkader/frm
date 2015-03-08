@@ -2,14 +2,14 @@
 require_once('include.php');
 require_once('../excel/PHPExcel.php');
 
-if (Sessions::isValidSession()) {
+if (Sessions::isValidSession() && isset($_GET['year']) ) {
 	$clsDB = new DB();
 	$clsReports = new Reports($clsDB);
 	$clsEvents = new Events($clsDB);
 	$objPHPExcel = new PHPExcel();
 	
 	$workSheetNum = 0;
-	$year  = @intval(date('Y'));
+	$year  = $_GET['year'];//@intval(date('Y'));
 	$objWorksheet = paymentListWorkSheet($objPHPExcel, $workSheetNum++, 
 						$clsReports->getCompleteList($year), $year.' List');
 	
@@ -40,6 +40,7 @@ if (Sessions::isValidSession()) {
 	//$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 	//$objWriter->save(str_replace('.php', '.xlsx', __FILE__));
 }	
+
 function paymentListWorkSheet($objPHPExcel, $workSheetNum, $paymentsList, $title) {
 	$objPHPExcel->createSheet();
 	$objPHPExcel->setActiveSheetIndex($workSheetNum);

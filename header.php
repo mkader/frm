@@ -25,13 +25,16 @@ if (Sessions::isValidSession()){
 	<ul id="menu-bar">
 		<li>My Profile</li>
 <?php if (Sessions::isLoginUserSuperAdmin()) { ?> <li>User</li> <?php } ?>
+		<li>Member</li>
+		<li>Meeting</li>
 		<li>Event</li>
 		<li>Donator</li>
 		<!-- <li>Pledge</li>-->
 		<li>Expense</li>
+		<li>Masjid</li>
 		<li>Template</li>
 		<li>Report</li>
-<?php if (Sessions::isLoginUserSuperAdmin()) { ?> <li>Log</li> <?php } ?>
+<?php if (Sessions::isLoginUserSuperAdmin()) { ?> <!--<li>Log</li>--> <?php } ?>
 	</ul>
 </div>
 <br />
