@@ -23,6 +23,8 @@ class Masjids {
 					website, created_on, modified_on, created_by, modified_by
 				FROM
 					masjid
+				where
+					masjid_type_id = 1
     	 		order by
     	 			created_on desc';
         $stmt = $this->conn->prepare($sql);

@@ -2,6 +2,10 @@ var gridid = "#jqGrid";
 var gridpagerid  = "#jqGridPager";
 var state_id =':;';
 var state_value =':[All];';
+var donator_id =':;';
+var donator_value =':[All];';
+var d = (new Date()).getTime();
+
 common.ajaxCall(false, "get", "json/select.json", null,
 	function( response ) {
 		state_id += response['state_id'][0];
@@ -45,6 +49,7 @@ function loadPledges(id) {
 	$( "#tabs" ).show();
 	updateContent("donatorpledgelist.php?did="+id, "#pledgelistid");
 	updateContent("donatorpaymentlist.php?did="+id, "#paymentlistid");
+	updateContent("donatorachlist.php?did="+id, "#achlistid");
 }
 
 $(gridid).jqGrid(common.gridOptions(gridpagerid, userColModel, 'Donator List',

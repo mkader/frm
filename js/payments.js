@@ -21,7 +21,7 @@ var paymentColModel = [
 ];
 
 // activate the toolbar searching
-$(gridid2).jqGrid('filterToolbar',common.showFilterOptions);
+//$(gridid2).jqGrid('filterToolbar',common.showFilterOptions);
 
 function pushData2(result) {
 	var arrayData = [];

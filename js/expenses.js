@@ -20,7 +20,7 @@ var eventColModel = [
 	{label: 'Expense Date', template:common.dateTemplate('expense_date', 50, true, ' * ',3,1)},
 	{label: 'Title', template:common.textTemplate('title', 100, true, ' * ',true,4,1)},
 	{label: 'Amount', formatter:'currency',
-		formatoptions:{thousandsSeparator: ",", decimalPlaces: 0, prefix: "$ "},
+		formatoptions:{thousandsSeparator: ",", decimalPlaces: 2, prefix: "$ "},
 		template:common.numberTemplate('amount', 50, true, ' * ',5,1, {maxlength: 8})},
 	{label: 'Comments', template:common.textAreaTemplate('comments', 100, false, ' &nbsp; ',true,6,1, '2', '23')},
 ];

@@ -3,8 +3,8 @@ var gridpagerid1 = "#jqGridPagerPledge";
 
 var event_id ='';
 var event_value =':[All];';
-var donator_id =':;';
-var donator_value =':[All];';
+donator_id =':;';
+donator_value =':[All];';
 var d = (new Date()).getTime();
 
 common.ajaxCall(false, "get", "json/donator.json?nocache="+d, null,
@@ -44,7 +44,7 @@ var pledgeColModel = [
 ];
 
 // activate the toolbar searching
-$(gridid1).jqGrid('filterToolbar',common.showFilterOptions);
+//$(gridid1).jqGrid('filterToolbar',common.showFilterOptions);
 
 function pushData1(result) {
 	var arrayData = [];

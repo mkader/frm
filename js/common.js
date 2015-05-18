@@ -1,9 +1,9 @@
-var textSearchOptions = {sopt:['eq', 'ne', 'bw', 'bn', 'ew', 'en', 'cn', 'nc']};
+var textSearchOptions = {sopt:['cn','eq', 'ne', 'bw', 'bn', 'ew', 'en',  'nc']};
 var numberSearchOptions = ['eq','ne','lt','le','gt','ge'];
 var gridFooterIcons = {search: false, view: true, add: true, edit: true, del: true, refresh: true};
 var Common = {
 
-	autoComplete:function(fldName, iurl, idataType){	
+	autoComplete:function(fldName, iurl, idataType){
 		$(fldName ).autocomplete({
 			source: function( request, response ) {
 				var regex = new RegExp(request.term, 'i');
@@ -18,7 +18,7 @@ var Common = {
 					}
 				)
 			},
-				
+
 		    minLength: 1,
 		    select: function( event, ui ) {
 		    	return ui.item;
@@ -35,22 +35,22 @@ var Common = {
 		});
 		$(".ui-autocomplete").css("zIndex", parseInt($("[style*=z-index]:last").css("zIndex"), 10) + 2);
 	},
-	
+
 	decimalOnly: function(fldName) {
 		$(fldName).keypress(function (event) {
-		    if ((event.which != 46 || $(this).val().indexOf('.') != -1) 
+		    if ((event.which != 46 || $(this).val().indexOf('.') != -1)
 		    	&& (event.which < 48 || event.which > 57)) {
 		        event.preventDefault();
 		    }
-	
+
 		    var text = $(this).val();
-	
+
 		    if ((text.indexOf('.') != -1) && (text.substring(text.indexOf('.')).length > 2)) {
 		        event.preventDefault();
 		    }
 		});
 	},
-	
+
 	numberOnly: function(fldName) {
 		$(fldName).keypress(function (event) {
 			if (event.which < 48 || event.which > 57) event.preventDefault();
@@ -202,7 +202,7 @@ var Common = {
     			searchOptions, formoptions, editOptions, 'select');
     	return $.extend( formatter, generateOptions );
     },
-   
+
     dateTemplate: function(iname, iwidth, irequired, iprefix, irowpos, icolpos) {
     	 var searchOptions = { sopt: numberSearchOptions,
 			dataInit:  function (elem) {
