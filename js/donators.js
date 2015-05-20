@@ -53,7 +53,7 @@ function loadPledges(id) {
 }
 
 $(gridid).jqGrid(common.gridOptions(gridpagerid, userColModel, 'Donator List',
-	'donators.php', 900, loadPledges, null, 100, 230, common.onDblClickRow));
+	'donators.php', 900, loadPledges, null, 100, 150, common.onDblClickRow));
 
 $(gridid).jqGrid('filterToolbar',common.showFilterOptions);
 

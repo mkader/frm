@@ -14,6 +14,23 @@ class Selects {
         $this->conn = $this->db->getConnection();
     }
 
+	function getPaymentMethodList() {
+	    	$sql = 'select id, payment_method from payment_method order by payment_method';
+	    	$stmt = $this->conn->prepare($sql);
+	    	$this->db->checkError();
+	    	$stmt->execute();
+	    	$this->db->checkError();
+
+	    	$events = array();
+	    	$stmt->bind_result($id, $payment_method);
+	    	while ($stmt->fetch()) {
+	    		$events[] = array('id' => $id, 'payment_method' => $payment_method);
+	    	}
+	    	$stmt->close();
+
+	    	return $events;
+    }
+
 	function jsonData($tablename, $sql) {
 	        //$sql = 'SELECT '.$value.' FROM '.$tablename;
 	        $stmt = $this->conn->prepare($sql);
@@ -42,18 +59,18 @@ class Selects {
 			$values .= '"]';
 	        return $ids.$values;
     }
-    
+
     function jsonAutoCompleteData($tablename, $sql) {
     	//$sql = 'SELECT '.$value.' FROM '.$tablename;
     	$stmt = $this->conn->prepare($sql);
     	$this->db->checkError();
     	$stmt->execute();
     	$this->db->checkError();
-    
+
     	$stmt->bind_result($value);
-    
+
     	$values = '[';
-    
+
     	$row=0;
     	$stmt->store_result();
     	$total = $stmt->num_rows-1;
@@ -63,7 +80,7 @@ class Selects {
     		$row++;
     	}
     	$stmt->close();
-    
+
     	$values .= ']';
     	return $values;
     }
