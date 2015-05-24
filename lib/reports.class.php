@@ -15,6 +15,12 @@ class Reports {
         $this->conn = $this->db->getConnection();
     }
 
+    /**
+     *	list of donator payment by year.
+     *	Returns an array of list
+     *
+     * @param	int	$itax_year.
+     */
     function getCompleteList($itax_year) {
     	 $sql = 'SELECT
 				    d.name, d.address1, d.address2, d.city, d.state, d.zipcode,
@@ -56,6 +62,12 @@ class Reports {
         return $reports;
     }
 
+    /**
+     *	sum of donator payment by year.
+     *	Returns an array of list
+     *
+     * @param	int	$itax_year.
+     */
     function getCompleteSum($itax_year) {
     	$sql = 'SELECT
 				    d.name, d.address1, d.address2, d.city, d.state, d.zipcode,
@@ -91,6 +103,12 @@ class Reports {
     	return $reports;
     }
 
+    /**
+     *	list of donator payment by event.
+     *	Returns an array of list
+     *
+     * @param	int	$event_id.
+     */
     function getEventPaymentList($event_id) {
     	$sql = 'select
 					d.name, d.address1, d.address2, d.city, d.state, d.zipcode,
@@ -133,6 +151,12 @@ class Reports {
     	return $reports;
     }
 
+    /**
+     *	sum of donator payment list by event.
+     *	Returns an array of list
+     *
+     * @param	int	$event_id.
+     */
     function getEventSum($event_id) {
     	$sql = 'SELECT
 				    d.name, d.address1, d.address2, d.city, d.state, d.zipcode,
@@ -171,6 +195,13 @@ class Reports {
     	return $reports;
     }
 
+    /**
+     *	sum of payment method donator list.
+     *	Returns an array of list
+     *
+     * @param	int	$payment_method_id
+     * @param	int	$year.
+     */
     function getPaymentMethodList($payment_method_id, $year) {
 		$sql = 'select
 					d.name, d.address1, d.address2, d.city, d.state, d.zipcode,
@@ -208,6 +239,12 @@ class Reports {
 		return $reports;
     }
 
+    /**
+     *	sum of donator payment list.
+     *	Returns an array of list
+     *
+     *	@param	int	$year.
+     */
     function getPaymentMethodSum($year) {
 		$sql = 'select
 					pm.payment_method, sum(p.amount) amount
@@ -237,7 +274,13 @@ class Reports {
 		return $reports;
     }
 
-    function getRemainderList($event_id) {
+    /**
+     *	list of pledged reminder donator.
+     *	Returns an array of list
+     *
+     *	@param	int	$event_id.
+     */
+    function getReminderList($event_id) {
 		$sql = 'SELECT
 					d.name, d.address1, d.address2, d.city, d.state, d.zipcode,
 					d.phone, d.email, d.company_name, pl.amount pledgedamount,
@@ -253,8 +296,9 @@ class Reports {
 				GROUP BY
 					d.id
 				having
-					pl.amount>100
-					and (pl.amount - IF(SUM(p.amount) IS NULL,0,SUM(p.amount)))>100
+					/*pl.amount>100 and 
+					(pl.amount - IF(SUM(p.amount) IS NULL,0,SUM(p.amount)))>100*/
+					(pl.amount - IF(SUM(p.amount) IS NULL,0,SUM(p.amount)))>0
 				ORDER BY
 					d.name, p.payment_date';
 		$stmt = $this->conn->prepare($sql);

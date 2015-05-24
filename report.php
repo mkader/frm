@@ -1,9 +1,10 @@
 <script>
 $('#payment_method_id').change(function() {
-    var url = "report/remainder.php?event_id=" + $(this).val();
+	if ($(this).val()!="") {
+    var url = "report/reminder.php?event_id=" + $(this).val();
     var win = window.open(url, '_blank');
   	win.focus();
-  	//return false;
+	}
 });
 </script>
 <?php
@@ -29,7 +30,7 @@ if (Sessions::isValidSession()) {
 				<a target="self" href="report/paymentmethodlisthtml.php?year=<?php echo date('Y')?>"><?php echo date('Y')?></a>
 	</li><br>
 	<li>
-		<a target="self" href="report/remainder.php">Remainder Letter-PDF</a>
+		Reminder Letter 
 		<select id="payment_method_id">
 			<option value="">Select</option>
 <?php
@@ -38,7 +39,7 @@ if (Sessions::isValidSession()) {
 		echo '<option value='.$key_value["id"]. '>'. $key_value["title"] .'</option>';
 	}
 ?>
-		</select>
+		</select> &nbsp;<a href="doc/Pledge_Reminder_Template.docx">Pledge_Reminder_Template.docx</a> 
 </li>
 </ol>
 </div>
