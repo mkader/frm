@@ -38,7 +38,7 @@ function iuddonator($iud, $action_type, $action_type_done) {
 	if ($iud!='d') {
 		$name = $_POST['name'];
 		$address1 = $_POST['address1'];
-		$address2 = $_POST['address2'];
+		//$address2 = $_POST['address2'];
 		$city = $_POST['city'];
 		$state = $_POST['state'];
 		$zipcode =  $_POST['zipcode'];

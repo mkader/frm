@@ -7,7 +7,7 @@ var memberColModel = [
 	{label: 'E-mail', formatter:'email', template:common.textTemplate('email', 100, true, ' * ',true,2,1)},
 	{label: 'Phone', template:common.phoneTemplate('phone', 50, true, ' * ',true,3,1)},
 	{label: 'Active', template:common.selectTemplate('active', 50, true, ' &nbsp; ',
-		'checkbox', active_id, active_value, true,4,1)}
+		'checkbox', active_id, active_value, true,4,1,'')}
 ];
 
 function editSettings() {

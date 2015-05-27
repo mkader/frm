@@ -18,7 +18,7 @@ var masjidColModel = [
    	{label: 'Address', hidden:true,template:common.textTemplate('address', 100, true, ' * ', true,3,1)},
 	{label: 'City', template:common.textTemplate('city', 50, true, ' * ', true,3,2)},
 	{label: 'State', template:common.selectTemplate('state', 50, true, ' * ',
-			'select', state_id, state_value, true,4,1)},
+			'select', state_id, state_value, true,4,1,'')},
 	{label: 'Zip Code',  hidden:true,template:common.textTemplate('zipcode', 50, true, ' * ', true,4,2)},
 	{label: 'E-mail', hidden:true,formatter:'email', template:common.textTemplate('email', 100, false, ' &nbsp; ', true,5,1)},
 	{label: 'Phone', template:common.phoneTemplate('phone', 50, false, ' &nbsp; ', true,5,2)},

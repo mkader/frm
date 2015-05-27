@@ -19,10 +19,10 @@ var eventColModel = [
 		formatoptions:{thousandsSeparator: ",", decimalPlaces: 0, prefix: "$ "},
 		template:common.numberTemplate('target_amount', 50, true, ' * ',3,1, {maxlength: 8})},
 	{label: 'Event Type', template:common.selectTemplate('pledge_type', 50, true, ' * ',
-			'select', pledge_type_id, pledge_type_value,true,4,1)},
+			'select', pledge_type_id, pledge_type_value,true,4,1,'')},
 	{label: 'Location', template:common.textTemplate('location', 150, true, ' * ',true,5,1)},
 	{label: 'Active', template:common.selectTemplate('active', 50, true, ' &nbsp; ',
-			'checkbox', active_id, active_value, true,6,1)},
+			'checkbox', active_id, active_value, true,6,1,'')},
 	{label: 'Description', template:common.textAreaTemplate('description', 100, false, ' &nbsp; ',true,8,1, '2', '23')},
 ];
 

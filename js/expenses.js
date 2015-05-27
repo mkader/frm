@@ -16,7 +16,7 @@ common.ajaxCall(false, "get", "json/event.json", null,
 var eventColModel = [
 	{label: 'id', template:common.idTemplate('id',1,1)},
 	{label: 'Event', template:common.selectTemplate('event_id', 50, false, ' &nbsp; ',
-			'select', event_id, event_value, true,2,1)},
+			'select', event_id, event_value, true,2,1,'')},
 	{label: 'Expense Date', template:common.dateTemplate('expense_date', 50, true, ' * ',3,1)},
 	{label: 'Title', template:common.textTemplate('title', 100, true, ' * ',true,4,1)},
 	{label: 'Amount', formatter:'currency',

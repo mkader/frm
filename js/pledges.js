@@ -31,16 +31,16 @@ var pledgeColModel = [
 
 	{label: 'id', template:common.idTemplate('id',1,1)},
 	{label: 'Event', template:common.selectTemplate('event_id', 50, true, ' * ',
-		'select', event_id, event_value, true,2,1)},
+		'select', event_id, event_value, true,2,1,'')},
 	{label: 'Donator', hidden:true, template:common.selectTemplate('donator_id', 50, false, ' * ',
-		'select', donator_id, donator_value, true,3,1)},
+		'select', donator_id, donator_value, true,3,1,'')},
 	{label: 'Pledge Amount', formatter:'currency',
 		formatoptions:{thousandsSeparator: ",", decimalPlaces: 2, prefix: "$ "},
 		template:common.numberTemplate('amount', 50, true, ' * ',4,1, {maxlength: 8})},
 	{label: 'Payment Method', template:common.selectTemplate('payment_method_id', 50, true, ' * ',
-		'select', payment_method_id, payment_method_value, true,5,1)},
+		'select', payment_method_id, payment_method_value, true,5,1,'')},
 	{label: 'Payment Type', template:common.selectTemplate('payment_type_id', 50, true, ' * ',
-		'select', payment_type_id, payment_type_value, true,6,1)},
+		'select', payment_type_id, payment_type_value, true,6,1,'')},
 ];
 
 // activate the toolbar searching

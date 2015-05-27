@@ -189,11 +189,11 @@ var Common = {
     },
 
     selectTemplate: function(iname, iwidth, irequired, iprefix, itype, editvalue,
-    		searchvalue, ieditable, irowpos, icolpos) {
+    		searchvalue, ieditable, irowpos, icolpos, idefaultvalue) {
     	var searchOptions = {};
     	var editOptions = {};
 		var searchOptions = {sopt: ['eq', 'ne'], value: searchvalue};
-		var editOptions = {value: editvalue};
+		var editOptions = {value: editvalue, defaultValue: idefaultvalue };
     	var formoptions = {elmprefix: iprefix, rowpos: irowpos, colpos: icolpos};
     	var editrules = {required: irequired, edithidden: true};
     	var formatter = {formatter:{}};

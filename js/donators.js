@@ -23,11 +23,11 @@ var userColModel = [
    	{label: 'Company Name', hidden:true, template:common.textTemplate('company_name', 100, false, ' &nbsp; ', true,3,2)},
 	{label: 'Address', template:common.textTemplate('address', 100, false, ' &nbsp; ', false,4,1)},
 	{label: 'Address', hidden:true, template:common.textTemplate('address1', 100, false, ' &nbsp; ', true,5,1)},
-	{label: '',  hidden:true, template:common.textTemplate('address2', 50, false, ' &nbsp; ', true,5,2)},
-	{label: 'City', hidden:true,template:common.textTemplate('city', 50, false, ' &nbsp; ', true,6,1)},
+	/*{label: '',  hidden:true, template:common.textTemplate('address2', 50, false, ' &nbsp; ', true,5,2)},*/
+	{label: 'City', hidden:true,template:common.textTemplate('city', 50, false, ' &nbsp; ', true,5,2)},
 	{label: 'State', hidden:true,template:common.selectTemplate('state', 50, false, ' &nbsp; ',
-			'select', state_id, state_value, true,6,2)},
-	{label: 'Zip Code', hidden:true, template:common.textTemplate('zipcode', 50, false, ' &nbsp; ', true,6,3)},
+			'select', state_id, state_value, true,6,1, 'WI')},
+	{label: 'Zip Code', hidden:true, template:common.textTemplate('zipcode', 50, false, ' &nbsp; ', true,6,2)},
 	{label: 'E-mail', formatter:'email', template:common.textTemplate('email', 100, false, ' &nbsp; ', true,7,1)},
 	{label: 'Phone', template:common.phoneTemplate('phone', 50, false, ' &nbsp; ', true,7,2)},
 	{label: 'Comments', template:common.textAreaTemplate('comments', 100, false, " &nbsp; ", true,8,1, '2', '23')}
@@ -83,8 +83,8 @@ function pushData(result) {
 		if(item.company_name.length>0) name_companyname+=' ('+item.company_name+')';
 		var address = '';
 		if(item.address1.length>0) address+=item.address1;
-		if(item.address2.length>0 && address.length>0) address+=', '+item.address2;
-		else address+=item.address2;
+		//if(item.address2.length>0 && address.length>0) address+=', '+item.address2;
+		//else address+=item.address2;
 		if (item.city.length>0 && address.length>0) address+=', '+ item.city;
 		else address+=item.city;
 		if(item.state.length>0 && address.length>0) address+=', '+ item.state
@@ -97,7 +97,7 @@ function pushData(result) {
 			name: item.name,
 			address: address,
 			address1: item.address1,
-			address2: item.address2,
+			//address2: item.address2,
 			city: item.city,
 			state: item.state,
 			zipcode: item.zipcode,

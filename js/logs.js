@@ -20,9 +20,9 @@ var eventColModel = [
 	{label: 'Record ID', formatter:'integer', formatoptions:{},
 		template:common.numberTemplate('record_id', 50, true, '',2,1, {})},
 	{label: 'Table Name', template:common.selectTemplate('log_table', 50, true, '',
-			'select', log_table_id, log_table_value,true,3,1)},
+			'select', log_table_id, log_table_value,true,3,1,'')},
 	{label: 'Action', template:common.selectTemplate('log_action', 50, true, '',
-			'select', log_action_id, log_action_value,true,4,1)},
+			'select', log_action_id, log_action_value,true,4,1,'')},
 	{label: 'Log', template:common.textAreaTemplate('log', 100, false, '',true,5,1, '10', '40','')},
 	{label: 'Log Date', template:common.dateTemplate('created_on', 100, true, '',6,1)},
 
