@@ -17,8 +17,8 @@ class Events {
     }
 
     function getActiveEventList() {
-    	$sql = 'SELECT 
-    		e.id, title, pt.pledge_type
+    	$sql = 'SELECT
+    		e.id, title, pt.pledge_type, e.pledge_type_id
         FROM
         	event e
         	inner join pledge_type pt on e.pledge_type_id = pt.id
@@ -30,18 +30,19 @@ class Events {
     	$this->db->checkError();
     	$stmt->execute();
     	$this->db->checkError();
-        
+
     	$events = array();
-    	$stmt->bind_result($id, $title, $pledge_type);
+    	$stmt->bind_result($id, $title, $pledge_type, $pledge_type_id);
     	while ($stmt->fetch()) {
     		$events[] = array('id' => $id, 'title' => $title,
-    				'pledge_type' => $pledge_type);
+    				'pledge_type' => $pledge_type,
+    				'pledge_type_id' => $pledge_type_id);
     	}
     	$stmt->close();
-    
+
     	return $events;
     }
-    
+
 	function getEventList() {
     	 $sql = 'SELECT
         	e.id, title, event_date, location, description, target_amount,
@@ -59,8 +60,8 @@ class Events {
 
 
         $events = array();
-        $stmt->bind_result($id, $title, $event_date, $location, $description, 
-        	$target_amount, $pledge_type_id, $active, $created_on, $modified_on, 
+        $stmt->bind_result($id, $title, $event_date, $location, $description,
+        	$target_amount, $pledge_type_id, $active, $created_on, $modified_on,
         	$created_by, $modified_by, $pledge_type);
         while ($stmt->fetch()) {
             $events[] = array('id' => $id, 'title' => $title,
@@ -80,11 +81,11 @@ class Events {
     }
 
     function jsonEvent() {
-    	$jsonData = $this->select->jsonData('event', 'select id, title value from event');
+    	$jsonData = $this->select->jsonData('event', 'select id, title value from event order by id desc');
     	Logger::JSON('event',"{".$jsonData."}");
     }
 
-    function iudEvent($dml, $id, $title, $event_date, $location, $description, 
+    function iudEvent($dml, $id, $title, $event_date, $location, $description,
     		$target_amount, $pledge_type_id, $active) {
         $tableName = 'event';
         //$timestamp = date('Y-m-d H:i:s');

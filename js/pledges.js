@@ -1,3 +1,4 @@
+debugger;
 var gridid1 = "#jqGridPledge";
 var gridpagerid1 = "#jqGridPagerPledge";
 

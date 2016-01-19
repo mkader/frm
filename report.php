@@ -30,17 +30,31 @@ if (Sessions::isValidSession()) {
 				<a target="self" href="report/paymentmethodlisthtml.php?year=<?php echo date('Y')?>"><?php echo date('Y')?></a>
 	</li><br>
 	<li>
-		Reminder Letter 
-		<select id="payment_method_id">
-			<option value="">Select</option>
+		Reminder Letter&nbsp;
+		&nbsp;[Pledge Reminder Template&nbsp;=>&nbsp;Operation&nbsp;<a href="doc/Operation_PR_Template_Excel.docx">Word</a>
+		&nbsp;<a href="doc/Operation_PR_Template_Excel.docx">Excel</a>
+		&nbsp;New Masjid&nbsp;<a href="doc/New Masjid_PR_Template_word.docx">Word</a>
+		&nbsp;<a href="doc/New Masjid_PR_Template_Excel.docx">Excel</a>]
+		<br>
 <?php
 	$activeEvents = $clsEvents->getActiveEventList();
 	foreach ($activeEvents as $key_name => $key_value) {
-		echo '<option value='.$key_value["id"]. '>'. $key_value["title"] .'</option>';
+		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$key_value["title"]."&nbsp;&nbsp;<a target='self' href='report/reminder_excel.php?pledge_type_id=".$key_value["pledge_type_id"]."&event_id=".$key_value["id"] ."'> Excel</a>&nbsp;&nbsp;<a target='self' href='report/reminder_word.php?pledge_type_id=".$key_value["pledge_type_id"]."&event_id=".$key_value["id"] ."'> Word</a><br>";
+		//echo '<option value='.$key_value["id"]. '>'. $key_value["title"] .'</option>';
 	}
 ?>
-		</select> &nbsp;<a href="doc/Pledge_Reminder_Template.docx">Pledge_Reminder_Template.docx</a> 
-</li>
+	</li><br>
+	<li>
+		Donations Receipt
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Excel -
+		<a target="self" href="report/donations_receipt_excel.php?year=<?php echo date('Y')-1?>"><?php echo date('Y')-1?></a>
+		<a href="report/donations_receipt_excel.php?year=<?php echo date('Y')?>"><?php echo date('Y')?> </a>
+		&nbsp;<a href="doc/Donations_Receipt_Template_Excel.docx">Donations_Receipt_Template_Excel.docx</a>
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Word -
+		<a target="self" href="report/donations_receipt_word.php?year=<?php echo date('Y')-1?>"><?php echo date('Y')-1?></a>
+		<a href="report/donations_receipt_word.php?year=<?php echo date('Y')?>"><?php echo date('Y')?></a>
+		&nbsp;<a href="doc/Donations_Receipt_Template_Word.docx">Donations_Receipt_Template_Word.docx</a>
+	</li><br>
 </ol>
 </div>
 <?php

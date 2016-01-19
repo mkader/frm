@@ -25,14 +25,14 @@ class Reports {
     	 $sql = 'SELECT
 				    d.name, d.address1, d.address2, d.city, d.state, d.zipcode,
     	 			d.phone, d.email, d.company_name, d.comments donator_comments,
-					p.payment_date ,p.amount, pm.payment_method, p.tax_year,
+					p.payment_date ,p.amount, pm.payment_method,
     	 			p.comments payment_comments
 				FROM
 					donator d
 					inner join payment p on d.id =p.donator_id
 					inner join payment_method pm on p.payment_method_id = pm.id
 				WHERE
-    	 			p.tax_year = ?
+    	 			year(p.payment_date) = ?
     	 		ORDER BY
 					d.name, p.payment_date';
         $stmt = $this->conn->prepare($sql);
@@ -45,7 +45,7 @@ class Reports {
         $reports = array();
         $stmt->bind_result($name, $address1, $address2, $city, $state, $zipcode,
         			$phone, $email, $company_name, $donator_comments, $payment_date,
-        			$amount, $payment_method, $tax_year, $payment_comments);
+        			$amount, $payment_method, $payment_comments);
         while ($stmt->fetch()) {
             $reports[] = array('name' => $name, 'address1' => $address1,
             		'address2' => $address2, 'city' => $city, 'state' => $state,
@@ -54,7 +54,7 @@ class Reports {
             		'donator_comments' => $donator_comments,
             		'payment_date' => Commons::date_format_form($payment_date),
             		'amount' => $amount,
-            		'payment_method' => $payment_method, 'tax_year' => $tax_year,
+            		'payment_method' => $payment_method,
             		'payment_comments' => $payment_comments);
         }
 		$stmt->close();
@@ -76,7 +76,7 @@ class Reports {
 					donator d
 					inner join payment p on d.id =p.donator_id
 				WHERE
-    	 			p.tax_year = ?
+    	 			year(p.payment_date) = ?
     			GROUP BY
     				d.id
     	 		ORDER BY
@@ -113,7 +113,7 @@ class Reports {
     	$sql = 'select
 					d.name, d.address1, d.address2, d.city, d.state, d.zipcode,
 					d.phone, d.email, d.company_name, d.comments donator_comments,
-					p.payment_date ,p.amount, pm.payment_method, p.tax_year,
+					p.payment_date ,p.amount, pm.payment_method,
 					p.comments payment_comments
 				from
 					pledge pl
@@ -134,7 +134,7 @@ class Reports {
     	$reports = array();
     	$stmt->bind_result($name, $address1, $address2, $city, $state, $zipcode,
     			$phone, $email, $company_name, $donator_comments, $payment_date,
-    			$amount, $payment_method, $tax_year, $payment_comments);
+    			$amount, $payment_method, $payment_comments);
     	while ($stmt->fetch()) {
     		$reports[] = array('name' => $name, 'address1' => $address1,
     				'address2' => $address2, 'city' => $city, 'state' => $state,
@@ -143,7 +143,7 @@ class Reports {
     				'donator_comments' => $donator_comments,
     				'payment_date' => Commons::date_format_form($payment_date),
     				'amount' => $amount,
-    				'payment_method' => $payment_method, 'tax_year' => $tax_year,
+    				'payment_method' => $payment_method,
     				'payment_comments' => $payment_comments);
     	}
     	$stmt->close();
@@ -211,7 +211,7 @@ class Reports {
 					payment p
 					inner join donator d on  d.id = p.donator_id
 				where
-					p.payment_method_id = ? && p.tax_year = ?
+					p.payment_method_id = ? && year(p.payment_date) = ?
 				group by
 					 d.id
 				ORDER BY
@@ -253,7 +253,7 @@ class Reports {
 					inner join donator d on  d.id = p.donator_id
 					inner join payment_method pm on pm.id = p.payment_method_id
 				where
-					p.tax_year = ?
+					year(p.payment_date) = ?
 				group by
 					 pm.id';
 		$stmt = $this->conn->prepare($sql);
@@ -296,7 +296,7 @@ class Reports {
 				GROUP BY
 					d.id
 				having
-					/*pl.amount>100 and 
+					/*pl.amount>100 and
 					(pl.amount - IF(SUM(p.amount) IS NULL,0,SUM(p.amount)))>100*/
 					(pl.amount - IF(SUM(p.amount) IS NULL,0,SUM(p.amount)))>0
 				ORDER BY

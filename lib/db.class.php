@@ -50,7 +50,7 @@ class DB {
 	    	foreach ($data as $key => $value) {
 	    		$sdata[$key] = $value['value'];
 	    	}
-	    	
+
 	    	if ($table=='user') $table_id = Table::User;
 	    	else if ($table=='donator') $table_id = Table::Donator;
 	    	else if ($table=='event') $table_id = Table::Event;
@@ -59,27 +59,27 @@ class DB {
 	    	else if ($table=='pledge') $table_id = Table::Pledge;
 	    	else if ($table=='pledgeremainder') $table_id = Table::PledgeRemainder;
 	    	else if ($table=='member') $table_id = Table::Member;
-	    	
+
 	    	// Build the insert SQL statement
 	    	$sql = "INSERT INTO log (record_id, log_table_id, log_action_id, log) values(?, ?, ?, ?)";
-	
+
 	    	// Create the statement to be executed
 	    	$stmt = $this->connection->prepare($sql);
 	    	$this->checkError();
-	    
+
 	    	$log_data = print_r($sdata,true);
 	    	$stmt->bind_param('iiis', $id, $table_id, $action_id, $log_data);
 	    	//call_user_func_array(array($stmt, 'bind_param'), $args);
 	    	$this->checkError();
-	    
+
 	    	// Execute the statement and close
 	    	$stmt->execute();
 	    	$this->checkError();
-	    
+
 	    	$stmt->close();
     	}
     }
-    
+
     function insert($tableName, $data = array()) {
         $colNames = array();
         $values = array();
@@ -88,6 +88,9 @@ class DB {
             $colNames[] = $key;
             $values[] = $value['value'];
             $types[] = $value['type'];
+            //Logger::log("ColName: " . $key);
+            //Logger::log("Value: " . $value['value']);
+            //Logger::log("Type: " . $value['type']);
         }
         $colNameCount = count($colNames);
 
@@ -111,13 +114,13 @@ class DB {
 
         // Build the arguments to be passed to the bind_param method
     	array_unshift($values,implode('', $types));
-        
+
         $args = array();
         foreach ($values as $key => $value)
         {
         	$args[$key] = &$values[$key];
         }
-        
+
         /*$args = array();
         $args[] = &implode('', $types);
         for ($i = 0; $i < count($values); $i++) {
@@ -126,8 +129,8 @@ class DB {
 
         call_user_func_array(array($stmt, 'bind_param'), $args);
         $this->checkError();
-        
-        
+
+
         // Execute the statement and close
         $stmt->execute();
         $this->checkError();
@@ -137,10 +140,10 @@ class DB {
         // Get the inserted ID
         $id = $this->connection->insert_id;
         Db::log(Action::Insert, $tableName, $id, $data);
-       
+
         return $id;
     }
-    
+
     function update($tableName, $idValue, $data = array()) {
         $colNames = array();
         $values = array();
@@ -169,13 +172,13 @@ class DB {
 
         $values[] = &$idValue;
         array_unshift($values,implode('', $types));
-        
+
         $args = array();
         foreach ($values as $key => $value)
         {
         	$args[$key] = &$values[$key];
         }
-        
+
         //$args = array();
         //$args[] = &implode('', $types);
         //for ($i = 0; $i < count($values); $i++) {
@@ -188,9 +191,9 @@ class DB {
 
         $stmt->execute();
         $this->checkError();
-        
+
         $stmt->close();
-        
+
         Db::log(Action::Update, $tableName, $idValue, $data);
     }
 
@@ -204,7 +207,7 @@ class DB {
         $this->checkError();
 
         $stmt->close();
-        
+
         Db::log(Action::Delete, $tableName, $idValue, array());
     }
 

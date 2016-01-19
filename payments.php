@@ -45,7 +45,6 @@ function iudPayment($iud, $actionType, $actionTypeDone) {
 	$donatorID = 0;
 	$amount = 0;
 	$paymentMethodID = 0;
-	$taxYear = 0;
 	$paymentDate = '';
 	$comments = '';
 
@@ -53,7 +52,6 @@ function iudPayment($iud, $actionType, $actionTypeDone) {
 		$paymentDate = $_POST['payment_date'];
 		$amount = $_POST['amount'];
 		$paymentMethodID = @intval($_POST['payment_method_id']);
-		$taxYear = $_POST['tax_year'];
 		$comments = $_POST['comments'];
 		$donatorID = @intval($_POST['donator_id']);
 		$pledgeID = @intval($_POST['pledge_id']);
@@ -67,7 +65,7 @@ function iudPayment($iud, $actionType, $actionTypeDone) {
 
 	try {
 		$id = $clsPayment->iudPayment($iud, $id, $paymentDate, $amount,
-			$paymentMethodID, $taxYear, $donatorID,  $pledgeID, $comments);
+			$paymentMethodID, $donatorID,  $pledgeID, $comments);
     	Logger::log($actionType. ' payment complete');
         if ($id > 0) {
             $response['success'] = 1;

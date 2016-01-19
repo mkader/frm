@@ -52,10 +52,11 @@ function login() {
 	$securityCode = $_POST['securitycode'];
 
 	try {
-		if(Sessions::securityCode() != $securityCode) {
+		//Enable this code when i deploy to server.
+		/*if(Sessions::securityCode() != $securityCode) {
 			$response['error'] = 1;
 			$response['message'] = 'Invalid security code. Please try again.';
-		} else {
+		} else {*/
 			$responseData = $clsUsers->login($usersName, $password);
 			Logger::log('Login complete');
 			if (!$responseData) {
@@ -66,7 +67,7 @@ function login() {
 				$response['data'] = $responseData;
 				Sessions::setLoginUserInfo($responseData);
 			}
-		}
+		//}
 	} catch (DBException $e) {
 		$response['error'] = 1;
 		$response['message'] = $e->getMessage();

@@ -88,8 +88,8 @@ function reminderListWorkSheet($objPHPExcel, $workSheetNum, $reminderList) {
 					 ->setCellValue('G' . $row, $pledged_amount)
 					 ->setCellValue('H' . $row, $paid)
 					 ->setCellValue('I' . $row, $balance)
-					 ->setCellValue('J' . $row, $event)
-					 ->setCellValue('K' . $row, $email);
+					 ->setCellValue('J' . $row, $email)
+					 ->setCellValue('K' . $row, $event);
 		$row++;
 	}
 	

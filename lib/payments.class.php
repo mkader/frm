@@ -16,7 +16,7 @@ class Payments {
 
     function getDonatorsPaymentList($donatorid) {
     	$sql = 'SELECT
-        	p.id, p.payment_date, p.amount, p.payment_method_id, p.tax_year,
+        	p.id, p.payment_date, p.amount, p.payment_method_id,
     		p.donator_id, p.pledge_id, p.comments, pm.payment_method,
     		p.created_on, p.modified_on, p.created_by,  p.modified_by,
     		e.title
@@ -38,14 +38,13 @@ class Payments {
 
     	$payements = array();
     	$stmt->bind_result($id, $payment_date, $amount, $payment_method_id,
-    		$tax_year, $donator_id, $pledge_id, $comments, $payment_method,
+    		$donator_id, $pledge_id, $comments, $payment_method,
     		$created_on, $modified_on, $created_by, $modified_by, $title);
     	while ($stmt->fetch()) {
     		$payements[] = array('id' => $id,
     				'payment_date' => Commons::date_format_form($payment_date),
     				'amount' => $amount,
     				'payment_method_id' => $payment_method_id,
-    				'tax_year' => $tax_year,
     				'donator_id' => $donator_id,
     				'title' => $title===NULL?"":$title,
     				'pledge_id' => $pledge_id,
@@ -61,14 +60,8 @@ class Payments {
     	return $payements;
     }
 
-
-    /*payment_date`, amount`, payment_method_id`, tax_year`,
-     donator_id`, pledge_id`, comments`
-
-    */
-
-    function iudPayment($dml, $id, $payment_date, $amount, $payment_method_id,
-    		$tax_year, $donator_id,  $pledge_id, $comments) {
+	function iudPayment($dml, $id, $payment_date, $amount, $payment_method_id,
+    		$donator_id,  $pledge_id, $comments) {
         $tableName ='payment';
         //$timestamp = date('Y-m-d H:i:s');
         $login_id = @intval(Sessions::loginUserID());
@@ -77,7 +70,6 @@ class Payments {
 	            'payment_date'  => array('type' => 's', 'value' => Commons::date_format_sql($payment_date)),
 	            'amount'     => array('type' => 'd', 'value' => $amount),
 	            'payment_method_id'     => array('type' => 'i', 'value' => $payment_method_id),
-	            'tax_year'     => array('type' => 'i', 'value' => $tax_year),
 	            'donator_id'     => array('type' => 'i', 'value' => $donator_id),
 	            'pledge_id'     => array('type' => 'i', 'value' => $pledge_id),
 	            'comments'  => array('type' => 's', 'value' => $comments),

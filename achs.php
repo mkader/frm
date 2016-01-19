@@ -42,17 +42,17 @@ function iudACH($iud, $actionType, $actionTypeDone) {
     $response = array();
     $id =  @intval($_POST['id']);
     $donatorID = 0;
-	$paymentMethodID = 0;
+	//$paymentMethodID = 0;
 	$achDate = '';
 	$bankName = '';
-	$bankAccountTypeID = 1;
+	//$bankAccountTypeID = 1;
 	$routingNumber = '';
 	$accountNnumber = '';
 	$voidCheckIncluded = 0;
-	$creditCardTypeID = 1;
-	$creditCardNumber = '';
-	$creditCardEexpiraitonDate = '';
-	$creditCcardSecurityCode = '';
+	//$creditCardTypeID = 1;
+	//$creditCardNumber = '';
+	//$creditCardEexpiraitonDate = '';
+	//$creditCcardSecurityCode = '';
 	$cycle = 0;
 	$amount = 0;
 	$startDate = '';
@@ -63,11 +63,11 @@ function iudACH($iud, $actionType, $actionTypeDone) {
 		$donatorID = @intval($_POST['donator_id']);
 		$paymentMethodID = @intval($_POST['payment_method_id']);
 		$achDate = $_POST['ach_date'];
-		//$bankName = $_POST['bank_name'];
+		$bankName = $_POST['bank_name'];
 		//$bankAccountTypeID = @intval($_POST['bank_account_type_id']);
-		//$routingNumber = $_POST['routing_number'];
-		//$accountNnumber = $_POST['account_number'];
-		//$voidCheckIncluded = @intval($_POST['void_check_included']);
+		$routingNumber = $_POST['routing_number'];
+		$accountNnumber = $_POST['account_number'];
+		$voidCheckIncluded = @intval($_POST['void_check_included']);
 		//$creditCardTypeID = @intval($_POST['credit_card_type_id']);
 		//$creditCardNumber = $_POST['credit_card_number'];
 		//$creditCardEexpiraitonDate = $_POST['credit_card_expiraiton_date'];
@@ -86,10 +86,8 @@ function iudACH($iud, $actionType, $actionTypeDone) {
 	}
 
 	try {
-		$id = $clsACH->iudACH($iud, $id, $donatorID, $paymentMethodID, $achDate, 
-    		$bankName, $bankAccountTypeID, $routingNumber, $accountNnumber, 
-    		$voidCheckIncluded, $creditCardTypeID, $creditCardNumber, 
-    		$creditCardEexpiraitonDate, $creditCcardSecurityCode, $cycle, 
+		$id = $clsACH->iudACH($iud, $id, $donatorID, $achDate, $bankName,
+			$routingNumber, $accountNnumber, $voidCheckIncluded, $cycle,
     		$amount, $startDate, $endDate, $comments);
     	Logger::log($actionType. ' ACH complete');
         if ($id > 0) {
