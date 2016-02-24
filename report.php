@@ -21,9 +21,11 @@ if (Sessions::isValidSession()) {
 		<a href="report/completelist.php?year=<?php echo date('Y')?>"><?php echo date('Y')?></a>
 	</li><br>
 	<li>
-			Complete List-HTML
+			List<br>
+			&nbsp;&nbsp;Complete - HTML
 			<a target="self" href="report/completelisthtml.php?year=<?php echo date('Y')-1?>"><?php echo date('Y')-1?></a>
 			<a target="self" href="report/completelisthtml.php?year=<?php echo date('Y')?>"><?php echo date('Y')?></a>
+			<br>&nbsp;&nbsp;<a target="self" href="report/reminderlisthtml.php">Reminder - HTML</a>
 	</li><br>
 	<li>
 				Payment Method List-HTML
@@ -31,10 +33,10 @@ if (Sessions::isValidSession()) {
 	</li><br>
 	<li>
 		Reminder Letter&nbsp;
-		&nbsp;[Pledge Reminder Template&nbsp;=>&nbsp;Operation&nbsp;<a href="doc/Operation_PR_Template_Excel.docx">Word</a>
-		&nbsp;<a href="doc/Operation_PR_Template_Excel.docx">Excel</a>
-		&nbsp;New Masjid&nbsp;<a href="doc/New Masjid_PR_Template_word.docx">Word</a>
-		&nbsp;<a href="doc/New Masjid_PR_Template_Excel.docx">Excel</a>]
+		&nbsp;[Pledge Reminder Template&nbsp;=>&nbsp;Operation&nbsp;<a href="template/Operation_PR_Template_Excel.docx">Word</a>
+		&nbsp;<a href="template/Operation_PR_Template_Excel.docx">Excel</a>
+		&nbsp;New Masjid&nbsp;<a href="template/New Masjid_PR_Template_word.docx">Word</a>
+		&nbsp;<a href="template/New Masjid_PR_Template_Excel.docx">Excel</a>]
 		<br>
 <?php
 	$activeEvents = $clsEvents->getActiveEventList();
@@ -49,11 +51,11 @@ if (Sessions::isValidSession()) {
 		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Excel -
 		<a target="self" href="report/donations_receipt_excel.php?year=<?php echo date('Y')-1?>"><?php echo date('Y')-1?></a>
 		<a href="report/donations_receipt_excel.php?year=<?php echo date('Y')?>"><?php echo date('Y')?> </a>
-		&nbsp;<a href="doc/Donations_Receipt_Template_Excel.docx">Donations_Receipt_Template_Excel.docx</a>
+		&nbsp;<a href="template/Donations_Receipt_Template_Excel.docx">Donations_Receipt_Template_Excel.docx</a>
 		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Word -
 		<a target="self" href="report/donations_receipt_word.php?year=<?php echo date('Y')-1?>"><?php echo date('Y')-1?></a>
 		<a href="report/donations_receipt_word.php?year=<?php echo date('Y')?>"><?php echo date('Y')?></a>
-		&nbsp;<a href="doc/Donations_Receipt_Template_Word.docx">Donations_Receipt_Template_Word.docx</a>
+		&nbsp;<a href="template/Donations_Receipt_Template_Word.docx">Donations_Receipt_Template_Word.docx</a>
 	</li><br>
 </ol>
 </div>

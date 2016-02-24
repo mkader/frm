@@ -22,7 +22,7 @@ if (Sessions::isValidSession() && isset($_GET['year']) ) {
 		$paid= $key_value["amount"];
 		$email= $key_value["email"];
 
-		$document = $objPHPWord->loadTemplate('../doc/Donations_Receipt_Template_word.docx');
+		$document = $objPHPWord->loadTemplate('../template/Donations_Receipt_Template_word.docx');
 
 		$document->setValue('DBName', $name);
 		$document->setValue('DBAddress', $address);
@@ -30,10 +30,16 @@ if (Sessions::isValidSession() && isset($_GET['year']) ) {
 		$document->setValue('DBState', $state);
 		$document->setValue('DBZip', $zip);
 		$document->setValue('DBPaid', $paid);
+
+		$path = '../doc/'.$year.'/donations/';
+		if(!file_exists($path)) {
+			mkdir($path.'mail/', 0777, true);
+			mkdir($path.'email/', 0777, true);
+		}
 		if (strlen($email)>0)
-			$document->save('../doc/'.$year.'/donations/'.str_replace('/',' ',$name).'_'.$email.'.docx');
+			$document->save($path.'email/'.str_replace('/',' ',$name).'_'.$email.'.docx');
 		else
-			$document->save('../doc/'.$year.'/donations/'.str_replace('/',' ',$name).'.docx');
+			$document->save($path.'mail/'.str_replace('/',' ',$name).'.docx');
 	}
 }
 ?>

@@ -7,39 +7,39 @@ if (Sessions::isValidSession() && isset($_GET['year']) ) {
 	$clsReports = new Reports($clsDB);
 	$clsEvents = new Events($clsDB);
 	$objPHPExcel = new PHPExcel();
-	
+
 	$workSheetNum = 0;
 	$year  = $_GET['year'];//@intval(date('Y'));
-	$objWorksheet = paymentListWorkSheet($objPHPExcel, $workSheetNum++, 
+	$objWorksheet = paymentListWorkSheet($objPHPExcel, $workSheetNum++,
 						$clsReports->getCompleteList($year), $year.' List');
-	
+
 	$objWorksheet = paymentSumWorkSheet($objPHPExcel, $workSheetNum++,
 			$clsReports->getCompleteSum($year), $year.' Summary');
-	
+
 	$activeEvents = $clsEvents->getActiveEventList();
 	foreach ($activeEvents as $key_name => $key_value) {
 		//e.id, title, pt.pledge_type
 		// Create a new worksheet, after the default sheet
 		//$objPHPExcel->createSheet();
 		$list = $clsReports->getEventPaymentList($key_value["id"]);
-		$objWorksheet = paymentListWorkSheet($objPHPExcel, $workSheetNum++, 
+		$objWorksheet = paymentListWorkSheet($objPHPExcel, $workSheetNum++,
 				$list, $key_value["title"].' List');
-		
+
 		$list = $clsReports->getEventSum($key_value["id"]);
 		$objWorksheet = eventSumWorkSheet($objPHPExcel, $workSheetNum++,
 				$list, $key_value["title"].' Sum');
 	}
-	
+
 	// Redirect output to a client’s web browser (Excel5)
 	header('Content-Type: application/vnd.ms-excel');
-	header('Content-Disposition: attachment;filename="'. date('Y') .'_MCCFundRaise.xls"');
+	header('Content-Disposition: attachment;filename="'. $year .'_MCCFundRaise.xls"');
 	header('Cache-Control: max-age=0');
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 	$objWriter->save('php://output');
-	
+
 	//$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 	//$objWriter->save(str_replace('.php', '.xlsx', __FILE__));
-}	
+}
 
 function paymentListWorkSheet($objPHPExcel, $workSheetNum, $paymentsList, $title) {
 	$objPHPExcel->createSheet();
@@ -54,7 +54,7 @@ function paymentListWorkSheet($objPHPExcel, $workSheetNum, $paymentsList, $title
 				 ->setCellValue('G1', "DONATION DATE")
 				 ->setCellValue('H1', "PAYMENT METHOD")
 				 ->setCellValue('I1', "COMMENTS");
-	
+
 	$objWorksheet->getColumnDimension('A')->setWidth(30);
 	$objWorksheet->getColumnDimension('B')->setWidth(30);
 	$objWorksheet->getColumnDimension('C')->setWidth(25);
@@ -65,9 +65,9 @@ function paymentListWorkSheet($objPHPExcel, $workSheetNum, $paymentsList, $title
 	$objWorksheet->getColumnDimension('H')->setWidth(18);
 	$objWorksheet->getColumnDimension('I')->setWidth(25);
 	$objWorksheet->getStyle('A1:I1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-	
+
 	$objWorksheet->freezePane('A2');
-	
+
 	$objWorksheet->getStyle('A1:I1')->applyFromArray(
 			array(
 					'font'    => array('bold' => true),
@@ -79,7 +79,7 @@ function paymentListWorkSheet($objPHPExcel, $workSheetNum, $paymentsList, $title
 					)
 			)
 	);
-	
+
 	$row = 2;
 	$totalAmount = 0;
 	foreach ($paymentsList as $key_name => $key_value) {
@@ -102,7 +102,7 @@ function paymentListWorkSheet($objPHPExcel, $workSheetNum, $paymentsList, $title
 					 ->setCellValue('I' . $row, $key_value["payment_comments"]);
 		$row++;
 	}
-	
+
 	//$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:E1');
 	$objWorksheet->setCellValue('E' . ($row+1), 'TOTAL ');
 	$objWorksheet->getStyle('E' . ($row+1))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
@@ -118,24 +118,24 @@ function paymentListWorkSheet($objPHPExcel, $workSheetNum, $paymentsList, $title
 					)
 			)
 	);
-	
+
 	$objWorksheet->getStyle('F2:'. $objWorksheet->getHighestColumn() . $objWorksheet->getHighestRow())
 				 ->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
-	
+
 	$objWorksheet->getStyle('I2:'. $objWorksheet->getHighestColumn() . $objWorksheet->getHighestRow())
 				 ->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
-	
+
 	$styleArray = array(
 			'borders' => array(
 					'allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN)
 			)
 	);
-	
+
 	$objWorksheet->getStyle('A1:' . $objWorksheet->getHighestColumn() . $objWorksheet->getHighestRow())
 				 ->applyFromArray($styleArray);
-	
+
 	$objWorksheet->setTitle($title);
-	
+
 	return $objWorksheet;
 }
 
@@ -157,7 +157,7 @@ function paymentSumWorkSheet($objPHPExcel, $workSheetNum, $paymentsList, $title)
 	$objWorksheet->getColumnDimension('E')->setWidth(15);
 	$objWorksheet->getColumnDimension('F')->setWidth(18);
 	$objWorksheet->getStyle('A1:F1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-	
+
 	$objWorksheet->freezePane('A2');
 
 	$objWorksheet->getStyle('A1:F1')->applyFromArray(
@@ -204,7 +204,7 @@ function paymentSumWorkSheet($objPHPExcel, $workSheetNum, $paymentsList, $title)
 					)
 			)
 	);
-	
+
 	$objWorksheet->getStyle('F2:'. $objWorksheet->getHighestColumn() . $objWorksheet->getHighestRow())
 				 ->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
 
