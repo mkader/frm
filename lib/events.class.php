@@ -45,14 +45,22 @@ class Events {
 
 	function getEventList() {
     	 $sql = 'SELECT
-        	e.id, title, event_date, location, description, target_amount,
-        	e.pledge_type_id, e.active, created_on, modified_on, created_by,
-        	modified_by, pt.pledge_type
-        FROM
-        	event e
-        	inner join pledge_type pt on e.pledge_type_id = pt.id
-    	order by
-    	 	e.id desc';
+				e.id, title, event_date, location, description, target_amount,
+				e.pledge_type_id, e.active, created_on, modified_on, created_by,
+				modified_by, pt.pledge_type, gpl.pledged_paid, gpl.pledged_amount,
+				(gpl.pledged_paid/gpl.pledged_amount) * 100 pledged_percentage
+			FROM
+				event e
+				inner join pledge_type pt on e.pledge_type_id = pt.id
+				left join (SELECT
+						pl.event_id,  sum(pl.amount) pledged_amount, sum(pa.pl_paid) pledged_paid
+					FROM
+						pledge pl
+						left join (select pledge_id, sum(amount) pl_paid from payment group by pledge_id) pa on pa.pledge_id = pl.id
+					group by
+						pl.event_id) gpl on gpl.event_id = e.id
+			order by
+				e.id desc';
         $stmt = $this->conn->prepare($sql);
         $this->db->checkError();
         $stmt->execute();
@@ -62,7 +70,8 @@ class Events {
         $events = array();
         $stmt->bind_result($id, $title, $event_date, $location, $description,
         	$target_amount, $pledge_type_id, $active, $created_on, $modified_on,
-        	$created_by, $modified_by, $pledge_type);
+        	$created_by, $modified_by, $pledge_type, $pledged_paid,
+        	$pledged_amount, $pledged_percentage);
         while ($stmt->fetch()) {
             $events[] = array('id' => $id, 'title' => $title,
             	'event_date' => Commons::date_format_form($event_date),
@@ -73,7 +82,8 @@ class Events {
             	'created_on' => Commons::date_format_form($created_on),
             	'modified_on' => Commons::date_format_form($modified_on),
             	'created_by' => $created_by, 'modified_by' => $modified_by ,
-            	'pledge_type' => $pledge_type);
+            	'pledge_type' => $pledge_type, 'pledged_amount' => $pledged_amount,
+            	'pledged_paid' => $pledged_paid, 'pledged_percentage' => $pledged_percentage);
         }
 		$stmt->close();
 

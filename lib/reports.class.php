@@ -275,6 +275,47 @@ class Reports {
     }
 
     /**
+     *	list of sum pledged type by yealry.
+     *	Returns an array of list
+     *
+     */
+    function getYearlyPledgeTypeSumList() {
+		$sql = "select
+			year(pa.payment_date) year, sum(pa.amount) amount,
+			sum(case when e.pledge_type_id is null then pa.amount else 0 end) no,
+			sum(case when e.pledge_type_id = '1' then pa.amount else 0 end) operation,
+			sum(case when e.pledge_type_id = '2' then pa.amount else 0 end) newmasjid,
+			sum(case when e.pledge_type_id = '3' then pa.amount else 0 end) zakath,
+			sum(case when e.pledge_type_id = '4' then pa.amount else 0 end) transportation,
+			sum(case when e.pledge_type_id = '5' then pa.amount else 0 end) funeral
+		from
+			payment pa
+			left join pledge pl on pl.id = pa.pledge_id
+			left join event e on e.id = pl.event_id
+			left join pledge_type pt on pt.id = e.pledge_type_id
+		group by
+			year(pa.payment_date) desc";
+		//echo $sql;
+		$stmt = $this->conn->prepare($sql);
+		$this->db->checkError();
+		$stmt->execute();
+		$this->db->checkError();
+
+		$reports = array();
+		$stmt->bind_result($year, $amount, $no, $operation, $newmasjid, $zakath, $transportation, $funeral);
+		while ($stmt->fetch()) {
+			$reports[] = array('year' => $year, 'amount' => $amount,
+					'no' => $no, 'operation' => $operation, 'newmasjid' => $newmasjid,
+					'zakath' => $zakath, 'transportation' => $transportation,
+					'funeral' => $funeral);
+		}
+		$stmt->close();
+
+		return $reports;
+    }
+
+
+    /**
      *	list of pledged reminder donator.
      *	Returns an array of list
      *

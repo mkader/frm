@@ -31,21 +31,21 @@ if (Sessions::isValidSession() && isset($_GET['year']) ) {
 	$clsDB = new DB();
 	$clsReports = new Reports($clsDB);
 	$clsEvents = new Events($clsDB);
-	
+
 	$year  = $_GET['year'];//@intval(date('Y'));
-	paymentListWorkSheet($clsReports->getCompleteList($year), $year.' List');
-	
+	//paymentListWorkSheet($clsReports->getCompleteList($year), $year.' List');
+
 	paymentSumWorkSheet($clsReports->getCompleteSum($year), $year.' Summary');
-	
+
 	$activeEvents = $clsEvents->getActiveEventList();
 	foreach ($activeEvents as $key_name => $key_value) {
-		$list = $clsReports->getEventPaymentList($key_value["id"]);
-		paymentListWorkSheet($list, $key_value["title"].' List');
-		
+		//$list = $clsReports->getEventPaymentList($key_value["id"]);
+		//paymentListWorkSheet($list, $key_value["title"].' List');
+
 		$list = $clsReports->getEventSum($key_value["id"]);
 		eventSumWorkSheet($list, $key_value["title"].' Sum');
 	}
-}	
+}
 
 function paymentListWorkSheet($paymentsList, $title) {
 	echo '<table border="1" rules="all">
@@ -149,6 +149,8 @@ function eventSumWorkSheet($paymentsList, $title) {
 	foreach ($paymentsList as $key_name => $key_value) {
 		$totalpledgedamount+=$key_value["pledgedamount"];
 		$totalpaid+=$key_value["paid"];
+		$balance  =  $key_value["pledgedamount"]-$key_value["paid"];
+		if ($balance<0) $balance =0;
 		$name =$key_value["name"].
 			(strlen($key_value["company_name"])>0?' ('. $key_value["company_name"].')':'');
 		$address =$key_value["address1"].
@@ -164,7 +166,7 @@ function eventSumWorkSheet($paymentsList, $title) {
 			<td>'.$key_value["email"].'</td>
 			<td style="text-align:right;">'.$key_value["pledgedamount"].'</td>
 			<td style="text-align:right;">'.$key_value["paid"].'</td>
-			<td style="text-align:right;">'.($key_value["pledgedamount"]-$key_value["paid"]).'</td>
+			<td style="text-align:right;">'.$balance.'</td>
 		</tr>';
 		$row++;
 	}

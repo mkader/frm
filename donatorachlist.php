@@ -62,7 +62,6 @@ $(gridid3).jqGrid(common.gridOptions(gridpagerid3, achColModel,
 	'ACH List', 'achs.php',900,null, initGrid3, 5, 115, common.onDblClickRow));
 
 function afterSubmitDonatorsACH(response) {
-	//debugger;
 	var res = common.jsonParse(response.responseText)
 	if (res['error']) {
 		return [false, 'Error: ' + res['message']];
@@ -73,12 +72,15 @@ function afterSubmitDonatorsACH(response) {
 };
 
 function beforeShowFormDonatorsACH(form) {
-	debugger;
 	$("#donator_id", form).val(<?php echo $did ?>);
 	$('#donator_id',form).attr('disabled','true');
 	common.numberOnly('#cycle');
 	common.decimalOnly('#amount');
 };
+
+function editSettings() {
+	return $.extend(common.modalEdit('auto', '',afterSubmitDonatorsACH, beforeShowFormDonatorsACH));
+}
 
 $(gridid3).navGrid(gridpagerid3,
 	gridFooterIcons,

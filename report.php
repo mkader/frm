@@ -16,6 +16,9 @@ if (Sessions::isValidSession()) {
 <div>
 <ol>
 	<li>
+			Yearly Pledge Type Sum List - <a href="report/yearlypledgetypesumlist.php">HTML</a>
+	</li><br>
+	<li>
 		Complete List-Excel
 		<a href="report/completelist.php?year=<?php echo date('Y')-1?>"><?php echo date('Y')-1?></a>
 		<a href="report/completelist.php?year=<?php echo date('Y')?>"><?php echo date('Y')?></a>

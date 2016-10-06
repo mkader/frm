@@ -6,7 +6,7 @@ var donator_id =':;';
 var donator_value =':[All];';
 var d = (new Date()).getTime();
 
-common.ajaxCall(false, "get", "json/select.json", null,
+common.ajaxCall(false, "get", "json/select.json?nocache="+d, null,
 	function( response ) {
 		state_id += response['state_id'][0];
 		state_value += response['state_id'][0];
@@ -33,11 +33,12 @@ var userColModel = [
 	{label: 'Comments', template:common.textAreaTemplate('comments', 100, false, " &nbsp; ", true,8,1, '2', '23')}
 ];
 
-/*function editSettings() {
+function editSettings() {
+	debugger;
 	return $.extend( common.modalEdit('auto', '',common.afterSubmit, null), {
 		beforeSubmit: beforeSubmit,
 	})
-}*/
+}
 
 function beforeSubmit(postdata, form) {
 	var validate = true;

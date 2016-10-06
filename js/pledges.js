@@ -1,4 +1,3 @@
-debugger;
 var gridid1 = "#jqGridPledge";
 var gridpagerid1 = "#jqGridPagerPledge";
 
@@ -38,10 +37,14 @@ var pledgeColModel = [
 	{label: 'Pledge Amount', formatter:'currency',
 		formatoptions:{thousandsSeparator: ",", decimalPlaces: 2, prefix: "$ "},
 		template:common.numberTemplate('amount', 50, true, ' * ',4,1, {maxlength: 8})},
-	{label: 'Payment Method', template:common.selectTemplate('payment_method_id', 50, true, ' * ',
-		'select', payment_method_id, payment_method_value, true,5,1,'')},
-	{label: 'Payment Type', template:common.selectTemplate('payment_type_id', 50, true, ' * ',
-		'select', payment_type_id, payment_type_value, true,6,1,'')},
+	{label: 'Paid', formatter:'currency',
+		formatoptions:{thousandsSeparator: ",", decimalPlaces: 2, prefix: "$ "},
+	    hidden: false, editable: false, editrules: { edithidden: false }, hidedlg: true,
+		template:common.numberTemplate('paid', 50, false, '  ',5,1, {maxlength: 8})},
+	//{label: 'Payment Method', template:common.selectTemplate('payment_method_id', 50, true, ' * ',
+	//	'select', payment_method_id, payment_method_value, true,6,1,'')},
+	//{label: 'Payment Type', template:common.selectTemplate('payment_type_id', 50, true, ' * ',
+	//	'select', payment_type_id, payment_type_value, true,7,1,'')},
 ];
 
 // activate the toolbar searching
@@ -57,12 +60,11 @@ function pushData1(result) {
 			//event_id:item.event_id,
 			//donator_id:item.donator_id,
 			amount: item.amount,
-			//payment_method_id: item.payment_method_id,
-			//payment_type_id: item.payment_type_id,
 			event_id: item.title,
 			donator_id: item.name,
-			payment_method_id: item.payment_method,
-			payment_type_id: item.payment_type
+			//payment_method_id: item.payment_method,
+			//payment_type_id: item.payment_type,
+			paid: item.paid
 		});
 	}
 	return arrayData;

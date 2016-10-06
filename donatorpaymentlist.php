@@ -65,7 +65,6 @@ $(gridid2).jqGrid(common.gridOptions(gridpagerid2, paymentColModel,
 	'Payment List', 'payments.php',900,null, initGrid2, 5, 115, common.onDblClickRow));
 
 function afterSubmitDonatorsPayment(response) {
-	//debugger;
 	var res = common.jsonParse(response.responseText)
 	if (res['error']) {
 		return [false, 'Error: ' + res['message']];
@@ -76,10 +75,8 @@ function afterSubmitDonatorsPayment(response) {
 };
 
 function beforeInitDataDonatorsPayment(form) {
-	//debugger;
 	common.ajaxCall(false, "get", "pledges.php?action=donatorspledgelistjson&id=<?php echo $did ?>", null,
 		function( response ) {
-		debugger;
 			var res = common.jsonParse(response);
 			if (res['error']) {
 				common.errorAlert(event, res['message']);
@@ -97,8 +94,14 @@ function beforeInitDataDonatorsPayment(form) {
 
 }
 
+function editSettings() {
+	return $.extend(common.modalEdit('auto', '',afterSubmitDonatorsPayment, beforeShowFormDonatorsPayment), {
+		beforeInitData: beforeInitDataDonatorsPayment,
+	});
+}
+
+
 function beforeShowFormDonatorsPayment(form) {
-	debugger;
 	$("#donator_id", form).val(<?php echo $did ?>);
 	$('#donator_id',form).attr('disabled','true');
 	common.numberOnly('#tax_year');

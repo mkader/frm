@@ -5,8 +5,8 @@
 	$(function() {$( "#tabs" ).tabs({}); });
 	$( "#tabs" ).hide();
 </script>
-  
- 
+
+
 <br>
 <div id="tabs" style="width:900px">
   <ul>
@@ -18,5 +18,5 @@
   <div id="paymentlistid"></div>
   <div id="achlistid"></div>
 </div>
- 
+
 <script type="text/javascript" src="js/donators.js" ></script>

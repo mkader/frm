@@ -89,15 +89,11 @@ function iudPledge($iud, $actionType, $actionTypeDone) {
     $eventID = 0;
 	$donatorID = 0;
 	$amount = 0;
-	$paymentMethodID = 0;
-	$paymentTypeID = 0;
 
 	if ($iud!='d') {
 		$eventID = @intval($_POST['event_id']);
 		$donatorID = @intval($_POST['donator_id']);
 		$amount = $_POST['amount'];
-		$paymentMethodID = @intval($_POST['payment_method_id']);
-		$paymentTypeID =  @intval($_POST['payment_type_id']);
 	}
 
 	if (($iud=='u' || $iud=='d') && $id<=0) {
@@ -107,7 +103,7 @@ function iudPledge($iud, $actionType, $actionTypeDone) {
 	}
 
 	try {
-		$id = $clsPledges->iudPledge($iud, $id, $eventID, $donatorID, $amount, $paymentMethodID, $paymentTypeID);
+		$id = $clsPledges->iudPledge($iud, $id, $eventID, $donatorID, $amount);
     	Logger::log($actionType. ' pledge complete');
         if ($id > 0) {
             $response['success'] = 1;

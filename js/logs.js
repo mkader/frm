@@ -4,7 +4,8 @@ var log_table_id =':;';
 var log_table_value =':[All];';
 var log_action_id =':;';
 var log_action_value =':[All];';
-common.ajaxCall(false, "get", "json/select.json", null,
+var d = (new Date()).getTime();
+common.ajaxCall(false, "get", "json/select.json?nocache="+d, null,
 	function( response ) {
 		log_table_id += response['log_table_id'][0];
 		log_table_value += response['log_table_value'][0];
@@ -70,7 +71,6 @@ function fetchGridData() {
 }
 
 function pushData(result) {
-	//debugger;
 	var arrayData = [];
 	//var result = res['data'];
 	for (var i = 0; i < result.length; i++) {

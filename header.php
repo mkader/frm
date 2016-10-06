@@ -33,6 +33,7 @@ if (Sessions::isValidSession()){
 		<li>Expense</li>
 		<li>Masjid</li>
 		<li>Template</li>
+		<li>School</li>
 		<li>Report</li>
 <?php if (Sessions::isLoginUserSuperAdmin()) { ?> <!--<li>Log</li>--> <?php } ?>
 	</ul>

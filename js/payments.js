@@ -1,9 +1,5 @@
-debugger;
-console.log(donator_id);
 var gridid2= "#jqGridPayment";
 var gridpagerid2 = "#jqGridPagerPayment";
-//alert(payment_method_id);
-//alert(payment_method_value);
 var paymentColModel = [
 
 	{label: 'id', template:common.idTemplate('id',1,1)},

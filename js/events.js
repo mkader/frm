@@ -2,7 +2,8 @@ var gridid = "#jqGrid";
 var gridpagerid  = "#jqGridPager";
 var pledge_type_id =':;';
 var pledge_type_value =':[All];';
-common.ajaxCall(false, "get", "json/select.json", null,
+var d = (new Date()).getTime();
+common.ajaxCall(false, "get", "json/select.json?nocache="+d, null,
 	function( response ) {
 		pledge_type_id += response['pledge_type_id'][0];
 		pledge_type_value += response['pledge_type_value'][0];
@@ -18,6 +19,18 @@ var eventColModel = [
 	{label: 'Target Amount', formatter:'currency',
 		formatoptions:{thousandsSeparator: ",", decimalPlaces: 0, prefix: "$ "},
 		template:common.numberTemplate('target_amount', 50, true, ' * ',3,1, {maxlength: 8})},
+	{label: 'Pledged Amount', formatter:'currency',
+		formatoptions:{thousandsSeparator: ",", decimalPlaces: 2, prefix: "$ "},
+	    hidden: false, editable: false, editrules: { edithidden: false }, hidedlg: true,
+		template:common.numberTemplate('pledged_amount', 50, false, '  ',5,1, {maxlength: 8})},
+	{label: 'Paid', formatter:'currency',
+		formatoptions:{thousandsSeparator: ",", decimalPlaces: 2, prefix: "$ "},
+	    hidden: false, editable: false, editrules: { edithidden: false }, hidedlg: true,
+		template:common.numberTemplate('pledged_paid', 50, false, '  ',5,1, {maxlength: 8})},
+	{label: 'Percentage', formatter:'currency',
+		formatoptions:{thousandsSeparator: ",", decimalPlaces: 2, prefix: ""},
+	    hidden: false, editable: false, editrules: { edithidden: false }, hidedlg: true,
+		template:common.numberTemplate('pledged_percentage', 50, false, '  ',5,1, {maxlength: 8})},
 	{label: 'Event Type', template:common.selectTemplate('pledge_type', 50, true, ' * ',
 			'select', pledge_type_id, pledge_type_value,true,4,1,'')},
 	{label: 'Location', template:common.textTemplate('location', 150, true, ' * ',true,5,1)},
@@ -26,6 +39,9 @@ var eventColModel = [
 	{label: 'Description', template:common.textAreaTemplate('description', 100, false, ' &nbsp; ',true,8,1, '2', '23')},
 ];
 
+function editSettings() {
+	return $.extend(common.modalEdit('auto','',common.afterSubmit, beforeShowForm));
+}
 
 $(gridid).jqGrid(common.gridOptions(gridpagerid, eventColModel, 'Event List',
 	'events.php', 900, null, null, 10, 230, common.onDblClickRow));
@@ -65,6 +81,9 @@ function pushData(result) {
 			location: item.location,
 			description: item.description,
 			target_amount: item.target_amount,
+			pledged_amount: item.pledged_amount,
+			pledged_paid: item.pledged_paid,
+			pledged_percentage:item.pledged_percentage,
 			pledge_type: item.pledge_type,
 			active: item.active
 		});

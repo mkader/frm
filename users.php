@@ -89,7 +89,7 @@ function userList() {
 
 	try {
 		$responseData = $clsUsers->getUserList();
-		Logger::log('User List complete');
+		//Logger::log('User List complete');
 		$response['success'] = 1;
 		$response['data'] = $responseData;
     } catch (DBException $e) {

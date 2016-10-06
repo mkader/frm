@@ -66,6 +66,7 @@ var Common = {
 	    return re.test(email);
 	},
 
+	//There is a bug in editSettings, fix it later.
 	onDblClickRow: function(rowid, ri, ci) {
 		//alert(rowid + " - " + ri + " - " + ci)
         var p = $(this)[0].p;

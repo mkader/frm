@@ -2,8 +2,8 @@ var gridid = "#jqGrid";
 var gridpagerid  = "#jqGridPager";
 var event_id ='0:;';
 var event_value =':[All];';
-
-common.ajaxCall(false, "get", "json/event.json", null,
+var d = (new Date()).getTime();
+common.ajaxCall(false, "get", "json/event.json?nocache="+d, null,
 	function( response ) {
 		event_id += response['event_id'][0];
 		event_value += response['event_value'][0];

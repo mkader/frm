@@ -6,7 +6,7 @@ if (Sessions::isValidSession() && isset($_GET['event_id']) ) {
 	$clsDB = new DB();
 	$clsReports = new Reports($clsDB);
 	$objPHPWord = new PHPWord();
-	$year = 2015;
+	$year = date("Y");
 	$pledge_type_id  = $_GET['pledge_type_id'];
 	$event_id  = $_GET['event_id'];
 	$list = $clsReports->getReminderList($event_id);
@@ -27,9 +27,9 @@ if (Sessions::isValidSession() && isset($_GET['event_id']) ) {
 		$email= $key_value["email"];
 
 		if ($pledge_type_id == 2)
-			$document = $objPHPWord->loadTemplate('../doc/New Masjid_PR_Template_Word.docx');
+			$document = $objPHPWord->loadTemplate('../template/New Masjid_PR_Template_Word.docx');
 		else
-			$document = $objPHPWord->loadTemplate('../doc/Operation_PR_Template_Word.docx');
+			$document = $objPHPWord->loadTemplate('../template/Operation_PR_Template_Word.docx');
 
 		$document->setValue('DBName', $name);
 		$document->setValue('DBAddress', $address);
@@ -41,13 +41,19 @@ if (Sessions::isValidSession() && isset($_GET['event_id']) ) {
 		$document->setValue('DBBalance', $balance);
 		$document->setValue('DBEvent', $event);
 
-		$path = '../doc/'.$year.'/remainders/';
+		$path = '../doc/'.$year.'/remainders/'. $event_id.'_';
 		if ($pledge_type_id == 2) $path.='masjid/'; else $path.='operation/';
 
+		//echo $path.' - ' .file_exists($path);
+		if(!file_exists($path)) {
+			mkdir($path.'mail/', 0777, true);
+			mkdir($path.'email/', 0777, true);
+		}
+
 		if (strlen($email)>0)
-			$document->save($path.str_replace('/',' ',$name).'_'.$email.'.docx');
+			$document->save($path.'email/'.str_replace('/',' ',$name).'_'.$email.'.docx');
 		else
-			$document->save($path.str_replace('/',' ',$name).'.docx');
+			$document->save($path.'mail/'.str_replace('/',' ',$name).'.docx');
 
 	}
 }

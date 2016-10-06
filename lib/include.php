@@ -17,4 +17,7 @@
 	require_once('meetings.class.php');
 	require_once('masjids.class.php');
 	require_once('achs.class.php');
+	require_once('enrollments.class.php');
+	require_once('students.class.php');
+	require_once('fees.class.php');
 ?>

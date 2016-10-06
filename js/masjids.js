@@ -2,7 +2,8 @@ var gridid = "#jqGrid";
 var gridpagerid  = "#jqGridPager";
 var state_id =':;';
 var state_value =':[All];';
-common.ajaxCall(false, "get", "json/select.json", null,
+var d = (new Date()).getTime();
+common.ajaxCall(false, "get", "json/select.json?nocache="+d, null,
 	function( response ) {
 		state_id += response['state_id'][0];
 		state_value += response['state_id'][0];

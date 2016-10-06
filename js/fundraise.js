@@ -15,6 +15,7 @@ $(function(){
 		else if (menu=="member") updateContent("memberlist.php", contentid);
 		else if (menu=="meeting") updateContent("meetinglist.php", contentid);
 		else if (menu=="masjid") updateContent("masjidlist.php", contentid);
+		else if (menu=="school") updateContent("school.php", contentid);
 	});
 })
 

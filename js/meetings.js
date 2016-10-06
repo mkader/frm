@@ -7,6 +7,10 @@ var meetingColModel = [
 	{label: 'Time', template:common.textTemplate('meeting_time', 100, true, ' * ',true,3,1)},
 ];
 
+function editSettings() {
+	return $.extend(common.modalEdit('auto', "", common.afterSubmit, null));
+}
+
 $(gridid).jqGrid(common.gridOptions(gridpagerid, meetingColModel, 'Meeting List',
 	'meetings.php', 900, null, null, 10, 230, common.onDblClickRow));
 
