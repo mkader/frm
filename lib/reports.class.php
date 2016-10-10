@@ -14,7 +14,269 @@ class Reports {
 
         $this->conn = $this->db->getConnection();
     }
-
+    
+    /**
+     *	list of enrollment.
+     *	Returns an array of list
+     *
+     * @param	int	$iyear.
+     */
+    function getEnrollmentList($orderBy ="concat(father_name,'', mother_name) asc") {
+    	$sql = "SELECT
+			    father_name, father_cell, mother_name, mother_cell, 
+    			address, city, zipcode, phone, language_primary, language_other,
+			    emergency_contact1, emergency_phone1, emergency_relation1,
+			    emergency_contact2, emergency_phone2, emergency_relation2,
+			    physician_name, physician_phone, physician_address, emergency_hospital,
+			    total_fee, financial_aid, 
+			    se.comments, first_name, middle_name, last_name,
+			    allergies_details, medical_conditions, gender,
+			    dob, age, ss.comments scomments
+		    FROM
+			    school_enrollment se
+			    inner join school_student ss on ss.enrollment_id =se.id
+    		where
+    			ss.active = 1
+		    order by ". $orderBy;
+    	$stmt = $this->conn->prepare($sql);
+    	$this->db->checkError();
+    	$stmt->execute();
+    	$this->db->checkError();
+    
+    	$enrollments = array();
+    	$stmt->bind_result($father_name, $father_cell, $mother_name, $mother_cell, 
+    			$address, $city, $zipcode, $phone, $language_primary, $language_other,
+    			$emergency_contact1, $emergency_phone1, $emergency_relation1,
+    			$emergency_contact2, $emergency_phone2, $emergency_relation2,
+    			$physician_name, $physician_phone, $physician_address, $emergency_hospital,
+    			$total_fee, $financial_aid, $comments, $first_name, $middle_name, $last_name,
+			    $allergies_details, $medical_conditions, $gender, $dob, $age, $scomments);
+    	while ($stmt->fetch()) {
+    		$enrollments[] = array('father_name' => $father_name,
+    				'father_cell' => $father_cell,
+    				'mother_name' => $mother_name,
+    				'mother_cell' => $mother_cell,
+    				'address' => $address, 'city' => $city,
+    				'zipcode' => $zipcode, 'phone' => $phone,
+    				'language_primary' => $language_primary,
+    				'language_other' => $language_other,
+    				'emergency_contact1' => $emergency_contact1,
+    				'emergency_phone1' => $emergency_phone1,
+    				'emergency_relation1' => $emergency_relation1,
+    				'emergency_contact2' => $emergency_contact2,
+    				'emergency_phone2' => $emergency_phone2,
+    				'emergency_relation2' => $emergency_relation2, 'comments' => $comments,
+    				'physician_name' => $physician_name,
+    				'physician_phone' => $physician_phone,
+    				'physician_address' => $physician_address,
+    				'emergency_hospital' => $emergency_hospital,
+    				'total_fee' => $total_fee,
+    				'financial_aid' => $financial_aid,
+    				'first_name' => $first_name,
+    				'middle_name' => $middle_name,
+    				'last_name' => $last_name,
+    				'allergies_details' => $allergies_details,
+    				'medical_conditions' => $medical_conditions,
+    				'gender' => $gender,
+    				'dob' => $dob,
+    				'age' => $age,
+    				'scomments' => $scomments);
+    	}
+    	$stmt->close();
+    
+    	return $enrollments;
+    }
+    
+    /**
+     *	sum of school fees by school year starting from oct and next year sep.
+     *	Returns an array of list
+     *
+     * @param	int	$iyear.
+     */
+    function getSchoolYearFeeSum($syear) {
+    	$eyear = $syear+1;
+    	$years = ($syear.','.$eyear);
+    	$sdate = $syear.'-10-01';
+    	$edate = $eyear.'-09-30';
+    	$sql = 'SELECT
+	    	1 as pos,
+    		SUM(IF(MONTH(fee_date) = 10, amount, 0)) AS S10,
+	    	SUM(IF(MONTH(fee_date) = 11, amount, 0)) AS S11,
+	    	SUM(IF(MONTH(fee_date) = 12, amount, 0)) AS S12,
+	    	SUM(IF(MONTH(fee_date) = 1, amount, 0)) AS E1,
+	    	SUM(IF(MONTH(fee_date) = 2, amount, 0)) AS E2,
+	    	SUM(IF(MONTH(fee_date) = 3, amount, 0)) AS E3,
+	    	SUM(IF(MONTH(fee_date) = 4, amount, 0)) AS E4,
+	    	SUM(IF(MONTH(fee_date) = 5, amount, 0)) AS E5,
+	    	SUM(IF(MONTH(fee_date) = 6, amount, 0)) AS E6,
+	    	SUM(IF(MONTH(fee_date) = 7, amount, 0)) AS E7,
+	    	SUM(IF(MONTH(fee_date) = 8, amount, 0)) AS E8,
+	    	SUM(IF(MONTH(fee_date) = 9, amount, 0)) AS E9,
+    		SUM(amount) AS SE	
+	    FROM
+	    	school_fee
+	    where
+	    	fee_date>=? and fee_date <=?
+    	union all
+		SELECT
+			2 as pos,
+	    	SUM(IF(MONTH(payment_date) = 10, pa.amount, 0)) AS S10,
+	    	SUM(IF(MONTH(payment_date) = 11, pa.amount, 0)) AS S11,
+	    	SUM(IF(MONTH(payment_date) = 12, pa.amount, 0)) AS S12,
+	    	SUM(IF(MONTH(payment_date) = 1, pa.amount, 0)) AS E1,
+	    	SUM(IF(MONTH(payment_date) = 2, pa.amount, 0)) AS E2,
+	    	SUM(IF(MONTH(payment_date) = 3, pa.amount, 0)) AS E3,
+	    	SUM(IF(MONTH(payment_date) = 4, pa.amount, 0)) AS E4,
+	    	SUM(IF(MONTH(payment_date) = 5, pa.amount, 0)) AS E5,
+	    	SUM(IF(MONTH(payment_date) = 6, pa.amount, 0)) AS E6,
+	    	SUM(IF(MONTH(payment_date) = 7, pa.amount, 0)) AS E7,
+	    	SUM(IF(MONTH(payment_date) = 8, pa.amount, 0)) AS E8,
+	    	SUM(IF(MONTH(payment_date) = 9, pa.amount, 0)) AS E9,
+    		SUM(pa.amount) AS SE	
+		from
+			event e
+			inner join pledge p on e.id = p.event_id
+			inner join payment pa on p.id  = pa.pledge_id 
+		where
+			e.pledge_type_id = 6  and year(e.event_date)=?
+		order by pos';
+    	$stmt = $this->conn->prepare($sql);
+    	$this->db->checkError();
+    	$stmt->bind_param('ssi', $sdate, $edate, $syear);
+    	$this->db->checkError();
+    	$stmt->execute();
+    	$this->db->checkError();
+    
+    	$reports = array();
+    	$stmt->bind_result($pos, $S10, $S11, $S12, $E1, $E2, $E3, $E4, $E5, $E6, $E7, $E8, $E9, $SE);
+    	while ($stmt->fetch()) {
+    		$reports[] = array('S10' => $S10, 'S11' => $S11, 'S12' => $S12, 
+    							'E1' => $E1, 'E2' => $E2, 'E3' => $E3,
+    							'E4' => $E4, 'E5' => $E5, 'E6' => $E6, 
+    							'E7' => $E7, 'E8' => $E8, 'E9' => $E9, 'SE' => $SE);
+    	}
+    	$stmt->close();
+    
+    	return $reports;
+    }
+    
+    /**
+     *	fee not paid this month list.
+     *	Returns an array of list
+     *
+     * @param	int	$iyear.
+     */
+    function getNotPaidThisMonth($syear, $month) {
+    	$eyear = $syear+1;
+    	$years = ($syear.','.$eyear);
+    	$sdate = $syear.'-10-01';
+    	$edate = $eyear.'-09-30';
+    	$sql = "select 
+					concat(father_name,' ', mother_name) parent_name,
+    				father_name, father_cell, mother_name, mother_cell, 
+    				concat(address,', ',city,' - ', zipcode) address_line, phone,
+    			 	financial_aid, total_fee, 
+    				(select count(ss.id) from school_student ss where se.id = ss.enrollment_id 
+    				 and ss.active = 1)  no_of_student
+				from 
+					school_enrollment se
+					left join school_fee sf on se.id = sf.enrollment_id
+    					and fee_date>=? and fee_date <=? and month(fee_date) =?
+				group by
+					parent_name
+    			having  
+    				if(SUM(amount) is null,0,SUM(amount))=0";
+    	$stmt = $this->conn->prepare($sql);
+    	$this->db->checkError();
+    	$stmt->bind_param('ssi', $sdate, $edate, $month);
+    	$this->db->checkError();
+    	$stmt->execute();
+    	$this->db->checkError();
+    
+    	$reports = array();
+    	$stmt->bind_result($parent_name, $father_name, $father_cell, $mother_name, $mother_cell, 
+    			$address_line, $phone, $financial_aid, $total_fee, $no_of_student);
+    	while ($stmt->fetch()) {
+    		$reports[] = array(
+    				'parent_name' => $parent_name,
+    				'father_name' => $father_name, 
+    				'father_cell' => $father_cell,
+    				'mother_name' => $mother_name,
+    				'mother_cell' => $mother_cell,
+    				'address_line' => $address_line,
+    				'phone' => $phone,
+    				'financial_aid' => $financial_aid,
+    				'total_fee' => $total_fee,
+    				'no_of_student' => $no_of_student);
+    	}
+    	$stmt->close();
+    
+    	return $reports;
+    }
+    
+    /**
+     *	sum of parent fees by school year starting from oct and next year sep.
+     *	Returns an array of list
+     *
+     * @param	int	$iyear.
+     */
+    function getParentFeeSum($syear) {
+    	$eyear = $syear+1;
+    	$years = ($syear.','.$eyear);
+    	$sdate = $syear.'-10-01';
+    	$edate = $eyear.'-09-30';
+    	$sql = "select 
+					concat(father_name,'/',mother_name) parent_name, 
+					concat(address,', ',city,' - ', zipcode) address_line, 
+    			 	financial_aid, total_fee, 
+    				(select count(ss.id) from school_student ss where se.id = ss.enrollment_id 
+    				 and ss.active = 1)  no_of_student,
+					SUM(IF(MONTH(fee_date) = 10, amount, 0)) AS S10,
+			    	SUM(IF(MONTH(fee_date) = 11, amount, 0)) AS S11,
+			    	SUM(IF(MONTH(fee_date) = 12, amount, 0)) AS S12,
+			    	SUM(IF(MONTH(fee_date) = 1, amount, 0)) AS E1,
+			    	SUM(IF(MONTH(fee_date) = 2, amount, 0)) AS E2,
+			    	SUM(IF(MONTH(fee_date) = 3, amount, 0)) AS E3,
+			    	SUM(IF(MONTH(fee_date) = 4, amount, 0)) AS E4,
+			    	SUM(IF(MONTH(fee_date) = 5, amount, 0)) AS E5,
+			    	SUM(IF(MONTH(fee_date) = 6, amount, 0)) AS E6,
+			    	SUM(IF(MONTH(fee_date) = 7, amount, 0)) AS E7,
+			    	SUM(IF(MONTH(fee_date) = 8, amount, 0)) AS E8,
+			    	SUM(IF(MONTH(fee_date) = 9, amount, 0)) AS E9,
+		    		SUM(amount) AS SE	
+				from 
+					school_enrollment se
+					left join school_fee sf on se.id = sf.enrollment_id
+    					and fee_date>=? and fee_date <=?
+				group by
+					parent_name";
+    	$stmt = $this->conn->prepare($sql);
+    	$this->db->checkError();
+    	$stmt->bind_param('ss', $sdate, $edate);
+    	$this->db->checkError();
+    	$stmt->execute();
+    	$this->db->checkError();
+    
+    	$reports = array();
+    	$stmt->bind_result($parent_name, $address_line, $financial_aid, $total_fee, $no_of_student,
+    			$S10, $S11, $S12, $E1, $E2, $E3, $E4, $E5, $E6, $E7, $E8, $E9, $SE);
+    	while ($stmt->fetch()) {
+    		$reports[] = array(
+    				'parent_name' => $parent_name, 
+    				'address_line' => $address_line, 
+    				'financial_aid' => $financial_aid,
+    				'total_fee' => $total_fee,
+    				'no_of_student' => $no_of_student,
+    				'S10' => $S10, 'S11' => $S11, 'S12' => $S12,
+    				'E1' => $E1, 'E2' => $E2, 'E3' => $E3,
+    				'E4' => $E4, 'E5' => $E5, 'E6' => $E6,
+    				'E7' => $E7, 'E8' => $E8, 'E9' => $E9, 'SE' => $SE);
+    	}
+    	$stmt->close();
+    
+    	return $reports;
+    }
+    
     /**
      *	list of donator payment by year.
      *	Returns an array of list

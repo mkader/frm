@@ -9,22 +9,12 @@ if (Sessions::isValidSession() && isset($_GET['year']) ) {
 	$objPHPExcel = new PHPExcel();
 
 	$workSheetNum = 0;
-	$year  = $_GET['year'];//@intval(date('Y'));
-	//$objWorksheet = paymentListWorkSheet($objPHPExcel, $workSheetNum++,
-	//					$clsReports->getCompleteList($year), $year.' List');
-
+	$year  = $_GET['year'];
 	$objWorksheet = paymentSumWorkSheet($objPHPExcel, $workSheetNum++,
 			$clsReports->getCompleteSum($year), $year.' Summary');
 
 	$activeEvents = $clsEvents->getActiveEventList();
 	foreach ($activeEvents as $key_name => $key_value) {
-		//e.id, title, pt.pledge_type
-		// Create a new worksheet, after the default sheet
-		//$objPHPExcel->createSheet();
-		//$list = $clsReports->getEventPaymentList($key_value["id"]);
-		//$objWorksheet = paymentListWorkSheet($objPHPExcel, $workSheetNum++,
-		//		$list, $key_value["title"].' List');
-
 		$list = $clsReports->getEventSum($key_value["id"]);
 		$objWorksheet = eventSumWorkSheet($objPHPExcel, $workSheetNum++,
 				$list, $key_value["title"].' Sum');

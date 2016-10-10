@@ -15,4 +15,5 @@
 	require_once('logs.class.php');
 	require_once('commons.class.php');
 	require_once('reports.class.php');
+	require_once('enrollments.class.php');
 ?>

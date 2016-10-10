@@ -26,11 +26,9 @@ function iudenrollment($iud, $action_type, $action_type_done) {
     $id =  @intval($_POST['id']);
     $father_name = '';
     $father_cell = '';
-    $father_work = '';
     $father_email = '';
     $mother_name = '';
     $mother_cell =  '';
-    $mother_work =  '';
     $mother_email =  '';
     $address =  '';
     $city =  '';
@@ -51,15 +49,15 @@ function iudenrollment($iud, $action_type, $action_type_done) {
     $physician_address='';
     $emergency_hospital ='';
     $medical_conditions='';
+    $financial_aid = 0;
+    $total_fee = 0;
 
 	if ($iud!='d') {
 		$father_name = $_POST['father_name'];
 		$father_cell = $_POST['father_cell'];
-		$father_work = $_POST['father_work'];
 		$father_email = $_POST['father_email'];
 		$mother_name = $_POST['mother_name'];
 		$mother_cell =  $_POST['mother_cell'];
-		$mother_work =  $_POST['mother_work'];
 		$mother_email =  $_POST['mother_email'];
 		$address =  $_POST['address'];
 		$city =  $_POST['city'];
@@ -80,6 +78,8 @@ function iudenrollment($iud, $action_type, $action_type_done) {
 		$physician_phone =  $_POST['physician_phone'];
 		$physician_address =  $_POST['physician_address'];
 		$emergency_hospital =$_POST['emergency_hospital'];
+		$total_fee =$_POST['total_fee'];
+		$financial_aid =$_POST['financial_aid'];
 	}
 
 	if (($iud=='u' || $iud=='d') && $id<=0) {
@@ -89,11 +89,12 @@ function iudenrollment($iud, $action_type, $action_type_done) {
 	}
 
 	try {
-		$id = $enrollment->iudEnrollment($iud, $id, $father_name, $father_cell, $father_work, $father_email,
-				$mother_name, $mother_cell, $mother_work, $mother_email, $address, $city, $zipcode, $state,
+		$id = $enrollment->iudEnrollment($iud, $id, $father_name, $father_cell, $father_email,
+				$mother_name, $mother_cell, $mother_email, $address, $city, $zipcode, $state,
 				$phone, $language_primary, $language_other, $emergency_contact1, $emergency_phone1,
 				$emergency_relation1, $emergency_contact2, $emergency_phone2, $emergency_relation2, $comments,
-    			$physician_name, $physician_phone, $physician_address, $emergency_hospital);
+    			$physician_name, $physician_phone, $physician_address, $emergency_hospital, $total_fee,
+    			$financial_aid);
 		Logger::log($action_type. ' enrollment complete');
 		if ($id > 0) {
 			$response['success'] = 1;

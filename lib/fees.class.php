@@ -69,7 +69,7 @@ class Fees {
         if ($dml!='d') {
         	$data = array(
 	            'fee_date'  => array('type' => 's', 'value' => Commons::date_format_sql($fee_date)),
-	            'amount'     => array('type' => 'd', 'value' => $amount),
+	            'amount'     => array('type' => 'i', 'value' => $amount),
 	            'fee_method_id'     => array('type' => 'i', 'value' => $fee_method_id),
 	            'enrollment_id'     => array('type' => 'i', 'value' => $enrollment_id),
 	            'event_id'     => array('type' => 'i', 'value' => $event_id),

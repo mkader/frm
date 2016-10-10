@@ -20,12 +20,13 @@ var userColModel = [
 	{label: 'id', template:common.idTemplate('id',1,1)},
 	{label: 'Father Name', template:common.textTemplate('father_name', 100, true, ' * ', true,2,1)},
    	{label: 'Cell', hidden:true,template:common.phoneTemplate('father_cell', 50, false, ' &nbsp; ', true,2,2)},
-	{label: 'Work', hidden:true,template:common.phoneTemplate('father_work', 50, false, ' &nbsp; ', true,2,3)},
-	{label: 'E-mail', hidden:true,formatter:'email', template:common.textTemplate('father_email', 100, false, ' &nbsp; ', true,2,4)},
+	{label: 'E-mail', hidden:true,formatter:'email', template:common.textTemplate('father_email', 100, false, ' &nbsp; ', true,2,3)},
+	{label: 'Assigned Fee', template:common.numberTemplate('total_fee', 50, true, ' * ',2,4, {maxlength: 8})},
 	{label: 'Mother Name', template:common.textTemplate('mother_name', 100, true, ' * ', true,3,1)},
    	{label: 'Cell', hidden:true,template:common.phoneTemplate('mother_cell', 50, false, ' &nbsp; ', true,3,2)},
-	{label: 'Work', hidden:true,template:common.phoneTemplate('mother_work', 50, false, ' &nbsp; ', true,3,3)},
-	{label: 'E-mail', hidden:true,formatter:'email', template:common.textTemplate('mother_email', 100, false, ' &nbsp; ', true,3,4)},
+	{label: 'E-mail', hidden:true,formatter:'email', template:common.textTemplate('mother_email', 100, false, ' &nbsp; ', true,3,3)},
+	{label: 'Aid', template:common.selectTemplate('financial_aid', 50, true, ' &nbsp; ',
+			'checkbox', active_id, active_value, true,3,4,'')},
 	{label: 'Address', template:common.textTemplate('address', 100, false, ' &nbsp; ', true,4,1)},
 	{label: 'City', hidden:true,template:common.textTemplate('city', 50, false, ' &nbsp; ', true,4,2)},
 	/*{label: 'State', hidden:true,template:common.selectTemplate('state', 50, false, ' &nbsp; ',
@@ -101,14 +102,6 @@ function pushData(result) {
 	var arrayData = [];
 	for (var i = 0; i < result.length; i++) {
 		var item = result[i];
-		//var father_name = item.father_name;
-		//var father_cell = item.father_cell;
-		//var father_work = item.father_work;
-		//var father_email = item.father_email;
-		//var mother_name = item.mother_name;
-		//var mother_cell = item.mother_cell;
-		//var mother_work = item.mother_work;
-		//var mother_email = item.mother_email;
 		var home_address = '';
 		if(item.address.length>0) home_address+=item.address;
 		if (item.city.length>0 && home_address.length>0) home_address+=', '+ item.city;
@@ -117,24 +110,13 @@ function pushData(result) {
 		else home_address+=item.state;
 		if(item.zipcode.length>0 && home_address.length>0) home_address+=' - '+ item.zipcode
 		else home_address+=item.zipcode;
-		//var phone = item.phone;
-		//var language_primary = item.language_primary;
-		//var language_other = item.language_other;
-		//var emergency_contact1 = item.emergency_contact1;
-		//var emergency_relation1 = item.emergency_relation1;
-		//var emergency_phone1 = item.language_other;
-		//var emergency_contact2 = item.emergency_contact2;
-		//var emergency_phone2 = item.emergency_phone2;
-		//var emergency_relation2 = item.emergency_relation2;
 		arrayData.push({
 			id: item.id,
 			father_name: item.father_name,
 			father_cell: item.father_cell,
-			father_work: item.father_work,
 			father_email: item.father_email,
 			mother_name: item.mother_name,
 			mother_cell: item.mother_cell,
-			mother_work: item.mother_work,
 			mother_email: item.mother_email,
 			home_address: home_address,
 			address: item.address,
@@ -155,7 +137,9 @@ function pushData(result) {
 			physician_name: item.physician_name,
 		    physician_phone: item.physician_phone,
 		    physician_address: item.physician_address,
-		    emergency_hospital:item.emergency_hospital
+		    emergency_hospital:item.emergency_hospital,
+		    total_fee:item.total_fee,
+		    financial_aid:item.financial_aid
 		});
 	}
 	return arrayData;
