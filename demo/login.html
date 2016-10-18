@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<link rel="import" href="head.html">
+<body >
+    <div>
+    	<div id="header" style="height:80px;">
+			<table style="width:100%; height:72px;" border="0">
+				<tr style ="width:100%">
+					<td align ="left" style="box-shadow: 2px 2px 3px #222222;"><img src="mcclogo.png" id="imgSeal" style="margin-bottom: 0px;" />
+						<br>
+						<div id="header-bottom" style = "text-align:left;">
+							<span id="User" style="color:white;font-weight:bold"></span>&nbsp;&nbsp;
+							<span id="LogoffSpan"><button id="logout"></button></span>
+						</div>
+
+		            </td>
+					<td style="color:black;text-shadow: 1px 1px 1px;box-shadow: 2px 2px 3px #222222;">
+						Masjid us-Sunnah
+						<div id="header-top">FundRaise App</div>
+					</td>
+					<td width="50%">&nbsp;</td>
+				</tr>
+			</table>
+		</div>
+
+
+    	<div id="content" class="middle">
+    		<style>
+
+			h1
+			{
+				font-size:20px;
+				padding:0px 20px 20px;
+				margin:0px;
+				text-align:center;
+			}
+
+			input,textarea { padding:7px; font-size:14px !important; width:250px; }
+
+			p > label:first-child
+			{
+				display: inline-block;
+				font-weight: 700;
+				margin-bottom: 5px;
+				padding-right: 35px;
+				text-align: right;
+				width: 135px;
+			}
+
+			#container
+			{
+				margin:0px auto;
+				width:500px;
+				background-color:#eee;
+				padding:20px;
+				border-radius: 5px;
+				clear: both;
+				-webkit-border-radius: 5px;
+				-moz-border-radius: 5px;
+				border-radius: 5px;
+				-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+				-moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+				box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+			}
+			</style>
+
+			<div id="container">
+				<h1>Log In</h1>
+				<p>
+					<label for="username">E-mail:</label>
+					<input type="text" name="username" id="username" />
+				</p>
+
+				<p>
+					<label for="password">Password:</label>
+					<input type="password" name="password" id="password" />
+				</p>
+
+				<p>
+					<label for="email">Security Code:</label>
+					<input type="text" name="securitycode" id="securitycode" />
+				</p>
+				<p>
+					<label></label>
+					<span ><img src="captchaimage.jpg?width=156&height=35&characters=5" /></span>
+				</p>
+
+				<p>
+					<label></label>
+					<input type="button" value="Log In" id="login"/>
+				</p>
+				<p>
+					<label></label>
+					<span id="error" style="font-size:small;font-weight:bold;color:red"></span>
+				</p>
+</div>
+		</div>
+		<div id="footer">
+			<p>
+				Designed &amp; Coded by: <a href="mailto:daynightsoft@gmail.com">Day Night Soft</a>. 2015-2016 All Rights reserved.
+			</p>
+</div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,172 @@
+body {
+	min-width: 600px;
+	margin: 0;
+	padding: 0;
+	border: 10;
+	/*text-align: center;*/
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 80%;
+	color: #000000;
+	/*background-color: #B2CFE6;*/
+}		
+
+#header {
+	margin-left: 0px;
+	margin-bottom: 0px;
+	color: #FFFFFF;
+	background-color: #8CA7BB;
+	border:solid 1px #005AC5;
+	font-size: 2.0vw;
+	font-weight: normal;
+	padding:10px;
+	border-bottom:solid 4px Black;
+	text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6 {color: #0066CB;}
+
+h1 {
+	font-size: 2.0em;
+	font-weight: normal;
+}
+
+h5 {
+    margin-bottom: 5px;
+}
+
+a {
+    font-size: 90%;
+	color: #003366;
+	text-decoration: none;
+	font-weight: bold;
+	cursor:hand;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+#content {
+	/*width: 100%;
+    border:solid 1px #005AC5;*/
+	background-color:White;
+	border-top:solid 1px Black;
+}
+
+#footer {
+	font-size: 0.8em;
+	font-style: italic;
+	text-align: left;
+	text-align:center;
+}
+
+.NormalTextBold {
+    font-family: Verdana, Helvetica, sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    font-weight: bold;
+    color:#333333;    
+}
+
+.SubMenuSelectedText {
+    font-family: Verdana, Helvetica, sans-serif;
+    font-size: 11px;
+    color: #FFFFFF;
+    text-transform:uppercase;
+}
+
+.SubMenuOtherText {
+    font-family: Verdana, Helvetica, sans-serif;
+    font-size: 11px;
+    color: #FFFFFF;
+}
+
+#header-bottom {
+	width:100%;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+#menu-bar {
+	width: 100%;
+    float: left;
+    margin: 0 0 0 0;
+    padding: 0;
+    list-style: none;
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #ccc; 
+    border-top: 1px solid #ccc; 
+}
+
+#menu-bar li {       
+    /*padding: 0px 0px 0px 0px;*/
+    float: left;
+    position: relative;
+    list-style: none;
+    display: block;
+    padding: 8px 15px;
+    text-decoration: none;
+    font-weight:900;
+    color: #069;
+    border-right: 1px solid #ccc; 
+}
+
+#menu-bar li:hover {
+    color: #c00;
+    background-color: #fff; 
+}
+
+#menu-bar ul {
+    background: #DDDDDD;
+    background: linear-gradient(top,  #FFFFFF,  #CFCFCF);
+    background: -ms-linear-gradient(top,  #FFFFFF,  #CFCFCF);
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#CFCFCF));
+    background: -moz-linear-gradient(top,  #FFFFFF,  #CFCFCF);
+    display: none;
+    margin: 0;
+    padding: 0;
+    width: 185px;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    border: solid 1px #B4B4B4;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-box-shadow: 2px 2px 3px #222222;
+    -moz-box-shadow: 2px 2px 3px #222222;
+    box-shadow: 2px 2px 3px #222222;
+}
+
+#menu-bar ul li {
+    float: none;
+    margin: 0;
+    padding: 0;
+
+    padding:10px 0px 10px 15px;
+    color:#424242 !important;
+    font-size:12px;
+    font-style:normal;
+    font-family:arial;
+    font-weight: normal;
+    text-shadow: 2px 2px 3px #FFFFFF;
+}
+
+div.middle {
+    padding: 20px 160px 5px 2px;
+    margin: 0px;
+}
+.titreSection {
+    font-weight: bold;
+    font-size: 14px;
+    color: #5B0000;
+    font-style: normal;
+    font-family: Verdana,Helvetica,sans-serif;
+}
+
+.ui-jqgrid .altRow td{background-color: lightblue;}
+
+.menuClicked {
+	text-transform:uppercase;
+	text-decoration: underline !important;
+	color: red !important;}
