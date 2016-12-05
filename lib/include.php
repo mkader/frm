@@ -20,4 +20,5 @@
 	require_once('enrollments.class.php');
 	require_once('students.class.php');
 	require_once('fees.class.php');
+	require_once('teachers.class.php');
 ?>

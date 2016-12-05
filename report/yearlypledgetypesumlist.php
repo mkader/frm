@@ -32,7 +32,7 @@ if (Sessions::isValidSession()) {
 	$clsReports = new Reports($clsDB);
 	$list = $clsReports->getYearlyPledgeTypeSumList();
 	echo '<table border="1" rules="all">
-			<tr><td colspan="8" style="text-align:center;font-weight:bold;font-size:18px">Yearly Pledge Type Sum List</td></tr>
+			<tr><td colspan="9" style="text-align:center;font-weight:bold;font-size:18px">Yearly Pledge Type Sum List</td></tr>
 			<tr style="background-color:#FFFF00;font-weight:bold">
 				<th style="font-weight:bold;font-size:18px">Year</th>
 				<th style="font-weight:bold;font-size:18px">Amount</th>
@@ -42,6 +42,7 @@ if (Sessions::isValidSession()) {
 				<th style="font-weight:bold;font-size:18px">Zakath</th>
 				<th style="font-weight:bold;font-size:18px">Transportation</th>
 				<th style="font-weight:bold;font-size:18px">Funeral</th>
+				<th style="font-weight:bold;font-size:18px">School</th>
 			</tr>';
 	$row = 2;
 	$totalpledgedamount = 0;
@@ -58,11 +59,12 @@ if (Sessions::isValidSession()) {
 			<td style="text-align:right;font-size:15px">'.number_format($key_value["zakath"],2).'</td>
 			<td style="text-align:right;font-size:15px">'.number_format($key_value["transportation"],2).'</td>
 			<td style="text-align:right;font-size:15px">'.number_format($key_value["funeral"],2).'</td>
+			<td style="text-align:right;font-size:15px">'.number_format($key_value["school"],2).'</td>
 		</tr>';
 		$row++;
 	}
 	/*echo '<tr>
-			<td colspan="5" style="text-align:right;font-weight:bold;font-size:53px">TOTAL</td>
+			<td colspan="6" style="text-align:right;font-weight:bold;font-size:53px">TOTAL</td>
 			<td style="text-align:right;font-weight:bold;font-size:13px">'.number_format($totalpledgedamount, 2, '.', '').'</td>
 			<td style="text-align:right;font-weight:bold;font-size:13px">'.number_format($totalpaid, 2, '.', '').'</td>
 			<td style="text-align:right;font-weight:bold;font-size:13px">'.number_format($totaldiff, 2, '.', '').'</td>

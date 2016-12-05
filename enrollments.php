@@ -4,7 +4,7 @@ require_once('lib/include.php');
 $db = new DB();
 $enrollment = new Enrollments($db);
 
-function enrollmentlist() {
+function enrollmentList() {
 	global $enrollment;
 	$response = array();
 
@@ -20,7 +20,7 @@ function enrollmentlist() {
 	return $response;
 }
 
-function iudenrollment($iud, $action_type, $action_type_done) {
+function iudEnrollment($iud, $action_type, $action_type_done) {
     global $enrollment;
     $response = array();
     $id =  @intval($_POST['id']);
@@ -129,7 +129,7 @@ if (Sessions::isValidSession()) {
 	    		$action_type_done ="deleted";
 	    	}
 	        Logger::log('Processing '. $action_type .' enrollment request...');
-	        $response = iudenrollment($iud, $action_type, $action_type_done);
+	        $response = iudEnrollment($iud, $action_type, $action_type_done);
 	    }
 	    Logger::log(print_r($response, true));
 	} else if (isset($_GET['action'])) {

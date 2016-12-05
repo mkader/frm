@@ -11,10 +11,12 @@
 <div id="tabs" style="width:900px">
   <ul>
     <li><a href="#studentlistid">Students</a></li>
-   <li><a href="#feelistid">Fees</a></li>
+   	<li><a href="#feelistid">Fees</a></li>
+   	<li><a href="#booksalelistid">Books</a></li>
   </ul>
   <div id="studentlistid"></div>
   <div id="feelistid"></div>
+  <div id="booksaleistid"></div>
 </div>
 
 <script type="text/javascript" src="js/enrollments.js" ></script>

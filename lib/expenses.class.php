@@ -35,7 +35,7 @@ class Expenses {
         $stmt->bind_result($id, $expense_date, $event_id, $title, $comments, $amount,
         	$created_on, $modified_on, $created_by, $modified_by, $event_title);
         while ($stmt->fetch()) {
-            $events[] = array('id' => $id, 
+            $events[] = array('id' => $id,
             	'title' => $title,
             	'expense_date' => Commons::date_format_form($expense_date),
             	'comments' => $comments,
@@ -66,7 +66,7 @@ class Expenses {
 	            'expense_date'     => array('type' => 's', 'value' => Commons::date_format_sql($expense_date)),
 	            'event_id'     => array('type' => 's', 'value' => $event_id),
 	            'comments'     => array('type' => 's', 'value' => $comments),
-	            'amount'     => array('type' => 'i', 'value' => $amount),
+	            'amount'     => array('type' => 'd', 'value' => $amount),
 	            'modified_by'   => array('type' => 'i', 'value' => $login_id)
 	        );
         }

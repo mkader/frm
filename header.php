@@ -14,7 +14,7 @@ if (Sessions::isValidSession()){
             </td>
 			<td style="color:black;text-shadow: 1px 1px 1px;box-shadow: 2px 2px 3px #222222;">
 				Masjid us-Sunnah
-				<div id="header-top">FundRaise App</div>
+				<div id="header-top">FundRaise/School App</div>
 			</td>
 			<td width="50%">&nbsp;</td>
 		</tr>
@@ -22,18 +22,29 @@ if (Sessions::isValidSession()){
 </div>
 <?php if (Sessions::isValidSession()){ ?>
 <div>
-	<ul id="menu-bar">
-		<li>My Profile</li>
-<?php if (Sessions::isLoginUserSuperAdmin()) { ?> <li>User</li> <?php } ?>
-		<li>Member</li>
-		<li>Meeting</li>
+	<ul id="menu-bar" class="dropdown">
+		<li>My Profile
+			<?php if (Sessions::isLoginUserSuperAdmin()) { ?> <ul><li>User</li></ul> <?php } ?>
+		</li>
 		<li>Event</li>
-		<li>Donator</li>
+		<li>Fundraise
+			<ul>
+				<li>Member</li>
+				<li>Meeting</li>
+				<li>Donator</li>
+			</ul>
+		</li>
+		<!--<li>Template</li>-->
+		<li>School
+			<ul>
+				<li>Enrollments</li>
+				<li>Teachers</li>
+				<li>Books</li>
+			</ul>
+		</li>
 		<!-- <li>Pledge</li>-->
 		<li>Expense</li>
 		<li>Masjid</li>
-		<li>Template</li>
-		<li>School</li>
 		<li>Report</li>
 <?php if (Sessions::isLoginUserSuperAdmin()) { ?> <!--<li>Log</li>--> <?php } ?>
 	</ul>

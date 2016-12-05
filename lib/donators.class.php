@@ -38,10 +38,10 @@ class Donators {
             $donators[] = array('id' => $id, 'name' => $name, 'address1' => $address1,
             	'address2' => $address2, 'city' => $city, 'state' => $state,
             	'zipcode' => $zipcode, 'email' => $email, 'phone' => $phone,
-            	'company_name' => $company_name, 'comments' => $comments,
+            	'company_name' => $company_name, 'comments' => $comments/*,
             	'created_on' => Commons::date_format_form($created_on),
             	'modified_on' => Commons::date_format_form($modified_on),
-            	'created_by' => $created_by, 'modified_by' => $modified_by);
+            	'created_by' => $created_by, 'modified_by' => $modified_by*/);
         }
 		$stmt->close();
 

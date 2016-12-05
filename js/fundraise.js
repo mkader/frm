@@ -4,7 +4,7 @@ $(function(){
 		$("#menu-bar li").removeClass( "menuClicked" );
 		$(this).addClass( "menuClicked" );
 		var menu = $(this).text().toLowerCase();
-		if (menu=="my profile") updateContent("myprofile.php", contentid);
+		if (menu.includes("my profile")) updateContent("myprofile.php", contentid);
 		else if (menu=="user")  updateContent("userlist.php", contentid);
 		else if (menu=="event") updateContent("eventlist.php", contentid);
 		else if (menu=="pledge") updateContent("pledgelist.php", contentid);
@@ -15,7 +15,10 @@ $(function(){
 		else if (menu=="member") updateContent("memberlist.php", contentid);
 		else if (menu=="meeting") updateContent("meetinglist.php", contentid);
 		else if (menu=="masjid") updateContent("masjidlist.php", contentid);
-		else if (menu=="school") updateContent("school.php", contentid);
+		else if (menu=="enrollments") updateContent("school.php", contentid);
+		else if (menu=="teachers") updateContent("teacherlist.php", contentid);
+		else if (menu=="books") updateContent("booklist.php", contentid);
+		
 	});
 })
 
